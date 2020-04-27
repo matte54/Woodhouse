@@ -1,0 +1,4 @@
+https://www.rockpapershotgun.com/feed/
+https://www.reddit.com/r/gifs/.rss
+https://www.gamespot.com/feeds/news/
+https://www.reddit.com/hot/.rss

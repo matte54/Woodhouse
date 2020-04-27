@@ -1,0 +1,19 @@
+<-Clean from Vocab->
+{reactions}
+blank spaces
+Twitter
+/r
+Likes
+>>
+/u
+|
+
+
+<-Regex Filter cleaing function together with remove blanks->
+
+all numbers 
+more then 3 numbers in a row
+less then 3 chars
+more then 3 of the same char in a row
+more then one special char in a row
+more then 2 Capitalized letters in a row with lowercaps in the same string
