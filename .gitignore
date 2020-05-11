@@ -3,5 +3,5 @@ mons/
 *.log
 *.sh
 /generalchat.txt
-highscore.txt
+/highscore.txt
 __pycache__/
