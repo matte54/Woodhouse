@@ -1,0 +1,6 @@
+data/
+mons/
+*.log
+*.sh
+/generalchat.txt
+highscore.txt
