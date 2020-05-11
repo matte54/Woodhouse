@@ -50,7 +50,7 @@ class MyClient(discord.Client):
         await self.wait_until_ready()
         channel = self.get_channel(194028816333537280) # channel ID goes here
         while not self.is_closed():
-            await asyncio.sleep(5000)
+            await asyncio.sleep(7000)
             async for message in channel.history(limit=1):
                 if message.author == self.user:
                     t = get_timestamp_str()
@@ -75,7 +75,7 @@ class MyClient(discord.Client):
                         await message.channel.send(pokemonRun)
 
                 else:
-                    dexR2 = random.randint(800, 1500)
+                    dexR2 = random.randint(1200, 1800)
                     await asyncio.sleep(dexR2)
 
     async def my_background_task(self):
@@ -118,7 +118,7 @@ class MyClient(discord.Client):
                         t = get_timestamp_str()
                         print('{}Can post but waiting...i have waited {} cycle(s)'.format(t, counter))
                         pass
-            x = random.randint(2000, 4000)
+            x = random.randint(4000, 7000)
             await asyncio.sleep(x)
 
     async def on_message(self, message):
@@ -128,16 +128,23 @@ class MyClient(discord.Client):
 
         if message.content.startswith('$url'):
             i = pick_url()
+            t = get_timestamp_str()
+            u = message.author
+            print('{}Manual triggered URL request by {} -----> {}'.format(t, u, i))
             await message.channel.send(i)
 
         if message.content.startswith('$highscore'):
             x = highscore()
+            t = get_timestamp_str()
+            u = message.author
+            print('{}{}Requested highscore list....'.format(t, u))
             await message.channel.send(x)
 
         if message.content.startswith('$speak'):
             x = get_speech(self)
             t = get_timestamp_str()
-            print('{}Manual trigger chosen reply was -----> {}'.format(t, x))
+            u = message.author
+            print('{}Manual trigger issued by {} chosen reply was -----> {}'.format(t, u, x))
             await message.channel.send(x)
 
         if message.content.startswith('$test'):
@@ -151,6 +158,8 @@ class MyClient(discord.Client):
 
         if message.content.startswith('$dex'):
             dexUser = message.author
+            t = get_timestamp_str()
+            print('{}Listing highscores for {}'.format(t, dexUser))
             uiDex = str(dexUser)
             filePathDex = './data/'+uiDex
             fE = open(filePathDex, 'a')
@@ -160,13 +169,12 @@ class MyClient(discord.Client):
                 content = f.readlines()
                 list2 = [a for a in content if a != '\n']
                 list3 = [i.strip() for i in list2]
-                #print(list3)
-                #middleDex = ('\n'.join(map(str, list3)))
+                c = len(list3)
                 test1 = ""
                 for name in list3:
                     test1 += name.ljust(15)
-                x = "```<-------------------- {} POKÈDEX -------------------->\n".format(dexUser)
-                z = "\n<--------------------------------------------------------------->```"
+                x = "```{} POKÈDEX\n".format(dexUser)
+                z = "\n{}/896 CAUGHT```".format(c)
                 ccDex = x+test1+z
                 await message.channel.send(ccDex)
 
@@ -174,10 +182,12 @@ class MyClient(discord.Client):
             global pokemonAlive
             global pokePick
             discordId = message.author
+            t = get_timestamp_str()
+            print('{}{} is attempting pokemon catch...'.format(t, discordId))
             uid = str(discordId)
             if pokemonAlive == 1:
                 #catchAttempt = bool(random.getrandbits(1))
-                if random.randint(1,10) < 8:
+                if random.randint(1,10) < 9:
                     pokemonAlive = 0
                     filePath = './data/'+uid
                     f = open(filePath, 'a')
@@ -213,6 +223,9 @@ class MyClient(discord.Client):
                 return
             mmoName, mmoClass = mmoMessage.split(' ', 1)
             mmoScore = playMMO(mmoName, mmoClass)
+            t = get_timestamp_str()
+            u = message.author
+            print('{}{} played the mmo...'.format(t, u))
             await message.channel.send(mmoScore)
 
 

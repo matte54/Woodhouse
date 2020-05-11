@@ -9,8 +9,12 @@ def pick_url():
             x = data['https://www.reddit.com/r/gifs/.rss'][i]['dlink']
             urls.append(x)
 
-        for i in data['https://www.reddit.com/hot/.rss']:
-            x = data['https://www.reddit.com/hot/.rss'][i]['dlink']
+        for i in data['https://www.reddit.com/r/aww/.rss']:
+            x = data['https://www.reddit.com/r/aww/.rss'][i]['dlink']
+            urls.append(x)
+
+        for i in data['https://www.reddit.com/r/funny/.rss']:
+            x = data['https://www.reddit.com/r/funny/.rss'][i]['dlink']
             urls.append(x)
 
         for i in data['https://www.rockpapershotgun.com/feed/']:

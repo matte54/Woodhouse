@@ -4,3 +4,4 @@ mons/
 *.sh
 /generalchat.txt
 highscore.txt
+__pycache__/
