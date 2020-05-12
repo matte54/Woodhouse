@@ -159,7 +159,7 @@ class MyClient(discord.Client):
         if message.content.startswith('$dex'):
             dexUser = message.author
             t = get_timestamp_str()
-            print('{}Listing highscores for {}'.format(t, dexUser))
+            print('{}Listing {}s pokédex...'.format(t, dexUser))
             uiDex = str(dexUser)
             filePathDex = './data/'+uiDex
             fE = open(filePathDex, 'a')
