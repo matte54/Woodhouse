@@ -27,6 +27,8 @@ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(me
 logger.addHandler(handler)
 
 global pokemonAlive
+global shutup
+shutup = 0
 
 class MyClient(discord.Client):
     def __init__(self, *args, **kwargs):
@@ -46,11 +48,17 @@ class MyClient(discord.Client):
 
     async def pokemon_task(self):
         global pokemonAlive
+        global shutup
         pokemonAlive = 0
         await self.wait_until_ready()
         channel = self.get_channel(194028816333537280) # channel ID goes here
         while not self.is_closed():
             await asyncio.sleep(7000)
+            if shutup == 1:
+                t = get_timestamp_str()
+                print('{}Shutup function is ON waiting 6 hours...'.format(t))
+                await asyncio.sleep(21600)
+                shutup = 0
             async for message in channel.history(limit=1):
                 if message.author == self.user:
                     t = get_timestamp_str()
@@ -79,11 +87,17 @@ class MyClient(discord.Client):
                     await asyncio.sleep(dexR2)
 
     async def my_background_task(self):
+        global shutup
         counter = 0
         await self.wait_until_ready()
         channel = self.get_channel(194028816333537280) # channel ID goes here
         while not self.is_closed():
-
+            await asyncio.sleep(30)
+            if shutup == 1:
+                t = get_timestamp_str()
+                print('{}Shutup function is ON waiting 6 hours...'.format(t))
+                await asyncio.sleep(21600)
+                shutup = 0
 
             async for message in channel.history(limit=1):
                 if message.author == self.user:
@@ -138,6 +152,16 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             u = message.author
             print('{}{}Requested highscore list....'.format(t, u))
+            await message.channel.send(x)
+
+        if message.content.startswith('$shutup'):
+            global shutup
+            shutup = 1
+            t = get_timestamp_str()
+            u = message.author
+            print('{}{} Told woodhouse to shutup....'.format(t, u))
+            l = ['Yes, sir.', 'righto', 'Its gonna be a itchy day...', 'will do!', 'Very good, sir.']
+            x = random.choice(l)
             await message.channel.send(x)
 
         if message.content.startswith('$speak'):
