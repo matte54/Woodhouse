@@ -44,7 +44,18 @@ class MyClient(discord.Client):
         y = self.user.name
         z = self.user.id
         print ('{}{} {} id {} - READY'.format(t, x, y, z))
-        print('-----------------------')
+
+    async def on_disconnect(self):
+        t = get_timestamp_str()
+        print('{}Connection LOST to discord servers!'.format(t))
+
+    async def on_connect(self):
+        t = get_timestamp_str()
+        print('{}Connection ESTABLISHED to discord servers!'.format(t))
+
+    async def on_resumed(self):
+        t = get_timestamp_str()
+        print('{}Connection resumed?'.format(t))
 
     async def pokemon_task(self):
         global pokemonAlive
