@@ -168,8 +168,9 @@ class MyClient(discord.Client):
                 t = get_timestamp_str()
                 u = message.author
                 print('{}{} Told woodhouse to shutup...but he was already doing it.'.format(t, u))
-                y = u[:-5]
-                x = 'I am sorry {}, but i cant shut up more then i already am...'.format(y)
+                k = str(u)
+                y = k[:-5]
+                x = '{} im terribly sorry but i cant shut up more then i already am...'.format(y)
                 await message.channel.send(x)
 
 
