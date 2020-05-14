@@ -156,13 +156,22 @@ class MyClient(discord.Client):
 
         if message.content.startswith('$shutup'):
             global shutup
-            shutup = 1
-            t = get_timestamp_str()
-            u = message.author
-            print('{}{} Told woodhouse to shutup....'.format(t, u))
-            l = ['Yes, sir.', 'righto', 'Its gonna be a itchy day...', 'will do!', 'Very good, sir.']
-            x = random.choice(l)
-            await message.channel.send(x)
+            if shutup == 0:
+                shutup = 1
+                t = get_timestamp_str()
+                u = message.author
+                print('{}{} Told woodhouse to shutup...'.format(t, u))
+                l = ['Yes, sir.', 'righto', 'Its gonna be a itchy day...', 'will do!', 'Very good, sir.']
+                x = random.choice(l)
+                await message.channel.send(x)
+            else:
+                t = get_timestamp_str()
+                u = message.author
+                print('{}{} Told woodhouse to shutup...but he was already doing it.'.format(t, u))
+                y = u[:-5]
+                x = 'I am sorry {}, but i cant shut up more then i already am...'.format(y)
+                await message.channel.send(x)
+
 
         if message.content.startswith('$speak'):
             x = get_speech(self)
