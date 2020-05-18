@@ -5,3 +5,4 @@ mons/
 /generalchat.txt
 /highscore.txt
 __pycache__/
+/test.py

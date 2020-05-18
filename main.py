@@ -1,6 +1,7 @@
 import discord
 import logging
 import os
+import re
 import io
 import random
 import asyncio
@@ -147,6 +148,8 @@ class MyClient(discord.Client):
             await asyncio.sleep(x)
 
     async def on_message(self, message):
+        txt = message.content
+
         if message.author == self.user:
             #print("It was me!")
             return
@@ -157,6 +160,32 @@ class MyClient(discord.Client):
             u = message.author
             print('{}Manual triggered URL request by {} -----> {}'.format(t, u, i))
             await message.channel.send(i)
+
+        if re.search(r'[0-9]{1,3}[Ff]', txt):
+            t = get_timestamp_str()
+            u = message.author
+            i = re.search(r'[0-9]{1,3}[Ff]', txt)
+            i = i.group(0)[:-1]
+            i = int(i)
+            c = round((i - 32) * 5.0/9.0)
+            resp = ['Sir im delighted to tell you that', '', 'Sir, ', 'Oh oh oh! i know that', 'My superior intelligence tell mes that']
+            r = random.choice(resp)
+            x = '{} {}f is {}c'.format(r, i, c)
+            print('{} Converted F to C for {}'.format(t, u))
+            await message.channel.send(x)
+
+        if re.search(r'[0-9]{1,3}[Cc]', txt):
+            t = get_timestamp_str()
+            u = message.author
+            i = re.search(r'[0-9]{1,3}[Cc]', txt)
+            i = i.group(0)[:-1]
+            i = int(i)
+            c = round(9.0/5.0 * i + 32)
+            resp = ['Sir im delighted to tell you that', '', 'Sir, ', 'Oh oh oh! i know that', 'My superior intelligence tell mes that', 'I know what that is in freedom units']
+            r = random.choice(resp)
+            x = '{} {}c is {}f'.format(r, i, c)
+            print('{} Converted C to F for {}'.format(t, u))
+            await message.channel.send(x)
 
         if message.content.startswith('$highscore'):
             x = highscore()
@@ -254,6 +283,8 @@ class MyClient(discord.Client):
                             writer.writerow(recordEntry)
                             f.close()
                             await message.channel.send("""```yaml\n{} CAUGHT {}!```""".format(discordId, pokePick))
+                            t = get_timestamp_str()
+                            print('{}{} caught {}'.format(t, discordId, pokePick))
                         else:
                             await message.channel.send("""```yaml\n{} CAUGHT {}...but he/she already had it!```""".format(discordId, pokePick))
                             #print("We had that one...")
