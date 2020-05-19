@@ -161,27 +161,27 @@ class MyClient(discord.Client):
             print('{}Manual triggered URL request by {} -----> {}'.format(t, u, i))
             await message.channel.send(i)
 
-        if re.search(r'[0-9]{1,3}[Ff]', txt):
+        if re.search(r'[0-9]{1,3}[Ff]\b', txt):
             t = get_timestamp_str()
             u = message.author
-            i = re.search(r'[0-9]{1,3}[Ff]', txt)
+            i = re.search(r'[0-9]{1,3}[Ff]\b', txt)
             i = i.group(0)[:-1]
             i = int(i)
             c = round((i - 32) * 5.0/9.0)
-            resp = ['Sir im delighted to tell you that', '', 'Sir, ', 'Oh oh oh! i know that', 'My superior intelligence tell mes that']
+            resp = ['Sir im delighted to tell you that', '', 'Sir, ', 'Oh oh oh! i know that', 'My superior intelligence tell me that']
             r = random.choice(resp)
             x = '{} {}f is {}c'.format(r, i, c)
             print('{} Converted F to C for {}'.format(t, u))
             await message.channel.send(x)
 
-        if re.search(r'[0-9]{1,3}[Cc]', txt):
+        if re.search(r'[0-9]{1,3}[Cc]\b', txt):
             t = get_timestamp_str()
             u = message.author
-            i = re.search(r'[0-9]{1,3}[Cc]', txt)
+            i = re.search(r'[0-9]{1,3}[Cc]\b', txt)
             i = i.group(0)[:-1]
             i = int(i)
             c = round(9.0/5.0 * i + 32)
-            resp = ['Sir im delighted to tell you that', '', 'Sir, ', 'Oh oh oh! i know that', 'My superior intelligence tell mes that', 'I know what that is in freedom units']
+            resp = ['Muuuurica!', '', 'Sir, ', 'I know what that is in freedom units']
             r = random.choice(resp)
             x = '{} {}c is {}f'.format(r, i, c)
             print('{} Converted C to F for {}'.format(t, u))
