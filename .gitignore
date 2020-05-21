@@ -6,3 +6,4 @@ mons/
 /highscore.txt
 __pycache__/
 /test.py
+/credentials.py

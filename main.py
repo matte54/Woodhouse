@@ -5,6 +5,7 @@ import re
 import io
 import random
 import asyncio
+import credentials
 from discord.ext import tasks, commands
 from urlhandler import pick_url
 from mmo import playMMO
@@ -16,7 +17,7 @@ import pandas as pd
 import time
 from mainfunc import get_speech
 
-TOKEN = 'MzI3MTM4MTM3MzcxNTc0Mjgy.XmQgCQ.5C5SR1LZ8QTN2si5ouZrP5SWpHk'
+TOKEN = credentials.KEY
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
                    description='Heroin addict')
