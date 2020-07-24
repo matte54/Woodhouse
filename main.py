@@ -251,7 +251,12 @@ class MyClient(discord.Client):
                 x = "```{} POKÈDEX\n".format(dexUser)
                 z = "\n{}/896 CAUGHT```".format(c)
                 ccDex = x+test1+z
-                await message.channel.send(ccDex)
+                if len(test1) < 1800:
+                    await message.channel.send(ccDex)
+                else:
+                    ccDexTemp = x+"To many mons caught, working on it..."+z
+                    await message.channel.send(ccDexTemp)
+
 
         if message.content.startswith('$catch'):
             global pokemonAlive
