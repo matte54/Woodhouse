@@ -16,6 +16,7 @@ import csv
 import pandas as pd
 import time
 from mainfunc import get_speech
+from spider_silk import db, Post
 
 TOKEN = credentials.KEY
 
@@ -262,6 +263,7 @@ class MyClient(discord.Client):
             global pokemonAlive
             global pokePick
             discordId = message.author
+            discordName = message.author.name #test
             t = get_timestamp_str()
             print('{}{} is attempting pokemon catch...'.format(t, discordId))
             uid = str(discordId)
@@ -291,6 +293,13 @@ class MyClient(discord.Client):
                             await message.channel.send("""```yaml\n{} CAUGHT {}!```""".format(discordId, pokePick))
                             t = get_timestamp_str()
                             print('{}{} caught {}'.format(t, discordId, pokePick))
+                            #Catch history entry
+                            try:
+                                postCatch = Post(body='{} CAUGHT {}!'.format(discordName, pokePick), pokemon=pokePick, user_id=discordId)
+                                db.session.add(post)
+                                db.session.commit()
+                            except:
+                                print('{} ERROR Could not put pokemon into catch history!'.format(t)
                         else:
                             await message.channel.send("""```yaml\n{} CAUGHT {}...but he/she already had it!```""".format(discordId, pokePick))
                             #print("We had that one...")
