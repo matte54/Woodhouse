@@ -298,8 +298,9 @@ class MyClient(discord.Client):
                                 postCatch = Post(body='{} CAUGHT {}!'.format(discordName, pokePick), pokemon=pokePick, user_id=discordId)
                                 db.session.add(post)
                                 db.session.commit()
-                            except:
-                                print('{} ERROR Could not put pokemon into catch history!'.format(t))
+                            except Exception as e:
+                                print('{}ERROR Could not put pokemon into catch history!'.format(t))
+                                print(e)
                         else:
                             await message.channel.send("""```yaml\n{} CAUGHT {}...but he/she already had it!```""".format(discordId, pokePick))
                             #print("We had that one...")
