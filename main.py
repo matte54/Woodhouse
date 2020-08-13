@@ -296,7 +296,7 @@ class MyClient(discord.Client):
                             #Catch history entry
                             try:
                                 postCatch = Post(body='{} CAUGHT {}!'.format(discordName, pokePick), pokemon=pokePick, user_id=discordId)
-                                db.session.add(post)
+                                db.session.add(postCatch)
                                 db.session.commit()
                             except Exception as e:
                                 print('{}ERROR Could not put pokemon into catch history!'.format(t))
