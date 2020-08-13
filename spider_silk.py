@@ -8,7 +8,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask('Arachne')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///var/www/arachne/app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////var/www/arachne/app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
