@@ -299,7 +299,7 @@ class MyClient(discord.Client):
                                 db.session.add(post)
                                 db.session.commit()
                             except:
-                                print('{} ERROR Could not put pokemon into catch history!'.format(t)
+                                print('{} ERROR Could not put pokemon into catch history!'.format(t))
                         else:
                             await message.channel.send("""```yaml\n{} CAUGHT {}...but he/she already had it!```""".format(discordId, pokePick))
                             #print("We had that one...")
