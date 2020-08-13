@@ -67,7 +67,7 @@ class MyClient(discord.Client):
         await self.wait_until_ready()
         channel = self.get_channel(194028816333537280) # channel ID goes here
         while not self.is_closed():
-            await asyncio.sleep(60) #Temporary (was 7000)
+            await asyncio.sleep(7000)
             if shutup == 1:
                 t = get_timestamp_str()
                 print('{}Shutup function is ON waiting 6 hours...'.format(t))
@@ -97,7 +97,7 @@ class MyClient(discord.Client):
                         await message.channel.send(pokemonRun)
 
                 else:
-                    dexR2 = random.randint(60, 120) #Temporary (was 1200, 1800)
+                    dexR2 = random.randint(1200, 1800)
                     await asyncio.sleep(dexR2)
 
     async def my_background_task(self):
