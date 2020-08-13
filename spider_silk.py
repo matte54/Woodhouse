@@ -16,11 +16,11 @@ db = SQLAlchemy(app)
 from datetime import datetime
 
 class Post(db.Model):
-    id = app_db.Column(app_db.Integer, primary_key=True)
-    body = app_db.Column(app_db.String(127))
-    timestamp = app_db.Column(app_db.DateTime, index=True, default=datetime.utcnow)
-    user_id = app_db.Column(app_db.Integer)
-    pokemon = app_db.Column(app_db.String(20))
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(127))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    user_id = db.Column(db.Integer)
+    pokemon = db.Column(db.String(20))
 
     def __repr__(self):
         return f'<Post {self.body}>'
