@@ -15,7 +15,7 @@ db = SQLAlchemy(app)
 
 from datetime import datetime
 
-class Post(app_db.Model):
+class Post(db.Model):
     id = app_db.Column(app_db.Integer, primary_key=True)
     body = app_db.Column(app_db.String(127))
     timestamp = app_db.Column(app_db.DateTime, index=True, default=datetime.utcnow)
