@@ -33,6 +33,13 @@ global pokemonAlive
 global shutup
 shutup = 0
 
+
+# Badges constants
+THRESHOLDS = [111 * n + 6 for n in range(1, 9)] # 8 badges
+BADGE_PATH_SINGLE = [f'badges/Badge{n}.png' for n in range(1, 9)] # individual badge icons
+BADGE_PATH_PROGRESS = ['badges/Badge1.png'] + [f'badges/Badge{n}a.png' for n in range(2, 9)] # cumulative badges
+
+
 class MyClient(discord.Client):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -252,11 +259,19 @@ class MyClient(discord.Client):
                 x = "```{} POKÈDEX\n".format(dexUser)
                 z = "\n{}/896 CAUGHT```".format(c)
                 ccDex = x+test1+z
+                badge_pic = None
+                if c > THRESHOLDS[0]:   # If we have at least 1 badge, show all the badges we have
+                    i = 0
+                    while c < THRESHOLDS[i]:
+                        i += 1
+                    badge_num = i
+                    badge_pic = BADGE_PATH_PROGRESS[badge_num]
+                
                 if len(test1) < 1800:
-                    await message.channel.send(ccDex)
+                    await message.channel.send(ccDex, file=badge_pic)
                 else:
                     ccDexTemp = x+"To many mons caught, working on it..."+z
-                    await message.channel.send(ccDexTemp)
+                    await message.channel.send(ccDexTemp, file=badge_pic))
 
 
         if message.content.startswith('$catch'):
@@ -286,11 +301,18 @@ class MyClient(discord.Client):
                         listC4 = ('\n'.join(map(str, listC3)))
 
                         if record not in listC4:
+                            count = len(listC4.split('\n')) + 1 # Use this to figure out if a player has reached a badge
                             #f = open(filePath, 'a')
                             writer = csv.writer(f)
                             writer.writerow(recordEntry)
                             f.close()
-                            await message.channel.send("""```yaml\n{} CAUGHT {}!```""".format(discordId, pokePick))
+                            message = f'yaml\n{discordId} CAUGHT {pokePick}!'
+                            badge_pic = None
+                            if count in THRESHOLDS:
+                                badge_num = THRESHOLDS.index(count)
+                                badge_pic = BADGE_PATH_SINGLE[badge_num]
+                                message += f'\n {discordId} EARNED A NEW BADGE!'
+                            await message.channel.send(f'```{message}```', file=badge_pic)
                             t = get_timestamp_str()
                             print('{}{} caught {}'.format(t, discordId, pokePick))
                             #Catch history entry
