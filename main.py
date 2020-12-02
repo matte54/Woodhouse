@@ -37,7 +37,7 @@ shutup = 0
 # Badges constants
 THRESHOLDS = [111 * n + 6 for n in range(1, 9)] # 8 badges
 BADGE_PATH_SINGLE = [f'badges/Badge{n}.png' for n in range(1, 9)] # individual badge icons
-BADGE_PATH_PROGRESS = ['badges/Badge1.png'] + [f'badges/Badge{n}a.png' for n in range(2, 9)] # cumulative badges
+BADGE_PATH_PROGRESS = [f'badges/Badge{n}a.png' for n in range(1, 9)] # cumulative badges
 
 
 class MyClient(discord.Client):
@@ -260,9 +260,9 @@ class MyClient(discord.Client):
                 z = "\n{}/896 CAUGHT```".format(c)
                 ccDex = x+test1+z
                 badge_pic = None
-                if c > THRESHOLDS[0]:   # If we have at least 1 badge, show all the badges we have
+                if c >= THRESHOLDS[0]:   # If we have at least 1 badge, show all the badges we have
                     i = 0
-                    while c < THRESHOLDS[i]:
+                    while c >= THRESHOLDS[i]:
                         i += 1
                     badge_num = i
                     badge_pic = BADGE_PATH_PROGRESS[badge_num]
@@ -334,7 +334,7 @@ class MyClient(discord.Client):
                                 print('{}ERROR Could not put pokemon into catch history!'.format(t))
                                 print(e)
                         else:
-                            await message.channel.send("""```yaml\n{} CAUGHT {}...but he/she already had it!```""".format(discordId, pokePick))
+                            await message.channel.send("""```yaml\n{} CAUGHT {}...but already had it!```""".format(discordId, pokePick))
                             #print("We had that one...")
 
                 else:
