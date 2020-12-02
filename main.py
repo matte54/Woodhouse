@@ -266,7 +266,7 @@ class MyClient(discord.Client):
                         i += 1
                     badge_num = i
                     badge_pic = BADGE_PATH_PROGRESS[badge_num]
-                
+
                 if len(test1) < 1800:
                     if badge_pic:
                         await message.channel.send(ccDex, file=badge_pic)
@@ -278,6 +278,8 @@ class MyClient(discord.Client):
                         await message.channel.send(ccDexTemp, file=badge_pic)
                     else:
                         await message.channel.send(ccDexTemp)
+
+
 
 
         if message.content.startswith('$catch'):
