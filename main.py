@@ -269,13 +269,13 @@ class MyClient(discord.Client):
 
                 if len(test1) < 1800:
                     if badge_pic:
-                        await message.channel.send(ccDex, file=badge_pic)
+                        await message.channel.send(ccDex, file=discord.File(badge_pic))
                     else:
                         await message.channel.send(ccDex)
                 else:
                     ccDexTemp = x+"To many mons caught, working on it..."+z
                     if badge_pic:
-                        await message.channel.send(ccDexTemp, file=badge_pic)
+                        await message.channel.send(ccDexTemp, file=discord.File(badge_pic))
                     else:
                         await message.channel.send(ccDexTemp)
 
@@ -320,7 +320,7 @@ class MyClient(discord.Client):
                                 badge_num = THRESHOLDS.index(count)
                                 badge_pic = BADGE_PATH_SINGLE[badge_num]
                                 message += f'\n {discordId} EARNED A NEW BADGE!'
-                                await message.channel.send(f'```{message}```', file=badge_pic)
+                                await message.channel.send(f'```{message}```', file=discord.File(badge_pic))
                             else:
                                 await message.channel.send(f'```{message}```')
                             t = get_timestamp_str()
