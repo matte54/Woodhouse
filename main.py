@@ -314,15 +314,15 @@ class MyClient(discord.Client):
                             writer = csv.writer(f)
                             writer.writerow(recordEntry)
                             f.close()
-                            message = f'yaml\n{discordId} CAUGHT {pokePick}!'
+                            msg = f'yaml\n{discordId} CAUGHT {pokePick}!'
                             badge_pic = None
                             if count in THRESHOLDS:
                                 badge_num = THRESHOLDS.index(count)
                                 badge_pic = BADGE_PATH_SINGLE[badge_num]
-                                message += f'\n {discordId} EARNED A NEW BADGE!'
-                                await message.channel.send(f'```{message}```', file=discord.File(badge_pic))
+                                msg += f'\n {discordId} EARNED A NEW BADGE!'
+                                await message.channel.send(f'```{msg}```', file=discord.File(badge_pic))
                             else:
-                                await message.channel.send(f'```{message}```')
+                                await message.channel.send(f'```{msg}```')
                             t = get_timestamp_str()
                             print('{}{} caught {}'.format(t, discordId, pokePick))
                             #Catch history entry
