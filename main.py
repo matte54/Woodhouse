@@ -268,10 +268,16 @@ class MyClient(discord.Client):
                     badge_pic = BADGE_PATH_PROGRESS[badge_num]
                 
                 if len(test1) < 1800:
-                    await message.channel.send(ccDex, file=badge_pic)
+                    if badge_pic:
+                        await message.channel.send(ccDex, file=badge_pic)
+                    else:
+                        await message.channel.send(ccDex)
                 else:
                     ccDexTemp = x+"To many mons caught, working on it..."+z
-                    await message.channel.send(ccDexTemp, file=badge_pic))
+                    if badge_pic:
+                        await message.channel.send(ccDexTemp, file=badge_pic)
+                    else:
+                        await message.channel.send(ccDexTemp)
 
 
         if message.content.startswith('$catch'):
@@ -312,7 +318,9 @@ class MyClient(discord.Client):
                                 badge_num = THRESHOLDS.index(count)
                                 badge_pic = BADGE_PATH_SINGLE[badge_num]
                                 message += f'\n {discordId} EARNED A NEW BADGE!'
-                            await message.channel.send(f'```{message}```', file=badge_pic)
+                                await message.channel.send(f'```{message}```', file=badge_pic)
+                            else:
+                                await message.channel.send(f'```{message}```')
                             t = get_timestamp_str()
                             print('{}{} caught {}'.format(t, discordId, pokePick))
                             #Catch history entry
