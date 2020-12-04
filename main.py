@@ -261,7 +261,7 @@ class MyClient(discord.Client):
                 status = f'{dexUser}\'s POKÉDEX  {count}/894 CAUGHT  {badge_text}'
                 last_five = '\n'.join(mons[-5:])
                 if count == 0: last_five = '  GO CATCH SOME POKÉMON FIRST'
-                trainer = dexUser.replace('#', '%23')
+                trainer = str(dexUser).replace('#', '%23')
                 url = f'http://thedarkzone.se/arachne/pokedex?trainer={trainer}'
                 msg = f'```{status}\n{last_five}```\n{url}'
                 if badge_num >= 0:
