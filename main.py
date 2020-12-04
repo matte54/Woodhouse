@@ -249,37 +249,25 @@ class MyClient(discord.Client):
             fE.close()
 
             with open(filePathDex) as f:
-                content = f.readlines()
-                list2 = [a for a in content if a != '\n']
-                list3 = [i.strip() for i in list2]
-                c = len(list3)
-                test1 = ""
-                for name in list3:
-                    test1 += name.ljust(15)
-                x = "```{} POKÈDEX\n".format(dexUser)
-                z = "\n{}/896 CAUGHT```".format(c)
-                ccDex = x+test1+z
-                badge_pic = None
-                if c >= THRESHOLDS[0]:   # If we have at least 1 badge, show all the badges we have
-                    i = 0
-                    while c >= THRESHOLDS[i]:
-                        i += 1
-                    badge_num = i
-                    badge_pic = BADGE_PATH_PROGRESS[badge_num]
-
-                if len(test1) < 1800:
-                    if badge_pic:
-                        await message.channel.send(ccDex, file=discord.File(badge_pic))
-                    else:
-                        await message.channel.send(ccDex)
+                # list of mons stripping newlines and removing empty lines
+                mons = [mon.strip() for mon in f.readlines() if mon.strip()]
+                count = len(mons)
+                badge_num = -1
+                if count >= THRESHOLDS[0]:
+                    badge_num = 0
+                    while count >= THRESHOLDS[badge_num + 1]:
+                        badge_num += 1
+                badge_text = '' if badge_num < 0 else f'{badge_num + 1}/8 BADGES'
+                status = f'{dexUser}\'s POKÉDEX  {count}/894 CAUGHT  {badge_text}'
+                last_five = '\n'.join(mons[-5:])
+                if count == 0: last_five = '  GO CATCH SOME POKÉMON FIRST'
+                trainer = dexUser.replace('#', '%23')
+                url = f'http://thedarkzone.se/arachne/pokedex?trainer={trainer}'
+                msg = f'```{status}\n{last_five}```\n{url}'
+                if badge_num >= 0:
+                    await message.channel.send(msg, file=discord.File(BADGE_PATH_PROGRESS[badge_num]))
                 else:
-                    ccDexTemp = x+"To many mons caught, working on it..."+z
-                    if badge_pic:
-                        await message.channel.send(ccDexTemp, file=discord.File(badge_pic))
-                    else:
-                        await message.channel.send(ccDexTemp)
-
-
+                    await message.channel.send(msg)
 
 
         if message.content.startswith('$catch'):
