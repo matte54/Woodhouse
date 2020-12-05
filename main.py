@@ -6,6 +6,8 @@ import io
 import random
 import asyncio
 import credentials
+import socket
+import hashlib
 from discord.ext import tasks, commands
 from urlhandler import pick_url
 from mmo import playMMO
@@ -18,7 +20,18 @@ import time
 from mainfunc import get_speech
 from spider_silk import db, Post
 
-TOKEN = credentials.KEY
+DEBUG = False
+if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '18093712d226974bfc25563025ebdb3c':
+    DEBUG = True
+
+try:
+    TOKEN = credentials.KEY
+except AttributeError:
+    print('Ignoring credentials key...')
+
+if DEBUG:
+    with open('catmaker', encoding='utf-8') as f:
+        TOKEN = f.read()
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
                    description='Heroin addict')
@@ -170,31 +183,27 @@ class MyClient(discord.Client):
             print('{}Manual triggered URL request by {} -----> {}'.format(t, u, i))
             await message.channel.send(i)
 
-        if re.search(r'[0-9]{1,3}[Ff]\b', txt):
+        m = re.search(r'(?:\s|^)(\-?\d+)( ?celcius| ?fahrenheit|c|f)\b', txt, flags=re.IGNORECASE)
+        if m:
             t = get_timestamp_str()
             u = message.author
-            i = re.search(r'[0-9]{1,3}[Ff]\b', txt)
-            i = i.group(0)[:-1]
-            i = int(i)
-            c = round((i - 32) * 5.0/9.0)
-            resp = ['Sir im delighted to tell you that', '', 'Sir, ', 'Oh oh oh! i know that', 'My superior intelligence tell me that']
-            r = random.choice(resp)
-            x = '{} {}f is {}c'.format(r, i, c)
-            print('{} Converted F to C for {}'.format(t, u))
-            await message.channel.send(x)
-
-        if re.search(r'[0-9]{1,3}[Cc]\b', txt):
-            t = get_timestamp_str()
-            u = message.author
-            i = re.search(r'[0-9]{1,3}[Cc]\b', txt)
-            i = i.group(0)[:-1]
-            i = int(i)
-            c = round(9.0/5.0 * i + 32)
-            resp = ['Muuuurica!', '', 'Sir, ', 'I know what that is in freedom units']
-            r = random.choice(resp)
-            x = '{} {}c is {}f'.format(r, i, c)
-            print('{} Converted C to F for {}'.format(t, u))
-            await message.channel.send(x)
+            i = int(m[1])
+            unit = m[2]
+            if unit.lower().startswith('c'):
+                c = round(9.0/5.0 * i + 32)
+                resp = ['Muuuurica!', '', 'Sir, ', 'I know what that is in freedom units']
+                r = random.choice(resp)
+                msg = f'{r} {i}c is {c}f'
+                print(f'{t} Converted C to F for {u}')
+                await message.channel.send(msg)
+            if unit.lower().startswith('f'):
+                c = round((i - 32) * 5.0/9.0)
+                resp = ['Sir im delighted to tell you that', '', 'Sir, ', 'Oh oh oh! i know that',
+                        'My superior intelligence tell me that']
+                r = random.choice(resp)
+                msg = f'{r} {i}f is {c}c'
+                print(f'{t} Converted F to C for {u}')
+                await message.channel.send(msg)
 
         if message.content.startswith('$highscore'):
             x = highscore()
@@ -222,7 +231,6 @@ class MyClient(discord.Client):
                 x = '{} im terribly sorry but i cant shut up more then i already am...'.format(y)
                 await message.channel.send(x)
 
-
         if message.content.startswith('$speak'):
             x = get_speech(self)
             t = get_timestamp_str()
@@ -248,26 +256,39 @@ class MyClient(discord.Client):
             fE = open(filePathDex, 'a')
             fE.close()
 
-            with open(filePathDex) as f:
+            with open(filePathDex) as f2:
                 # list of mons stripping newlines and removing empty lines
-                mons = [mon.strip() for mon in f.readlines() if mon.strip()]
+                mons = [mon.strip() for mon in f2.readlines() if mon.strip()]
                 count = len(mons)
                 badge_num = -1
                 if count >= THRESHOLDS[0]:
                     badge_num = 0
                     while count >= THRESHOLDS[badge_num + 1]:
                         badge_num += 1
-                badge_text = '' if badge_num < 0 else f'{badge_num + 1}/8 BADGES'
-                status = f'{dexUser}\'s POKÉDEX  {count}/894 CAUGHT  {badge_text}'
-                last_five = '\n'.join(mons[-5:])
-                if count == 0: last_five = '  GO CATCH SOME POKÉMON FIRST'
+                # badge_text = '' if badge_num < 0 else f'{badge_num + 1}/8 BADGES'
+                # status = f'{dexUser}\'s POKÉDEX  {count}/894 CAUGHT  {badge_text}'
+                # last_five = '\n'.join(mons[-5:])
+                # if count == 0: last_five = '  GO CATCH SOME POKÉMON FIRST'
                 trainer = str(dexUser).replace('#', '%23')
                 url = f'http://thedarkzone.se/arachne/pokedex?trainer={trainer}'
-                msg = f'```{status}\n{last_five}```\n{url}'
+                # msg = f'```{status}\n{last_five}```\n{url}'
+                
+                # TODO embed user's arachne avatar?
+                embed = discord.Embed()
+                embed.title = f'{dexUser}\s POKÉDEX'
+                embed.url = url
+                last_five = '\n'.join(['> ' + mon for mon in mons[-5:]])
+                if count == 0:
+                    last_five = 'Go catch some pokémon first!'
+                embed.add_field(name='CAUGHT', value=f'{count}/894', inline=True)
                 if badge_num >= 0:
-                    await message.channel.send(msg, file=discord.File(BADGE_PATH_PROGRESS[badge_num]))
+                    embed.add_field(name='BADGES', value=f'{badge_num + 1}/8', inline=True)
+                embed.add_field(name='Last 5 Pokémon', value=last_five, inline=False)
+                
+                if badge_num >= 0:
+                    await message.channel.send(embed=embed, file=discord.File(BADGE_PATH_PROGRESS[badge_num]))
                 else:
-                    await message.channel.send(msg)
+                    await message.channel.send(embed=embed)
 
 
         if message.content.startswith('$catch'):
