@@ -8,3 +8,4 @@ mons/
 __pycache__/
 /test.py
 /credentials.py
+catmaker
