@@ -17,7 +17,7 @@ from pokemon import find_pokemon_sprite
 import csv
 import pandas as pd
 import time
-from mainfunc import get_speech
+from mainfunc import get_speech, ranswer
 from spider_silk import db, Post
 
 DEBUG = False
@@ -232,7 +232,8 @@ class MyClient(discord.Client):
                 await message.channel.send(x)
 
         if message.content.startswith('$speak'):
-            x = get_speech(self)
+            #x = get_speech(self)
+            x = ranswer() #Testing markovify
             t = get_timestamp_str()
             u = message.author
             print('{}Manual trigger issued by {} chosen reply was -----> {}'.format(t, u, x))
@@ -272,7 +273,7 @@ class MyClient(discord.Client):
                 trainer = str(dexUser).replace('#', '%23')
                 url = f'http://thedarkzone.se/arachne/pokedex?trainer={trainer}'
                 # msg = f'```{status}\n{last_five}```\n{url}'
-                
+
                 # TODO embed user's arachne avatar?
                 embed = discord.Embed()
                 embed.title = f'{dexUser}\s POKÉDEX'
@@ -284,7 +285,7 @@ class MyClient(discord.Client):
                 if badge_num >= 0:
                     embed.add_field(name='BADGES', value=f'{badge_num + 1}/8', inline=True)
                 embed.add_field(name='Last 5 Pokémon', value=last_five, inline=False)
-                
+
                 if badge_num >= 0:
                     await message.channel.send(embed=embed, file=discord.File(BADGE_PATH_PROGRESS[badge_num]))
                 else:

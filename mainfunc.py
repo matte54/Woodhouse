@@ -1,5 +1,12 @@
 import random
 import io
+import markovify
+
+#compile text model for random generation
+with open("generalchat.txt", encoding='utf-8') as f:
+    text = f.read()
+text_model = markovify.NewlineText(text)
+text_model.compile()
 
 def random_line(fname):
     lines = open(fname, encoding='utf8').read().splitlines()
@@ -7,7 +14,7 @@ def random_line(fname):
     return(x)
 
 def get_speech(client):
-    r = random_line('generalchat.txt')
+    r = random_line('generalchat.txt') #This will be replaced by markovify if everything checks out.
     washing = []
     washing.extend(r)
     emojis = client.emojis
@@ -25,3 +32,7 @@ def get_speech(client):
                 washing[j] = reply.replace(old_text, new_text)
     x = random.choice(washing)
     return (x)
+
+# Test for markovify, if a precompiled text model this way holds up and dosent take forever for each response.
+def ranswer():
+    return (text_model.make_sentence())
