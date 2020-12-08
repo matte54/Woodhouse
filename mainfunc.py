@@ -8,13 +8,18 @@ with open("generalchat.txt", encoding='utf-8') as f:
 text_model = markovify.NewlineText(text)
 text_model.compile()
 
-def random_line(fname):
-    lines = open(fname, encoding='utf8').read().splitlines()
-    x = random.choices(lines, k=10)
-    return(x)
+# Old randomline system
+#def random_line(fname):
+#    lines = open(fname, encoding='utf8').read().splitlines()
+#    x = random.choices(lines, k=10)
+#    return(x)
 
 def get_speech(client):
-    r = random_line('generalchat.txt') #This will be replaced by markovify if everything checks out.
+    #r = random_line('generalchat.txt') #This will be replaced by markovify if everything checks out.
+    #Markovify instead of random line.
+    r = []
+    for l in range(10):
+        r.append(text_model.make_sentence())
     washing = []
     washing.extend(r)
     emojis = client.emojis
@@ -33,6 +38,6 @@ def get_speech(client):
     x = random.choice(washing)
     return (x)
 
-# Test for markovify, if a precompiled text model this way holds up and dosent take forever for each response.
+# Test for markovify, left in for the $speech command just because
 def ranswer():
     return (text_model.make_sentence())
