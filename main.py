@@ -17,7 +17,7 @@ from pokemon import find_pokemon_sprite
 import csv
 import pandas as pd
 import time
-from mainfunc import get_speech, ranswer
+from mainfunc import get_speech, ranswer, get_holiday
 from spider_silk import db, Post
 
 DEBUG = False
@@ -144,11 +144,20 @@ class MyClient(discord.Client):
                     t = get_timestamp_str()
                     print('{}0-100 Roll came up {}'.format(t, i))
                     if i > 70 :
-                        t = get_timestamp_str()
-                        x = get_speech(self)
-                        print('{}Automatic trigger chosen reply was -----> {}'.format(t, x))
-                        await message.channel.send(x)
-                        counter = 0
+                        g = bool(random.getrandbits(1))
+                        if g == True:
+                            t = get_timestamp_str()
+                            x = get_speech(self)
+                            print('{}Automatic trigger chosen reply was -----> {}'.format(t, x))
+                            await message.channel.send(x)
+                            counter = 0
+                        else:
+                            t = get_timestamp_str()
+                            x = get_holiday()
+                            print('{}Holiday weirdness -----> {}'.format(t, x))
+                            await message.channel.send(x)
+                            counter = 0
+
                     elif i < 15:
                         z = pick_url()
                         t = get_timestamp_str()
@@ -178,6 +187,13 @@ class MyClient(discord.Client):
 
         if message.content.startswith('$url'):
             i = pick_url()
+            t = get_timestamp_str()
+            u = message.author
+            print('{}Manual triggered URL request by {} -----> {}'.format(t, u, i))
+            await message.channel.send(i)
+
+        if message.content.startswith('$holiday'):
+            i = get_holiday()
             t = get_timestamp_str()
             u = message.author
             print('{}Manual triggered URL request by {} -----> {}'.format(t, u, i))

@@ -1,6 +1,8 @@
 import random
 import io
 import markovify
+import requests
+from lxml import etree as ET
 
 #compile text model for random generation
 with open("generalchat.txt", encoding='utf-8') as f:
@@ -15,7 +17,6 @@ text_model.compile()
 #    return(x)
 
 def get_speech(client):
-    #r = random_line('generalchat.txt') #This will be replaced by markovify if everything checks out.
     #Markovify instead of random line.
     r = []
     for l in range(10):
@@ -41,3 +42,9 @@ def get_speech(client):
 # Test for markovify, left in for the $speech command just because
 def ranswer():
     return (text_model.make_sentence())
+
+def get_holiday():
+    req = requests.get('https://www.checkiday.com/rss.php?tz=Europe/Stockholm')
+    result = ET.fromstring(req.content)
+    things = [thing[1].text for thing in result.iter('item')]
+    return random.choice(things)
