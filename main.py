@@ -144,8 +144,8 @@ class MyClient(discord.Client):
                     t = get_timestamp_str()
                     print('{}0-100 Roll came up {}'.format(t, i))
                     if i > 70 :
-                        g = bool(random.getrandbits(1))
-                        if g == True:
+                        g = random.randint(1, 100)
+                        if g < 75:
                             t = get_timestamp_str()
                             x = get_speech(self)
                             print('{}Automatic trigger chosen reply was -----> {}'.format(t, x))
@@ -196,7 +196,7 @@ class MyClient(discord.Client):
             i = get_holiday()
             t = get_timestamp_str()
             u = message.author
-            print('{}Manual triggered URL request by {} -----> {}'.format(t, u, i))
+            print('{}Manual triggered Holiday request by {} -----> {}'.format(t, u, i))
             await message.channel.send(i)
 
         m = re.search(r'(?:\s|^)(\-?\d+)( ?celcius| ?fahrenheit|c|f)\b', txt, flags=re.IGNORECASE)
