@@ -19,8 +19,16 @@ text_model.compile()
 def get_speech(client):
     #Markovify instead of random line.
     r = []
-    for l in range(10):
+    for l in range(5):
         r.append(text_model.make_sentence())
+    for k in range(5):
+        r.append(text_model.make_short_sentence(15, tries=100))
+    #Short sentences leaves None entries ghetto remove those...
+    cla_list = []
+    for val in r:
+        if val != None:
+            cla_list.append(val)
+    r = cla_list
     washing = []
     washing.extend(r)
     emojis = client.emojis
