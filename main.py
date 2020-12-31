@@ -245,6 +245,7 @@ class MyClient(discord.Client):
                 msg = f'{r} {i}f is {c}c'
                 print(f'{t} Converted F to C for {u}')
                 await message.channel.send(msg)
+        break
 
         if message.content.startswith('$highscore'):
             x = highscore()
