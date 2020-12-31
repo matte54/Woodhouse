@@ -189,6 +189,7 @@ class MyClient(discord.Client):
                 t = get_timestamp_str()
                 u = message.author
                 u_str = str(u)[:-5]
+                #TODO move this get_speech call to where its needed to improve response time
                 i = get_speech(self)
                 p = bool(random.getrandbits(1))
                 if p == True:
@@ -205,7 +206,8 @@ class MyClient(discord.Client):
                         b_response = i + ", " + u_str
                         await message.channel.send(b_response)
                         print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, b_response))
-
+                break
+        break
 
 
         if message.content.startswith('$url'):
