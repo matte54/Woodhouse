@@ -188,7 +188,7 @@ class MyClient(discord.Client):
             if message.content.__contains__("Woodhouse") or message.content.__contains__("woodhouse"):
                 t = get_timestamp_str()
                 u = message.author
-                u_str = str(u)
+                u_str = str(u)[:-5]
                 i = get_speech(self)
                 p = bool(random.getrandbits(1))
                 if p == True:
