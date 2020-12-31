@@ -206,9 +206,7 @@ class MyClient(discord.Client):
                         b_response = i + ", " + u_str
                         await message.channel.send(b_response)
                         print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, b_response))
-                break
-        break
-
+            pass
 
         if message.content.startswith('$url'):
             i = pick_url()
@@ -245,7 +243,6 @@ class MyClient(discord.Client):
                 msg = f'{r} {i}f is {c}c'
                 print(f'{t} Converted F to C for {u}')
                 await message.channel.send(msg)
-        break
 
         if message.content.startswith('$highscore'):
             x = highscore()
