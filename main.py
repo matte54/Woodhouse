@@ -46,6 +46,8 @@ global pokemonAlive
 global shutup
 shutup = 0
 
+#Flare?
+response_flare = ["you talking to me?", "what was that?", "uhm...", "suuuure...", "Thats my name dont wear it out", "Oh hey!", "whats up?"]
 
 # Badges constants
 THRESHOLDS = [111 * n + 6 for n in range(1, 9)] # 8 badges
@@ -181,9 +183,29 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         txt = message.content
 
-        if message.author == self.user:
-            #print("It was me!")
-            return
+        if message.author != self.user:
+            #message mentions woodhouse with or with caps?
+            if message.content.__contains__("Woodhouse") or message.content.__contains__("woodhouse"):
+                t = get_timestamp_str()
+                u = message.author
+                i = get_speech(self)
+                p = bool(random.getrandbits(1))
+                if p == True:
+                    await message.channel.send(i)
+                    print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, i))
+                else:
+                    o = bool(random.getrandbits(1))
+                    if o == True:
+                        i2 = random.choice(response_flare)
+                        c_response = u + ", " + i2
+                        await message.channel.send(c_response)
+                        print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, c_response))
+                    else:
+                        b_response = i + ", " + u
+                        await message.channel.send(b_response)
+                        print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, b_response))
+
+
 
         if message.content.startswith('$url'):
             i = pick_url()
