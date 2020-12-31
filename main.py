@@ -188,6 +188,7 @@ class MyClient(discord.Client):
             if message.content.__contains__("Woodhouse") or message.content.__contains__("woodhouse"):
                 t = get_timestamp_str()
                 u = message.author
+                u_str = str(u)
                 i = get_speech(self)
                 p = bool(random.getrandbits(1))
                 if p == True:
@@ -197,11 +198,11 @@ class MyClient(discord.Client):
                     o = bool(random.getrandbits(1))
                     if o == True:
                         i2 = random.choice(response_flare)
-                        c_response = u + ", " + i2
+                        c_response = u_str + ", " + i2
                         await message.channel.send(c_response)
                         print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, c_response))
                     else:
-                        b_response = i + ", " + u
+                        b_response = i + ", " + u_str
                         await message.channel.send(b_response)
                         print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, b_response))
 
