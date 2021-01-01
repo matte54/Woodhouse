@@ -182,31 +182,31 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         txt = message.content
-
-        if message.author != self.user:
-            #message mentions woodhouse with or with caps?
-            if message.content.__contains__("Woodhouse") or message.content.__contains__("woodhouse"):
-                t = get_timestamp_str()
-                u = message.author
-                u_str = str(u)[:-5]
-                #TODO move this get_speech call to where its needed to improve response time
-                i = get_speech(self)
-                p = bool(random.getrandbits(1))
-                if p == True:
-                    await message.channel.send(i)
-                    print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, i))
+        #Make sure the message is from a normal person.
+        if message.author == client.user:
+            return
+        #message mentions woodhouse with or with caps?
+        if message.content.__contains__("Woodhouse") or message.content.__contains__("woodhouse"):
+            t = get_timestamp_str()
+            u = message.author
+            u_str = str(u)[:-5]
+            #TODO move this get_speech call to where its needed to improve response time
+            i = get_speech(self)
+            p = bool(random.getrandbits(1))
+            if p == True:
+                await message.channel.send(i)
+                print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, i))
+            else:
+                o = bool(random.getrandbits(1))
+                if o == True:
+                    i2 = random.choice(response_flare)
+                    c_response = u_str + ", " + i2
+                    await message.channel.send(c_response)
+                    print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, c_response))
                 else:
-                    o = bool(random.getrandbits(1))
-                    if o == True:
-                        i2 = random.choice(response_flare)
-                        c_response = u_str + ", " + i2
-                        await message.channel.send(c_response)
-                        print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, c_response))
-                    else:
-                        b_response = i + ", " + u_str
-                        await message.channel.send(b_response)
-                        print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, b_response))
-            pass
+                    b_response = i + ", " + u_str
+                    await message.channel.send(b_response)
+                    print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, b_response))
 
         if message.content.startswith('$url'):
             i = pick_url()
