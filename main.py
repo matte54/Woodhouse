@@ -47,7 +47,7 @@ global shutup
 shutup = 0
 
 #Flare?
-response_flare = ["you talking to me?", "what was that?", "uhm...", "suuuure...", "Thats my name dont wear it out", "Oh hey!", "whats up?"]
+response_flare = ["Yes", "No", "you talking to me?", "what was that?", "uhm...", "suuuure...", "Thats my name dont wear it out", "Oh hey!", "whats up?"]
 
 # Badges constants
 THRESHOLDS = [111 * n + 6 for n in range(1, 9)] # 8 badges

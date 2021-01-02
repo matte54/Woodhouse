@@ -24,6 +24,8 @@ def highscore():
 #playerName, className = gameStart()
 
 def playMMO(playerName, className):
+    if len(playerName) > 15 or len(className) > 15:
+        return("Uh uh uh, name or class was to long...15 chars max")
     player = True
     playerLevel = 1.0
     playerGearLvl = 0.0
