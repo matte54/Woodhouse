@@ -426,10 +426,10 @@ class MyClient(discord.Client):
                     #print(f'{discordId} casts their line but {random.choice(failFlare)}') #debug
                 else:
                     x = cast_line(discordId)
-                    await message.channel.send("""```yaml\n{} {}!```""".format(discordId, x)))
+                    await message.channel.send("""```yaml\n{} {}!```""".format(discordId, x))
                     #print(f'{x}') #debug
             else:
-                await message.channel.send("""```yaml\nYou are not allowed to fish again this soon {}!```""".format(discordId)))
+                await message.channel.send("""```yaml\nYou are not allowed to fish again this soon {}!```""".format(discordId))
                 #print(f'You are not allowed to fish again this soon {discordId}') #debug
 
 
