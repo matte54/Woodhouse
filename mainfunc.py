@@ -79,6 +79,7 @@ failFlare = ["broke the line and fish got away...", "fell in the water.", "caugh
 
 def cast_line(discordId):
     x = random.randint(1,100)
+    uid = str(discordId)
     #print(f'Roll is {x}')  #debug
 
     # % chances of each class of fish and getting the right index for the dad joke.
@@ -121,7 +122,7 @@ def cast_line(discordId):
 
     now = datetime.datetime.now()
 
-    f = open('./data/fishTime/'+discordId, "w")
+    f = open('./data/fishTime/'+uid, "w")
     f.write(str(now.hour))
     f.close()
 

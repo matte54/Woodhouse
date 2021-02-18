@@ -412,12 +412,12 @@ class MyClient(discord.Client):
             #This whole mess is to combat a File not found and just placing in the number 13 to get started
             now = datetime.datetime.now()
             try:
-                f = open('./data/fishTime/'+discordId, 'r')
+                f = open('./data/fishTime/'+uid, 'r')
             except FileNotFoundError:
-                f = open('./data/fishTime/'+discordId, "w")
+                f = open('./data/fishTime/'+uid, "w")
                 f.write("13")
                 f.close()
-                f = open('./data/fishTime/'+discordId, "r")
+                f = open('./data/fishTime/'+uid, "r")
             timeCheck = int(f.readline())
 
             #Check if person has fished in the current hour
