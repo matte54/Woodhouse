@@ -17,7 +17,7 @@ from pokemon import find_pokemon_sprite
 import csv
 import pandas as pd
 import time
-from mainfunc import get_speech, ranswer, get_holiday
+from mainfunc import get_speech, ranswer, get_holiday, cast_line
 from spider_silk import db, Post
 
 DEBUG = False
@@ -400,6 +400,38 @@ class MyClient(discord.Client):
             u = message.author
             print('{}{} played the mmo...'.format(t, u))
             await message.channel.send(mmoScore)
+
+#Fish catching game woo
+        if message.content.startswith('$cast'):
+            discordId = message.author
+            t = get_timestamp_str()
+            print('{}{} is casting a line...'.format(t, discordId))
+            uid = str(discordId)
+            failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "rolls in the empty line...", "broke the fishingpole", "lost the fish and spilled their beer"]
+            #This whole mess is to combat a File not found and just placing in the number 13 to get started
+            now = datetime.datetime.now()
+            try:
+                f = open('./data/fishTime/'+discordId, 'r')
+            except FileNotFoundError:
+                f = open('./data/fishTime/'+discordId, "w")
+                f.write("13")
+                f.close()
+                f = open('./data/fishTime/'+discordId, "r")
+            timeCheck = int(f.readline())
+
+            #Check if person has fished in the current hour
+            if timeCheck != now.hour:
+                if random.randint(1,10) < 5:
+                    await message.channel.send("""```yaml\n{} CASTS THEIR LINE BUT {}!```""".format(discordId, random.choice(failFlare)))
+                    #print(f'{discordId} casts their line but {random.choice(failFlare)}') #debug
+                else:
+                    x = cast_line(discordId)
+                    await message.channel.send("""```yaml\n{} {}!```""".format(discordId, x)))
+                    #print(f'{x}') #debug
+            else:
+                await message.channel.send("""```yaml\nYou are not allowed to fish again this soon {}!```""".format(discordId)))
+                #print(f'You are not allowed to fish again this soon {discordId}') #debug
+
 
 
 def get_timestamp_str():
