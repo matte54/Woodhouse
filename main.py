@@ -423,7 +423,7 @@ class MyClient(discord.Client):
             #Check if person has fished in the current hour
             if timeCheck != now.hour:
                 if random.randint(1,10) < 5:
-                    await message.channel.send("""```yaml\n{} CASTS THEIR LINE BUT {}!```""".format(discordId, random.choice(failFlare)))
+                    await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
                     #print(f'{discordId} casts their line but {random.choice(failFlare)}') #debug
                 else:
                     x = cast_line(discordId)
