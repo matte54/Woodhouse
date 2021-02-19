@@ -121,7 +121,7 @@ def cast_line(discordId):
         index = fishClass7.index(z)
         j = jokeClass7[index]
         c = "(class 7)"
-        w = round(random.uniform(40.00, 3000.00),2)
+        w = round(random.uniform(40.00, 5000.00),2)
 
     now = datetime.datetime.now()
 
