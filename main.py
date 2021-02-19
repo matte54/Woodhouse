@@ -408,7 +408,7 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             print('{}{} is casting a line...'.format(t, discordId))
             uid = str(discordId)
-            failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "rolls in the empty line...", "broke the fishingpole", "lost the fish and spilled their beer"]
+            failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "reels in the empty line...", "broke the fishingpole", "lost the fish and spilled their beer", "with all their force throwing their entire fishing rod, hook, line and sinker.", "after a long tough fight the fish got away"]
             #This whole mess is to combat a File not found and just placing in the number 13 to get started
             now = datetime.datetime.now()
             try:
@@ -419,15 +419,19 @@ class MyClient(discord.Client):
                 f.close()
                 f = open('./data/fishTime/'+uid, "r")
             timeCheck = int(f.readline())
-
+            f.close()
             #Check if person has fished in the current hour
             if timeCheck != now.hour:
-                if random.randint(1,10) < 5:
+                if random.randint(1,10) < 6:
                     await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
+                    #temporary way to add wait time to a fail.           
+                    f = open('./data/fishTime/'+uid, "w")
+                    f.write(str(now.hour))
+                    f.close()
                     #print(f'{discordId} casts their line but {random.choice(failFlare)}') #debug
                 else:
                     x = cast_line(discordId)
-                    await message.channel.send("""```yaml\n{} {}!```""".format(discordId, x))
+                    await message.channel.send("""```yaml\n{} {}```""".format(discordId, x))
                     #print(f'{x}') #debug
             else:
                 await message.channel.send("""```yaml\nYou are not allowed to fish again this soon {}!```""".format(discordId))

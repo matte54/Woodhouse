@@ -5,8 +5,8 @@ import requests
 from lxml import etree as ET
 
 #Fishing Lists
-fishClass1 = ["Tin can", "Old shoe", "Rusty dagger"]
-jokeClass1 = ["This can can!", "Where is the other one?", "Old murder weapon?"]
+fishClass1 = ["Tin can", "Old shoe", "Rusty dagger", "Seaweed", "Magikarp"]
+jokeClass1 = ["This can can!", "Where is the other one?", "Old murder weapon?", "Those fish must be pretty high", "He casts splash...its super effective!"]
 fishClass2 = ["Bitterling", "Pale chub", "Goldfish", "Pop-eyed goldfish", "Killifish", "Tadpole", "Guppy", "Nibble fish", "Neon tetra", "Rainbowfish", "Sea butterfly", "Sea horse", "Clown fish"]
 jokeClass2 = ["It's mad at me, but only a little", "That name seems a bit judgy...", "It's worth its weight in fish!", "It looks so...surprised!", "The streams are safe again.", "I'm sure it will grow on me.", "Welcome to the team, newbie!", "Come to think of it, I could use a bite!", "Wasn't hard to track.", "Where's my pot of goldfish?", "Try not to confuse it for a sea moth!", "But...where's its sea jockey?", "How many can fit in a carfish?"]
 fishClass3 = ["Crucian carp", "Ranchu goldfish", "Crawfish", "Frog", "Freshwater goby", "Loach", "Bluegill", "Pond smelt", "Mitten crab", "Angelfish", "Betta", "Piranha", "Surgeonfish", "Butterfly fish", "Anchovy", "Horse mackerel", "Barreleye"]
@@ -72,10 +72,6 @@ def get_holiday():
     result = ET.fromstring(req.content)
     things = [thing[1].text for thing in result.iter('item')]
     return random.choice(things)
-
-#flare for fishing
-failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "rolled in the empty line..."]
-
 
 def cast_line(discordId):
     x = random.randint(1,100)
