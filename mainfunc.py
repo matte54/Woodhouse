@@ -155,7 +155,7 @@ def fishOff():
     return(x)
 
 def bucket(discordId):
-    jsonFile = discordId + '.json'
+    jsonFile = str(discordId) + '.json'
     filePath = "./data/bucket/"+jsonFile
     try:
         with open(filePath, "r") as f:
