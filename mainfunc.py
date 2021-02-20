@@ -155,14 +155,15 @@ def fishOff():
     return(x)
 
 def bucket(discordId):
-    jsonFile = str(discordId) + '.json'
+    discordIdStr = str(discordId)
+    jsonFile = discordIdStr + '.json'
     filePath = "./data/bucket/"+jsonFile
     try:
         with open(filePath, "r") as f:
             data = json.load(f)
             sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
             sortdict = dict(sort_bucket)
-            x = discordId.upper() + "s BUCKET(TOP 10)\n"
+            x = discordIdStr.upper() + "s BUCKET(TOP 10)\n"
             limit = 0
             for i in sortdict:
                 x += i.upper() + ' - ' + str(sortdict[i]) + ' POUNDS\n'
