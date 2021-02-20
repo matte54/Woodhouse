@@ -441,7 +441,7 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             u = message.author
             print('{}{} is listing the fishoff highscores'.format(t, u))
-            x = fishoff()
+            x = fishOff()
             await message.channel.send("""```yaml\n\n FISH OFF MONTHLY HIGHSCORE \n {}```""".format(x))
 
 def get_timestamp_str():
