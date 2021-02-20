@@ -18,7 +18,7 @@ from pokemon import find_pokemon_sprite
 import csv
 import pandas as pd
 import time
-from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket
+from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish
 from spider_silk import db, Post
 
 DEBUG = False
@@ -430,8 +430,9 @@ class MyClient(discord.Client):
                     f.close()
                     #print(f'{discordId} casts their line but {random.choice(failFlare)}') #debug
                 else:
-                    x = cast_line(discordId)
-                    await message.channel.send("""```yaml\n{} {}```""".format(discordId, x))
+                    x, fish, weight = cast_line(discordId)
+                    q = addFish(discordId, fish, weight)
+                    await message.channel.send("""```yaml\n{} {}\n{}```""".format(discordId, x, q))
                     #print(f'{x}') #debug
             else:
                 await message.channel.send("""```yaml\nYou are not allowed to fish again this soon {}!```""".format(discordId))

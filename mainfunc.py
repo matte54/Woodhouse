@@ -130,7 +130,7 @@ def cast_line(discordId):
     f.close()
 
     u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + w + ") POUNDS"
-    return(u.upper())
+    return(u.upper(), z, w)
 
 def fishOff():
     path = "./data/bucket/"
@@ -172,6 +172,35 @@ def bucket(discordId):
                     break
     except FileNotFoundError:
         return("No fish in the bucket yet , go catch some!")
+    return(x)
+
+def addFish(discordId, fish, weight):
+    jsonFile = discordId + '.json'
+    filePath = "./data/bucket/"+jsonFile
+    print(f'Loading file...{filePath}')
+    if os.path.isfile(filePath) == True:
+        print(f'File found!')
+        with open(filePath, "r") as f:
+            data = json.load(f)
+            if fish in data:
+                print(f"That fish type is in the bucket already.")
+                if data[fish] < weight:
+                    x = (f'NEW RECORD {fish}! This new one was {weight} the one in your bucket was only {data[fish]}')
+                    data[fish] = weight
+                    writeJSON(filePath, data)
+                else:
+                    x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
+
+            else:
+                x = (f"New fish type...adding new entry")
+                data[fish] = weight
+                writeJSON(filePath, data)
+
+    else:
+        print(f"JSON not found! Creating...")
+        data = {fish: weight}
+        writeJSON(filePath, data)
+
     return(x)
 
 def writeJSON(filePath, data):
