@@ -2,6 +2,7 @@ import random, datetime
 import io
 import markovify
 import requests
+import json
 from lxml import etree as ET
 
 #Fishing Lists
@@ -130,3 +131,31 @@ def cast_line(discordId):
 
     u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + w + ") POUNDS"
     return(u.upper())
+
+def fishOff():
+    path = "./data/bucket/"
+    highscoreDict = {}
+    x = os.listdir(path)
+    for i in x:
+        filePath = path + i
+        with open(filePath, "r") as f:
+            data = json.load(f)
+            sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
+            sortdict = dict(sort_bucket)
+            topFish = next(iter(sortdict))
+            topFishWeight = sortdict[topFish]
+            nameFix = i[:-5]
+            highscoreDict[nameFix + ' - ' + topFish] = topFishWeight
+
+    sort_score = sorted(highscoreDict.items(), key=lambda x: x[1], reverse=True)
+    sort_score_dict = dict(sort_score)
+    x = ""
+    for i in sort_score_dict:
+        x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' POUNDS\n'
+    return(x)
+
+def writeJSON(filePath, data):
+    with open(filePath, "w") as f:
+        json.dump(data, f, indent=4)
+        f.close()
+    print(f'Finished writing {filePath}')

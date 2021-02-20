@@ -18,7 +18,7 @@ from pokemon import find_pokemon_sprite
 import csv
 import pandas as pd
 import time
-from mainfunc import get_speech, ranswer, get_holiday, cast_line
+from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishoff
 from spider_silk import db, Post
 
 DEBUG = False
@@ -424,7 +424,7 @@ class MyClient(discord.Client):
             if timeCheck != now.hour:
                 if random.randint(1,10) < 6:
                     await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
-                    #temporary way to add wait time to a fail.           
+                    #temporary way to add wait time to a fail.
                     f = open('./data/fishTime/'+uid, "w")
                     f.write(str(now.hour))
                     f.close()
@@ -437,7 +437,12 @@ class MyClient(discord.Client):
                 await message.channel.send("""```yaml\nYou are not allowed to fish again this soon {}!```""".format(discordId))
                 #print(f'You are not allowed to fish again this soon {discordId}') #debug
 
-
+        if message.content.startswith('$fishoff'):
+            t = get_timestamp_str()
+            u = message.author
+            print('{}{} is listing the fishoff highscores'.format(t, u))
+            x = fishoff()
+            await message.channel.send("""```yaml\n\n FISH OFF MONTHLY HIGHSCORE \n {}```""".format(x))
 
 def get_timestamp_str():
     i = time.strftime("%H:%M:%S - ")
