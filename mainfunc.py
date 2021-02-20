@@ -198,6 +198,7 @@ def addFish(discordId, fish, weight):
                 writeJSON(filePath, data)
 
     else:
+        x = ""
         print(f"JSON not found! Creating...")
         data = {fish: weight}
         writeJSON(filePath, data)
