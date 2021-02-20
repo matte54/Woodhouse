@@ -175,7 +175,8 @@ def bucket(discordId):
     return(x)
 
 def addFish(discordId, fish, weight):
-    jsonFile = discordId + '.json'
+    discordIdStr = str(discordId)
+    jsonFile = discordIdStr + '.json'
     filePath = "./data/bucket/"+jsonFile
     print(f'Loading file...{filePath}')
     if os.path.isfile(filePath) == True:
