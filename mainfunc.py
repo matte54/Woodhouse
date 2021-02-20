@@ -154,6 +154,25 @@ def fishOff():
         x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' POUNDS\n'
     return(x)
 
+def bucket(discordId):
+    jsonFile = discordId + '.json'
+    filePath = "./data/bucket/"+jsonFile
+    try:
+        with open(filePath, "r") as f:
+            data = json.load(f)
+            sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
+            sortdict = dict(sort_bucket)
+            x = discordId.upper() + "s BUCKET(TOP 10)\n"
+            limit = 0
+            for i in sortdict:
+                x += i.upper() + ' - ' + str(sortdict[i]) + ' POUNDS\n'
+                limit += 1
+                if limit == 10:
+                    break
+    except FileNotFoundError:
+        return("No fish in the bucket yet , go catch some!")
+    return(x)
+
 def writeJSON(filePath, data):
     with open(filePath, "w") as f:
         json.dump(data, f, indent=4)
