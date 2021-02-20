@@ -18,7 +18,7 @@ from pokemon import find_pokemon_sprite
 import csv
 import pandas as pd
 import time
-from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishoff
+from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff
 from spider_silk import db, Post
 
 DEBUG = False
