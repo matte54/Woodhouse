@@ -2,7 +2,7 @@ import random, datetime
 import io
 import markovify
 import requests
-import json
+import json, os
 from lxml import etree as ET
 
 #Fishing Lists
