@@ -81,13 +81,13 @@ def cast_line(discordId):
 
     # % chances of each class of fish and getting the right index for the dad joke.
 
-    if 1 <= x <= 28:
+    if 1 <= x <= 38:
         z = random.choice(fishClass1)
         index = fishClass1.index(z)
         j = jokeClass1[index]
         c = "(class 1)"
         w = str(round(random.uniform(0.5, 5.0),2))
-    elif 29 <= x <= 53:
+    elif 38 <= x <= 53:
         z = random.choice(fishClass2)
         index = fishClass2.index(z)
         j = jokeClass2[index]
@@ -149,10 +149,15 @@ def fishOff():
 
     sort_score = sorted(highscoreDict.items(), key=lambda x: x[1], reverse=True)
     sort_score_dict = dict(sort_score)
+    #Code to return the winner for future winnerlist.
+    y = next(iter(sort_score_dict))
+    z = str(sort_score_dict[y])
+    winner = y.upper() + ' - '+ z + ' POUNDS'
+
     x = ""
     for i in sort_score_dict:
         x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' POUNDS\n'
-    return(x)
+    return(x, winner)
 
 def bucket(discordId):
     discordIdStr = str(discordId)
@@ -178,13 +183,13 @@ def addFish(discordId, fish, weight):
     discordIdStr = str(discordId)
     jsonFile = discordIdStr + '.json'
     filePath = "./data/bucket/"+jsonFile
-    print(f'Loading file...{filePath}')
+    #print(f'Loading file...{filePath}')
     if os.path.isfile(filePath) == True:
-        print(f'File found!')
+        #print(f'File found!')
         with open(filePath, "r") as f:
             data = json.load(f)
             if fish in data:
-                print(f"That fish type is in the bucket already.")
+                #print(f"That fish type is in the bucket already.")
                 if data[fish] < weight:
                     x = (f'NEW RECORD {fish}! This new one was {weight} the one in your bucket was only {data[fish]}')
                     data[fish] = weight
@@ -193,13 +198,13 @@ def addFish(discordId, fish, weight):
                     x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
 
             else:
-                x = (f"New fish type...adding new entry")
+                x = (f"New fish type! great addition to your bucket!")
                 data[fish] = weight
                 writeJSON(filePath, data)
 
     else:
         x = ""
-        print(f"JSON not found! Creating...")
+        #print(f"JSON not found! Creating...")
         data = {fish: weight}
         writeJSON(filePath, data)
 
@@ -209,4 +214,4 @@ def writeJSON(filePath, data):
     with open(filePath, "w") as f:
         json.dump(data, f, indent=4)
         f.close()
-    print(f'Finished writing {filePath}')
+    #print(f'Finished writing {filePath}')

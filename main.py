@@ -408,7 +408,7 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             print('{}{} is casting a line...'.format(t, discordId))
             uid = str(discordId)
-            failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "reels in the empty line...", "broke the fishingpole", "lost the fish and spilled their beer", "with all their force throwing their entire fishing rod, hook, line and sinker.", "after a long tough fight the fish got away"]
+            failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "reels in the empty line...", "broke the fishing pole", "lost the fish and spilled their beer", "with all their force throwing their entire fishing rod, hook, line and sinker.", "after a long tough fight the fish got away"]
             #This whole mess is to combat a File not found and just placing in the number 13 to get started
             now = datetime.datetime.now()
             try:
@@ -422,7 +422,7 @@ class MyClient(discord.Client):
             f.close()
             #Check if person has fished in the current hour
             if timeCheck != now.hour:
-                if random.randint(1,10) < 6:
+                if random.randint(1,10) < 7:
                     await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
                     #temporary way to add wait time to a fail.
                     f = open('./data/fishTime/'+uid, "w")
@@ -442,7 +442,7 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             u = message.author
             print('{}{} is listing the fishoff highscores'.format(t, u))
-            x = fishOff()
+            x, winner = fishOff()
             await message.channel.send("""```yaml\n\n     FISH OFF MONTHLY HIGHSCORE\n{}```""".format(x))
 
         if message.content.startswith('$bucket'):
