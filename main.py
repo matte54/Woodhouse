@@ -422,7 +422,7 @@ class MyClient(discord.Client):
             f.close()
             #Check if person has fished in the current hour
             if timeCheck != now.hour:
-                if random.randint(1,10) < 7:
+                if random.randint(1,10) < 3:
                     await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
                     #temporary way to add wait time to a fail.
                     f = open('./data/fishTime/'+uid, "w")
