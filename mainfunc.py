@@ -86,7 +86,7 @@ def cast_line(discordId):
         index = fishClass1.index(z)
         j = jokeClass1[index]
         c = "(class 1)"
-        w = round(random.uniform(0.5, 5.0),2)
+        w = round(random.uniform(0.1, 0.4),2)
     elif 38 <= x <= 53:
         z = random.choice(fishClass2)
         index = fishClass2.index(z)
