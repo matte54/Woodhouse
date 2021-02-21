@@ -86,50 +86,50 @@ def cast_line(discordId):
         index = fishClass1.index(z)
         j = jokeClass1[index]
         c = "(class 1)"
-        w = str(round(random.uniform(0.5, 5.0),2))
+        w = round(random.uniform(0.5, 5.0),2)
     elif 38 <= x <= 53:
         z = random.choice(fishClass2)
         index = fishClass2.index(z)
         j = jokeClass2[index]
         c = "(class 2)"
-        w = str(round(random.uniform(0.05, 0.70),2))
+        w = round(random.uniform(0.05, 0.70),2)
     elif 54 <= x <= 71:
         z = random.choice(fishClass3)
         index = fishClass3.index(z)
         j = jokeClass3[index]
         c = "(class 3)"
-        w = str(round(random.uniform(0.25, 5.00),2))
+        w = round(random.uniform(0.25, 5.00),2)
     elif 72 <= x <= 83:
         z = random.choice(fishClass4)
         index = fishClass4.index(z)
         j = jokeClass4[index]
         c = "(class 4)"
-        w = str(round(random.uniform(0.25, 8.00),2))
+        w = round(random.uniform(0.25, 8.00),2)
     elif 84 <= x <= 92:
         z = random.choice(fishClass5)
         index = fishClass5.index(z)
         j = jokeClass5[index]
         c = "(class 5)"
-        w = str(round(random.uniform(2.50, 110.00),2))
+        w = round(random.uniform(2.50, 110.00),2)
     elif 93 <= x <= 98:
         z = random.choice(fishClass6)
         index = fishClass6.index(z)
         j = jokeClass6[index]
         c = "(class 6)"
-        w = str(round(random.uniform(5.00, 500.00),2))
+        w = round(random.uniform(5.00, 500.00),2)
     elif 99 <= x <= 100:
         z = random.choice(fishClass7)
         index = fishClass7.index(z)
         j = jokeClass7[index]
         c = "(class 7)"
-        w = str(round(random.uniform(40.00, 5000.00),2))
+        w = round(random.uniform(40.00, 5000.00),2)
 
     now = datetime.datetime.now()
     f = open('./data/fishTime/'+uid, "w")
     f.write(str(now.hour))
     f.close()
 
-    u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + w + ") POUNDS"
+    u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + str(w) + ") POUNDS"
     return(u.upper(), z, w)
 
 def fishOff():
