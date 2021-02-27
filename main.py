@@ -74,7 +74,7 @@ class MyClient(discord.Client):
         y = fishOffHandler()
         if y != None:
             channel = self.get_channel(194028816333537280)
-            await message.channel.send(y)
+            await channel.send(y)
 
 
 
