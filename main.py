@@ -18,7 +18,7 @@ from pokemon import find_pokemon_sprite
 import csv
 import pandas as pd
 import time
-from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish
+from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish, fishscore, fishOffHandler
 from spider_silk import db, Post
 
 DEBUG = False
@@ -70,6 +70,13 @@ class MyClient(discord.Client):
         y = self.user.name
         z = self.user.id
         print ('{}{} {} id {} - READY'.format(t, x, y, z))
+        #Check Fishing
+        y = fishOffHandler()
+        if y != None:
+            channel = self.get_channel(194028816333537280)
+            await message.channel.send(y)
+
+
 
     async def on_disconnect(self):
         t = get_timestamp_str()
@@ -450,6 +457,13 @@ class MyClient(discord.Client):
             u = message.author
             print('{}{} is listing their bucket'.format(t, u))
             x = bucket(u)
+            await message.channel.send("""```yaml\n\n{}```""".format(x))
+
+        if message.content.startswith('$fishscore'):
+            t = get_timestamp_str()
+            u = message.author
+            print('{}{} is listing the all time fishoff winners'.format(t, u))
+            x = fishscore()
             await message.channel.send("""```yaml\n\n{}```""".format(x))
 
 def get_timestamp_str():

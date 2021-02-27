@@ -87,7 +87,7 @@ def cast_line(discordId):
     try:
         with open(filePath, "r") as f:
             data = json.load(f)
-            print(f'LOADED {filePath}!')
+            #print(f'LOADED {filePath}!')
     except FileNotFoundError:
         return(f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
 
@@ -101,6 +101,9 @@ def cast_line(discordId):
     w = round(random.triangular(wL, wH, mid),2)
     c = chosenClass[0][:-4]
 
+    #check WR
+    wr = check_wr(uid, z, w)
+
     #Make the only fish once and hour mark.
     now = datetime.datetime.now()
     f = open('./data/fishTime/'+uid, "w")
@@ -108,7 +111,7 @@ def cast_line(discordId):
     f.close()
 
     #return pretty string?
-    u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + str(w) + ") POUNDS"
+    u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + str(w) + ") POUNDS \n" + wr
     return(u.upper(), z, w)
 
 def fishOff():
@@ -186,6 +189,91 @@ def addFish(discordId, fish, weight):
         #print(f"JSON not found! Creating...")
         data = {fish: weight}
         writeJSON(filePath, data)
+
+    return(x)
+
+def fishscore():
+    filePath = "./data/fishoffwinners.json"
+    try:
+        with open(filePath, "r") as f:
+            data = json.load(f)
+            x = " ***** - FISHOFF WINNERS - *****\n"
+            limit = 0
+            for i in data:
+                x += str(data[i]) + ' POUNDS\n'
+                limit += 1
+                if limit == 10:
+                    break
+    except FileNotFoundError:
+        return("No previous winners yet!")
+    return(x)
+
+def fishOffHandler():
+    dir = './data/bucket'
+    now = datetime.datetime.now()
+    lastMonth = now - datetime.timedelta(days=now.day)
+    monthStr = lastMonth.strftime("%b")
+    yearStr = lastMonth.strftime("%Y")
+    nowdebug = 1
+    if nowdebug == 1:
+    #if now.day == 1:
+        print(f'Today is the first of the month!')
+
+        path = "./data/bucket/"
+        highscoreDict = {}
+        x = os.listdir(path)
+        for i in x:
+            filePath = path + i
+            with open(filePath, "r") as f:
+                data = json.load(f)
+                sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
+                sortdict = dict(sort_bucket)
+                topFish = next(iter(sortdict))
+                topFishWeight = sortdict[topFish]
+                nameFix = i[:-5]
+                highscoreDict[nameFix + ' - ' + topFish] = topFishWeight
+                sort_score = sorted(highscoreDict.items(), key=lambda x: x[1], reverse=True)
+                sort_score_dict = dict(sort_score)
+                #Code to return the winner for future winnerlist.
+                y = next(iter(sort_score_dict))
+                z = str(sort_score_dict[y])
+
+        winnertext = monthStr + " " + yearStr + " " + y + " " + z
+
+        Key = monthStr+yearStr
+        filePath2 = "./data/fishoffwinners.json"
+        with open(filePath2, "r") as f2:
+            data2 = json.load(f2)
+            if Key in data2:
+                print(f'{Key} entry already exists...ignoring')
+            else:
+                print(f'A fishoff winner been crowned {winnertext}')
+                data2[Key] = winnertext
+                writeJSON(filePath2, data2)
+                for f in os.listdir(dir):
+                    #os.remove(os.path.join(dir, f))
+                    print(f'Deleting {f}')
+                return(winnertext)
+    else:
+        print(f'Today is NOT the first of the month...keep fishing')
+
+def check_wr(uid, fish, weight):
+    filePath = "./data/fishwr.json"
+    try:
+        with open(filePath, "r") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        return(f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
+
+
+    if data[fish]['weight'] < weight:
+        x = (f"NEW WORLD RECORD {fish}! This new one was {weight} the old record was {data[fish]['weight']} caught by {data[fish]['holder']}")
+        data[fish]['weight'] = weight
+        data[fish]['holder'] = uid
+        writeJSON(filePath, data)
+    else:
+        #print(f'There was no record on this fish')
+        return('')
 
     return(x)
 
