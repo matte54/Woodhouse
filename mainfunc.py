@@ -75,60 +75,39 @@ def get_holiday():
     return random.choice(things)
 
 def cast_line(discordId):
-    x = random.randint(1,100)
+    #define variables n stuff
     uid = str(discordId)
-    #print(f'Roll is {x}')  #debug
+    fileDir = "./data/fishdata/"
+    fishFiles = ["class1.json", "class2.json", "class3.json", "class4.json", "class5.json", "class6.json", "class7.json"]
 
-    # % chances of each class of fish and getting the right index for the dad joke.
+    #pick random fish with weighted chances
+    chosenClass = random.choices(fishFiles, weights=(38, 19, 15, 12, 7, 6, 3))
+    filePath = fileDir + chosenClass[0]
+    #access json should never error but anyways?
+    try:
+        with open(filePath, "r") as f:
+            data = json.load(f)
+            print(f'LOADED {filePath}!')
+    except FileNotFoundError:
+        return(f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
 
-    if 1 <= x <= 38:
-        z = random.choice(fishClass1)
-        index = fishClass1.index(z)
-        j = jokeClass1[index]
-        c = "(class 1)"
-        w = round(random.uniform(0.1, 0.4),2)
-    elif 38 <= x <= 53:
-        z = random.choice(fishClass2)
-        index = fishClass2.index(z)
-        j = jokeClass2[index]
-        c = "(class 2)"
-        w = round(random.uniform(0.05, 0.70),2)
-    elif 54 <= x <= 71:
-        z = random.choice(fishClass3)
-        index = fishClass3.index(z)
-        j = jokeClass3[index]
-        c = "(class 3)"
-        w = round(random.uniform(0.25, 5.00),2)
-    elif 72 <= x <= 83:
-        z = random.choice(fishClass4)
-        index = fishClass4.index(z)
-        j = jokeClass4[index]
-        c = "(class 4)"
-        w = round(random.uniform(0.25, 8.00),2)
-    elif 84 <= x <= 92:
-        z = random.choice(fishClass5)
-        index = fishClass5.index(z)
-        j = jokeClass5[index]
-        c = "(class 5)"
-        w = round(random.uniform(2.50, 110.00),2)
-    elif 93 <= x <= 98:
-        z = random.choice(fishClass6)
-        index = fishClass6.index(z)
-        j = jokeClass6[index]
-        c = "(class 6)"
-        w = round(random.uniform(5.00, 500.00),2)
-    elif 99 <= x <= 100:
-        z = random.choice(fishClass7)
-        index = fishClass7.index(z)
-        j = jokeClass7[index]
-        c = "(class 7)"
-        w = round(random.uniform(40.00, 5000.00),2)
+    #Ugly data converting back and forth cause i dont know syntax
+    z = random.choice(list(data))
+    j = data[z]['joke']
+    wL = data[z]['weightLow']
+    wH = data[z]['weightHigh']
+    #Triangular weighted random weight test.
+    mid = wL+wH / 2
+    w = round(random.triangular(wL, wH, mid),2)
+    c = chosenClass[0][:-4]
 
+    #Make the only fish once and hour mark.
     now = datetime.datetime.now()
     f = open('./data/fishTime/'+uid, "w")
     f.write(str(now.hour))
     f.close()
 
+    #return pretty string?
     u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + str(w) + ") POUNDS"
     return(u.upper(), z, w)
 
