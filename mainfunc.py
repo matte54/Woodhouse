@@ -267,7 +267,7 @@ def check_wr(uid, fish, weight):
 
 
     if data[fish]['weight'] < weight:
-        x = (f"NEW WORLD RECORD {fish}! This new one was {weight} the old record was {data[fish]['weight']} caught by {data[fish]['holder']}")
+        x = (f"NEW WORLD RECORD! previous record was {data[fish]['weight']} caught by {data[fish]['holder']}")
         data[fish]['weight'] = weight
         data[fish]['holder'] = uid
         writeJSON(filePath, data)
