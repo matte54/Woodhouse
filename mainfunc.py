@@ -214,9 +214,9 @@ def fishOffHandler():
     lastMonth = now - datetime.timedelta(days=now.day)
     monthStr = lastMonth.strftime("%b")
     yearStr = lastMonth.strftime("%Y")
-    nowdebug = 1
-    if nowdebug == 1:
-    #if now.day == 1:
+    #nowdebug = 1
+    #if nowdebug == 1:
+    if now.day == 1:
         print(f'Today is the first of the month!')
 
         path = "./data/bucket/"
@@ -251,11 +251,11 @@ def fishOffHandler():
                 data2[Key] = winnertext
                 writeJSON(filePath2, data2)
                 for f in os.listdir(dir):
-                    #os.remove(os.path.join(dir, f))
+                    os.remove(os.path.join(dir, f))
                     print(f'Deleting {f}')
                 return(winnertext)
     else:
-        print(f'Today is NOT the first of the month...keep fishing')
+        print(f'Today is NOT the first of the month, its {now.day}...keep fishing')
 
 def check_wr(uid, fish, weight):
     filePath = "./data/fishwr.json"
