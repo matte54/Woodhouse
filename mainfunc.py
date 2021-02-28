@@ -156,7 +156,7 @@ def bucket(discordId):
             x = discordIdStr.upper() + "s BUCKET(TOP 10)\n"
             limit = 0
             for i in sortdict:
-                x += i.upper() + ' - ' + str(sortdict[i]) + ' POUNDS\n'
+                x += i.upper() + ' - ' + str(sortdict[i]) + ' LBS\n'
                 limit += 1
                 if limit == 10:
                     break
