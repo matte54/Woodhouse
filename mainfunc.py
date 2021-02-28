@@ -111,35 +111,38 @@ def cast_line(discordId):
     f.close()
 
     #return pretty string?
-    u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + str(w) + ") POUNDS \n" + wr
+    u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + str(w) + ") LBS \n" + wr
     return(u.upper(), z, w)
 
 def fishOff():
     path = "./data/bucket/"
     highscoreDict = {}
     x = os.listdir(path)
-    for i in x:
-        filePath = path + i
-        with open(filePath, "r") as f:
-            data = json.load(f)
-            sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
-            sortdict = dict(sort_bucket)
-            topFish = next(iter(sortdict))
-            topFishWeight = sortdict[topFish]
-            nameFix = i[:-5]
-            highscoreDict[nameFix + ' - ' + topFish] = topFishWeight
+    if len(x) != 0:
+        for i in x:
+            filePath = path + i
+            with open(filePath, "r") as f:
+                data = json.load(f)
+                sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
+                sortdict = dict(sort_bucket)
+                topFish = next(iter(sortdict))
+                topFishWeight = sortdict[topFish]
+                nameFix = i[:-5]
+                highscoreDict[nameFix + ' - ' + topFish] = topFishWeight
 
-    sort_score = sorted(highscoreDict.items(), key=lambda x: x[1], reverse=True)
-    sort_score_dict = dict(sort_score)
-    #Code to return the winner for future winnerlist.
-    y = next(iter(sort_score_dict))
-    z = str(sort_score_dict[y])
-    winner = y.upper() + ' - '+ z + ' POUNDS'
+        sort_score = sorted(highscoreDict.items(), key=lambda x: x[1], reverse=True)
+        sort_score_dict = dict(sort_score)
+        #Code to return the winner for future winnerlist.
+        y = next(iter(sort_score_dict))
+        z = str(sort_score_dict[y])
+        winner = y.upper() + ' - '+ z + ' LBS'
 
-    x = ""
-    for i in sort_score_dict:
-        x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' POUNDS\n'
-    return(x, winner)
+        x = ""
+        for i in sort_score_dict:
+            x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
+        return(x, winner)
+    else:
+        return("There is no buckets!")
 
 def bucket(discordId):
     discordIdStr = str(discordId)
