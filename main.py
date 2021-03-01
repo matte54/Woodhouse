@@ -442,7 +442,7 @@ class MyClient(discord.Client):
                     #await message.channel.send("""```yaml\n{} {}\n{}```""".format(discordId, x, q))
                     #New rogue embedd
                     x = cast_line(discordId)
-                    await message.channel.send(x)
+                    await message.channel.send(embed=x)
             else:
                 await message.channel.send("""```yaml\nYou are not allowed to fish again this soon {}!```""".format(discordId))
 
