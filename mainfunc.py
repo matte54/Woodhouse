@@ -188,14 +188,16 @@ def addFish(discordId, fish, weight):
                     oldPb = data[fish]
                     data[fish] = weight
                     writeJSON(filePath, data)
+                    #new rogue
+                    return(oldPb)
                 else:
                     x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
-
+                    return(0.0)
             else:
                 x = (f"New fish type! great addition to your bucket!")
                 data[fish] = weight
                 writeJSON(filePath, data)
-
+                return(0.0)
     else:
         x = ""
         #print(f"JSON not found! Creating...")
@@ -203,8 +205,8 @@ def addFish(discordId, fish, weight):
         writeJSON(filePath, data)
     #old system
     #return(x)
-    #new rogue
-    return(oldPb)
+    return(0.0)
+
 
 def fishscore():
     filePath = "./data/fishoffwinners.json"
