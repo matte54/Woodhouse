@@ -348,7 +348,7 @@ def fishing_embed(username, fish, joke, fish_class, weight, old_pb=0.0, old_wr=0
     if old_wr and dethroned:
         embed.add_field(name="NEW WORLD RECORD!", value=f"*Previous record was {old_wr} lbs by {dethroned}*")
     fishWithoutSpaces = fish.replace(" ", "")
-    icon_url = f"http://127.0.0.1/fishicons/{fishWithoutSpaces}.png"
+    icon_url = f"http://thedarkzone.se/fishicons/{fishWithoutSpaces}.png"
     print(icon_url) # this may need to change
     embed.set_thumbnail(url=icon_url)
     return embed
