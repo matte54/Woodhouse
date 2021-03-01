@@ -112,7 +112,7 @@ def cast_line(discordId):
     #new rogue embedd System
     wr, holder = check_wr(uid, z, w)
     q = addFish(discordId, z, w)
-    cI = int(c[5:])
+    cI = int(c[4:])
     x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder)
     return(x)
 
