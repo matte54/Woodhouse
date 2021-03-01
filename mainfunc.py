@@ -100,7 +100,7 @@ def cast_line(discordId):
     #Triangular weighted random weight test.
     mid = wL+wH / 2
     w = round(random.triangular(wL, wH, mid),2)
-    c = chosenClass[0][:-4]
+    c = chosenClass[0][:-5]
 
 
     #Make the only fish once and hour mark.
@@ -112,7 +112,7 @@ def cast_line(discordId):
     #new rogue embedd System
     wr, holder = check_wr(uid, z, w)
     q = addFish(discordId, z, w)
-    cI = int(c[4:])
+    cI = int(c[5:])
     x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder)
     return(x)
 
