@@ -192,7 +192,7 @@ def addFish(discordId, fish, weight):
                     return(oldPb)
                 else:
                     x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
-                    return(0.0)
+                    return(None)
             else:
                 x = (f"New fish type! great addition to your bucket!")
                 data[fish] = weight
