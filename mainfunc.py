@@ -291,7 +291,8 @@ def check_wr(uid, fish, weight):
         writeJSON(filePath, data)
     else:
         #print(f'There was no record on this fish')
-        return('')
+        #return('')
+        return(0.0, "")
     #old system
     #return(x)
 
