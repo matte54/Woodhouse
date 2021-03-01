@@ -432,19 +432,19 @@ class MyClient(discord.Client):
             if timeCheck != now.hour:
                 if random.randint(1,10) < 3:
                     await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
-                    #temporary way to add wait time to a fail.
                     f = open('./data/fishTime/'+uid, "w")
                     f.write(str(now.hour))
                     f.close()
-                    #print(f'{discordId} casts their line but {random.choice(failFlare)}') #debug
                 else:
-                    x, fish, weight = cast_line(discordId)
-                    q = addFish(discordId, fish, weight)
-                    await message.channel.send("""```yaml\n{} {}\n{}```""".format(discordId, x, q))
-                    #print(f'{x}') #debug
+                    #Old system
+                    #x, fish, weight = cast_line(discordId)
+                    #q = addFish(discordId, fish, weight)
+                    #await message.channel.send("""```yaml\n{} {}\n{}```""".format(discordId, x, q))
+                    #New rogue embedd
+                    x = cast_line(discordId)
+                    await message.channel.send(x)
             else:
                 await message.channel.send("""```yaml\nYou are not allowed to fish again this soon {}!```""".format(discordId))
-                #print(f'You are not allowed to fish again this soon {discordId}') #debug
 
         if message.content.startswith('$fishoff'):
             t = get_timestamp_str()

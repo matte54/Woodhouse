@@ -4,6 +4,7 @@ import markovify
 import requests
 import json, os
 from lxml import etree as ET
+from discord import Embed
 
 #Fishing Lists
 fishClass1 = ["Tin can", "Old shoe", "Rusty dagger", "Seaweed", "Magikarp"]
@@ -101,8 +102,6 @@ def cast_line(discordId):
     w = round(random.triangular(wL, wH, mid),2)
     c = chosenClass[0][:-4]
 
-    #check WR
-    wr = check_wr(uid, z, w)
 
     #Make the only fish once and hour mark.
     now = datetime.datetime.now()
@@ -110,9 +109,18 @@ def cast_line(discordId):
     f.write(str(now.hour))
     f.close()
 
-    #return pretty string?
-    u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + str(w) + ") LBS \n" + wr
-    return(u.upper(), z, w)
+    #new rogue embedd System
+    wr, holder = check_wr(uid, z, w)
+    q = addFish(discordId, z, w)
+    cI = int(c[5:])
+    x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder)
+    return(x)
+
+    #Old System
+    #check WR
+    #wr = check_wr(uid, z, w)
+    #u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + str(w) + ") LBS \n" + wr
+    #return(u.upper(), z, w)
 
 def fishOff():
     path = "./data/bucket/"
@@ -177,6 +185,7 @@ def addFish(discordId, fish, weight):
                 #print(f"That fish type is in the bucket already.")
                 if data[fish] < weight:
                     x = (f'NEW RECORD {fish}! This new one was {weight} the one in your bucket was only {data[fish]}')
+                    oldPb = data[fish]
                     data[fish] = weight
                     writeJSON(filePath, data)
                 else:
@@ -192,8 +201,10 @@ def addFish(discordId, fish, weight):
         #print(f"JSON not found! Creating...")
         data = {fish: weight}
         writeJSON(filePath, data)
-
-    return(x)
+    #old system
+    #return(x)
+    #new rogue
+    return(oldPb)
 
 def fishscore():
     filePath = "./data/fishoffwinners.json"
@@ -271,17 +282,67 @@ def check_wr(uid, fish, weight):
 
     if data[fish]['weight'] < weight:
         x = (f"NEW WORLD RECORD! previous record was {data[fish]['weight']} caught by {data[fish]['holder']}")
+        #add for embed
+        oldWr = data[fish]['weight']
+        oldWrHolder = data[fish]['holder']
+
         data[fish]['weight'] = weight
         data[fish]['holder'] = uid
         writeJSON(filePath, data)
     else:
         #print(f'There was no record on this fish')
         return('')
+    #old system
+    #return(x)
 
-    return(x)
+    #new rogue embedd
+    return(oldWr, oldWrHolder)
 
 def writeJSON(filePath, data):
     with open(filePath, "w") as f:
         json.dump(data, f, indent=4)
         f.close()
     #print(f'Finished writing {filePath}')
+
+def fishing_embed(username, fish, joke, fish_class, weight, old_pb=0.0, old_wr=0.0, dethroned=""):
+    """Create a discord embed of the caught fish.
+
+    Note if old_wr is provided remember to also provide the dethroned parameter.
+
+    :param username: The user that caught the fish
+    :type username: str
+    :param fish: The name of the fish
+    :type fish: str
+    :param joke: It's a joke
+    :type joke: str
+    :param fish_class: The class of fish
+    :type fish_class: int
+    :param weight: The weight of the fish
+    :type weight: float
+    :param old_pb: The weight of the user's previous record if applicable, defaults to 0.0
+    :type old_pb: float
+    :param old_wr: The wright of the previous world record if applicable, defaults to 0.0
+    :type old_wr: float
+    :param dethroned: The name of the previous record holder if applicable, defaults to ""
+    :type dethroned: str
+
+    :return: The created embed
+    :rtype: discord.Embed
+    """
+
+    embed = Embed()
+    n = 'n' if fish.lower()[0] in 'aeiou' else ''
+    embed.title = f"{username} caught a{n} {fish}!"
+    embed.description = f"*{joke}*"
+    embed.colour = 0x99ff
+    embed.add_field(name="Class", value=f"**{fish_class}**", inline=True)
+    embed.add_field(name="Weight", value=f"**{weight}**", inline=True)
+    if old_pb == 0.0:
+        embed.add_field(name="New fish type!", value="Great addition to your bucket!")
+    elif weight > old_pb:
+        embed.add_field(name="NEW RECORD!", value=f"*Your previous one was only {old_pb} lbs*")
+    if old_wr and dethroned:
+        embed.add_field(name="NEW WORLD RECORD!", value=f"*Previous record was {old_wr} lbs by {dethroned}*")
+    icon_url = f"./data/fishicons/{fish}.png" # this may need to change
+    embed.set_thumbnail(url=icon_url)
+    return embed
