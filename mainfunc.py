@@ -343,8 +343,9 @@ def fishing_embed(username, fish, joke, fish_class, weight, old_pb=0.0, old_wr=0
     if old_pb != None:
         if old_pb == 0.0:
             embed.add_field(name="New fish type!", value="Great addition to your bucket!")
-    elif weight > old_pb:
-        embed.add_field(name="NEW RECORD!", value=f"*Your previous one was only {old_pb} lbs*")
+    if old_pb != None:
+        elif weight > old_pb:
+            embed.add_field(name="NEW RECORD!", value=f"*Your previous one was only {old_pb} lbs*")
     if old_wr and dethroned:
         embed.add_field(name="NEW WORLD RECORD!", value=f"*Previous record was {old_wr} lbs by {dethroned}*")
     fishWithoutSpaces = fish.replace(" ", "")
