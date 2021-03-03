@@ -324,7 +324,7 @@ class MyClient(discord.Client):
 
                 # TODO embed user's arachne avatar?
                 embed = discord.Embed()
-                embed.title = f'{dexUser}\s POKÉDEX'
+                embed.title = f'{dexUser}\'s POKÉDEX'
                 embed.url = url
                 last_five = '\n'.join(['> ' + mon for mon in mons[-5:]])
                 if count == 0:
