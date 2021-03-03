@@ -192,7 +192,8 @@ def addFish(discordId, fish, weight):
                     return(oldPb)
                 else:
                     x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
-                    return(None)
+                    currentPb = data[fish]
+                    return(currentPb)
             else:
                 x = (f"New fish type! great addition to your bucket!")
                 data[fish] = weight
@@ -340,13 +341,12 @@ def fishing_embed(username, fish, joke, fish_class, weight, old_pb=0.0, old_wr=0
     embed.colour = 0x99ff
     embed.add_field(name="Class", value=f"**{fish_class}**", inline=True)
     embed.add_field(name="Weight", value=f"**{weight}**", inline=True)
-    if old_pb != None:
-        if old_pb == 0.0:
-            embed.add_field(name="New fish type!", value="Great addition to your bucket!")
-        elif weight > old_pb:
-            embed.add_field(name="NEW RECORD!", value=f"*Your previous one was only {old_pb} lbs*")
-        else:
-            embed.add_field(name=f"Releasing {fish}...", value=f"You already have one at {weight} lbs!")
+    if old_pb == 0.0:
+        embed.add_field(name="New fish type!", value="Great addition to your bucket!")
+    elif weight > old_pb:
+        embed.add_field(name="NEW RECORD!", value=f"*Your previous one was only {old_pb} lbs*")
+    else:
+        embed.add_field(name=f"Releasing {fish}...", value=f"You already have one at {old_pb} lbs!")
     if old_wr and dethroned:
         embed.add_field(name="NEW WORLD RECORD!", value=f"*Previous record was {old_wr} lbs by {dethroned}*")
     fishWithoutSpaces = fish.replace(" ", "")
