@@ -110,10 +110,12 @@ def cast_line(discordId):
     f.close()
 
     #new rogue embedd System
-    wr, holder = get_wr(z) # get the current wr if any
+    wr, holder = get_wr(z)  # get the current wr if any
     #changed check_wr to this if statement
-    if holder == "None": # assuming if no wr we get back weight is 0.0 and holder is "None"
+    if holder == "None":    # assuming if no wr we get back weight is 0.0 and holder is "None"
         wr, holder = 0.0, ""
+    elif w > wr:              # if new fish is wr, write it to file
+        write_wr(uid, z, w)
     q = addFish(discordId, z, w)
     cI = int(c[5:])
     x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder)
