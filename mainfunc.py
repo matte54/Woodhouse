@@ -347,8 +347,12 @@ def fishing_embed(username, fish, joke, fish_class, weight, old_pb=0.0, old_wr=0
         embed.add_field(name="NEW RECORD!", value=f"*Your previous one was only {old_pb} lbs*")
     else:
         embed.add_field(name=f"Releasing {fish}...", value=f"You already have one at {old_pb} lbs!")
-    if old_wr and dethroned:
+    if old_wr == 0.0 and dethroned == "":
+        embed.add_field(name="NEW WORLD RECORD!", value=f"*You caught the first {fish}!*")
+    elif old_wr > 0.0 and dethroned != "":
         embed.add_field(name="NEW WORLD RECORD!", value=f"*Previous record was {old_wr} lbs by {dethroned}*")
+    else:
+        print(f"Something weird happened old_wr: {old_wr} dethroned: {dethroned}")
     fishWithoutSpaces = fish.replace(" ", "")
     icon_url = f"http://thedarkzone.se/fishicons/{fishWithoutSpaces}.png"
     embed.set_thumbnail(url=icon_url)
