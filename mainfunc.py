@@ -110,7 +110,10 @@ def cast_line(discordId):
     f.close()
 
     #new rogue embedd System
-    wr, holder = check_wr(uid, z, w)
+    wr, holder = get_wr(z) # get the current wr if any
+    #changed check_wr to this if statement
+    if holder == "None": # assuming if no wr we get back weight is 0.0 and holder is "None"
+        wr, holder = 0.0, ""
     q = addFish(discordId, z, w)
     cI = int(c[5:])
     x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder)
@@ -274,33 +277,28 @@ def fishOffHandler():
     else:
         print(f'Today is NOT the first of the month, its {now.day}...keep fishing')
 
-def check_wr(uid, fish, weight):
+
+def get_wr(fish):
     filePath = "./data/fishwr.json"
     try:
         with open(filePath, "r") as f:
             data = json.load(f)
     except FileNotFoundError:
-        return(f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
+        return (f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
+    return data[fish]['weight'], data[fish]['holder']
 
 
-    if data[fish]['weight'] < weight:
-        x = (f"NEW WORLD RECORD! previous record was {data[fish]['weight']} caught by {data[fish]['holder']}")
-        #add for embed
-        oldWr = data[fish]['weight']
-        oldWrHolder = data[fish]['holder']
-
-        data[fish]['weight'] = weight
-        data[fish]['holder'] = uid
-        writeJSON(filePath, data)
-    else:
-        #print(f'There was no record on this fish')
-        #return('')
-        return(0.0, "")
-    #old system
-    #return(x)
-
-    #new rogue embedd
-    return(oldWr, oldWrHolder)
+def write_wr(uid, fish, weight):
+    filePath = "./data/fishwr.json"
+    try:
+        with open(filePath, "r") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        return (f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
+    data[fish]['weight'] = weight
+    data[fish]['holder'] = uid
+    writeJSON(filePath, data)
+    print(f'Wrote to file {filePath}')
 
 def writeJSON(filePath, data):
     with open(filePath, "w") as f:
