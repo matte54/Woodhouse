@@ -80,7 +80,6 @@ def cast_line(discordId):
     uid = str(discordId)
     fileDir = "./data/fishdata/"
     fishFiles = ["class1.json", "class2.json", "class3.json", "class4.json", "class5.json", "class6.json", "class7.json"]
-
     #pick random fish with weighted chances
     chosenClass = random.choices(fishFiles, weights=(38, 19, 15, 12, 7, 6, 3))
     filePath = fileDir + chosenClass[0]
@@ -91,7 +90,6 @@ def cast_line(discordId):
             #print(f'LOADED {filePath}!')
     except FileNotFoundError:
         return(f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
-
     #Ugly data converting back and forth cause i dont know syntax
     z = random.choice(list(data))
     j = data[z]['joke']
@@ -101,31 +99,25 @@ def cast_line(discordId):
     mid = wL+wH / 2
     w = round(random.triangular(wL, wH, mid),2)
     c = chosenClass[0][:-5]
-
-
     #Make the only fish once and hour mark.
     now = datetime.datetime.now()
     f = open('./data/fishTime/'+uid, "w")
     f.write(str(now.hour))
     f.close()
-
-    #new rogue embedd System
+    #check WR stuff
     wr, holder = get_wr(z)  # get the current wr if any
     #changed check_wr to this if statement
     if holder == "None":    # assuming if no wr we get back weight is 0.0 and holder is "None"
+        write_wr(uid, z, w) #added this rogue, cause it dont write the first ever record i think.
         wr, holder = 0.0, ""
     elif w > wr:              # if new fish is wr, write it to file
         write_wr(uid, z, w)
-    q = addFish(discordId, z, w)
+    #addfish to buckets if needed
+    q = addFish(discordId, z, w) #check bucket and add if needed
+    #return for rogue embed
     cI = int(c[5:])
-    x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder)
+    x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
     return(x)
-
-    #Old System
-    #check WR
-    #wr = check_wr(uid, z, w)
-    #u = "CASTS THEIR LINE AND CATCHES A " + z + " " + c + "\n" + j + "\n" + "WEIGHT (" + str(w) + ") LBS \n" + wr
-    #return(u.upper(), z, w)
 
 def fishOff():
     path = "./data/bucket/"
