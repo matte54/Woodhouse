@@ -5,6 +5,7 @@ import requests
 import json, os
 from lxml import etree as ET
 from discord import Embed
+from fishstats import fishStats
 
 #Fishing Lists
 fishClass1 = ["Tin can", "Old shoe", "Rusty dagger", "Seaweed", "Magikarp"]
@@ -116,6 +117,8 @@ def cast_line(discordId):
     q = addFish(discordId, z, w) #check bucket and add if needed
     #return for rogue embed
     cI = int(c[5:])
+    #record stats(wip)
+    fishStats(uid, z, w, cI)
     x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
     return(x)
 
