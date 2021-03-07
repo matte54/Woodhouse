@@ -124,7 +124,6 @@ def classPercentages(statsDict):
     class5P = round(class5 / total * 100, 1)
     class6P = round(class6 / total * 100, 1)
     class7P = round(class7 / total * 100, 1)
-    print(class2P)
     classT = (class1P, class2P, class3P, class4P, class5P, class6P, class7P)
     return(classT)
 
