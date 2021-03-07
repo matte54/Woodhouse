@@ -9,11 +9,12 @@ def writeJSON(filePath, data):
 def fishStats(uid, fish, weight, fishClass):
     with open("./data/fishstats.json", "r") as f:
         data = json.load(f)
-
+    fishClassStr = str(fishClass)
     #add to the fish specific total
     data["fishes"][fish]["number"] += 1
     #add to the game total
     data["total"]["number"] += 1
+    data["total"][fishClassStr] += 1
     #add user specific data
     if uid not in data["users"]:
         data["users"][uid] = {}
