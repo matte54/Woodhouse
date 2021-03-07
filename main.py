@@ -435,6 +435,16 @@ class MyClient(discord.Client):
                     f = open('./data/fishTime/'+uid, "w")
                     f.write(str(now.hour))
                     f.close()
+                    #write fail into stats
+                    with open("./data/fishstats.json", "r") as f:
+                        data = json.load(f)
+                    if uid not in data["users"]:
+                        data["users"][uid] = {}
+                        data["users"][uid]["numbers"] = 0
+                        data["users"][uid]["fails"] = 0
+                    data["users"][uid]["fails"] += 1
+                    writeJSON("./data/fishstats.json", data)
+                    f.close()
                 else:
                     #Old system
                     #x, fish, weight = cast_line(discordId)
@@ -470,6 +480,11 @@ class MyClient(discord.Client):
 def get_timestamp_str():
     i = time.strftime("%H:%M:%S - ")
     return(i)
+
+def writeJSON(filePath, data):
+    with open(filePath, "w") as f:
+        json.dump(data, f, indent=4)
+        f.close()
 
 client = MyClient()
 client.run(TOKEN)

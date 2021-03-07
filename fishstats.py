@@ -16,7 +16,8 @@ def fishStats(uid, fish, weight, fishClass):
     data["total"]["number"] += 1
     #add user specific data
     if uid not in data["users"]:
-        print(f'{uid} is not in the stats')
-        data["users"][uid] = 0
-    data["users"][uid] += 1
+        data["users"][uid] = {}
+        data["users"][uid]["numbers"] = 0
+        data["users"][uid]["fails"] = 0
+    data["users"][uid]["numbers"] += 1
     writeJSON("./data/fishstats.json", data)
