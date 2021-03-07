@@ -295,7 +295,7 @@ def write_wr(uid, fish, weight):
     data[fish]['weight'] = weight
     data[fish]['holder'] = uid
     writeJSON(filePath, data)
-    print(f'Wrote to file {filePath}')
+    #print(f'Wrote to file {filePath}')
 
 def writeJSON(filePath, data):
     with open(filePath, "w") as f:

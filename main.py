@@ -9,6 +9,7 @@ import credentials
 import socket
 import hashlib
 import datetime
+import json
 from discord.ext import tasks, commands
 from urlhandler import pick_url
 from mmo import playMMO
