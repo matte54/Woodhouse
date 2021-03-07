@@ -20,6 +20,7 @@ import csv
 import pandas as pd
 import time
 from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish, fishscore, fishOffHandler
+from fishstats import listFishStats
 from spider_silk import db, Post
 
 DEBUG = False
@@ -476,6 +477,13 @@ class MyClient(discord.Client):
             u = message.author
             print('{}{} is listing the all time fishoff winners'.format(t, u))
             x = fishscore()
+            await message.channel.send("""```yaml\n\n{}```""".format(x))
+
+        if message.content.startswith('$fishstats'):
+            t = get_timestamp_str()
+            u = message.author
+            print('{}{} is listing the fishstats'.format(t, u))
+            x = listFishStats()
             await message.channel.send("""```yaml\n\n{}```""".format(x))
 
 def get_timestamp_str():
