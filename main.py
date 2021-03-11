@@ -141,6 +141,7 @@ class MyClient(discord.Client):
                 f = open("./data/schoolTime", "w")
                 f.write(str(now.day))
                 f.close()
+                return(currentSchool)
                 await asyncio.sleep(30)#debug
                 #await asyncio.sleep(random.randint(3000, 4000))
 
@@ -242,7 +243,7 @@ class MyClient(discord.Client):
             x = random.randint(4000, 7000)
             await asyncio.sleep(x)
 
-    async def on_message(self, message):
+    async def on_message(self, message, currentSchool):
         txt = message.content
         #Make sure the message is from a normal person.
         if message.author == client.user:
