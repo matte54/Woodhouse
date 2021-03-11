@@ -83,6 +83,7 @@ def cast_line(discordId, school):
     fishFiles = ["class1.json", "class2.json", "class3.json", "class4.json", "class5.json", "class6.json", "class7.json"]
     #pick random fish with weighted chances
     chosenClass = random.choices(fishFiles, weights=school)
+    print(f'Current school is {school}')
     filePath = fileDir + chosenClass[0]
     #access json should never error but anyways?
     try:

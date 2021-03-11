@@ -57,6 +57,9 @@ THRESHOLDS = [111 * n + 6 for n in range(1, 9)] # 8 badges
 BADGE_PATH_SINGLE = [f'badges/Badge{n}.png' for n in range(1, 9)] # individual badge icons
 BADGE_PATH_PROGRESS = [f'badges/Badge{n}a.png' for n in range(1, 9)] # cumulative badges
 
+#school
+defaultWeights = (38, 19, 15, 12, 7, 6, 3)
+currentSchool = defaultWeights
 
 class MyClient(discord.Client):
     def __init__(self, *args, **kwargs):
@@ -95,7 +98,7 @@ class MyClient(discord.Client):
         print('{}Connection resumed?'.format(t))
 
 
-    async def school_task(self):
+    async def school_task(self, currentSchool):
         defaultWeights = (38, 19, 15, 12, 7, 6, 3)
         class2 = (19, 38, 15, 12, 7, 6, 3)
         class3 = (15, 19, 38, 12, 7, 6, 3)
@@ -141,7 +144,6 @@ class MyClient(discord.Client):
                 f = open("./data/schoolTime", "w")
                 f.write(str(now.day))
                 f.close()
-                return(currentSchool)
                 await asyncio.sleep(30)#debug
                 #await asyncio.sleep(random.randint(3000, 4000))
 
