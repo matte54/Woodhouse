@@ -113,14 +113,13 @@ class MyClient(discord.Client):
         while not self.is_closed():
             global currentSchool
             currentSchool = defaultWeights
-            #await asyncio.sleep(random.randint(3600, 7200))
+            await asyncio.sleep(random.randint(3600, 7200))
             Xi = random.randint(1, 100)
-            print(f'{Xi} roll')#debug
             now = datetime.datetime.now()
             f = open("./data/schoolTime", 'r')
             dayCheck = int(f.readline())
             f.close()
-            if Xi < 70 and dayCheck != now.day:
+            if Xi > 70 and dayCheck != now.day:
                 yI = random.randint(1, 6)
                 if yI == 1:
                     currentSchool = class2
@@ -140,18 +139,16 @@ class MyClient(discord.Client):
                 if yI == 6:
                     currentSchool = class7
                     className = "class7"
-                #await message.channel.send("""```yaml\nA school of {} fish just swam into the area...```""".format(className))
+                await message.channel.send("""```yaml\nA school of {} fish just swam into the area...```""".format(className))
                 print(f'changing school to {className}')
                 now = datetime.datetime.now()
                 f = open("./data/schoolTime", "w")
                 f.write(str(now.day))
                 f.close()
-                await asyncio.sleep(60)#debug
-                #await asyncio.sleep(random.randint(3000, 4000))
+                await asyncio.sleep(random.randint(3000, 4000))
             else:
-                print("No school change this time...")
-                await asyncio.sleep(60)#debug
-                #await asyncio.sleep(random.randint(3000, 4000))
+                print(f"No school change this time...roll was {Xi} and or today is {now.day} we have {dayCheck} on file")
+                await asyncio.sleep(random.randint(3000, 4000))
 
     async def pokemon_task(self):
         global pokemonAlive
