@@ -243,7 +243,7 @@ class MyClient(discord.Client):
             x = random.randint(4000, 7000)
             await asyncio.sleep(x)
 
-    async def on_message(self, message, currentSchool):
+    async def on_message(self, message):
         txt = message.content
         #Make sure the message is from a normal person.
         if message.author == client.user:
