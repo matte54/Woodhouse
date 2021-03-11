@@ -98,7 +98,7 @@ class MyClient(discord.Client):
         print('{}Connection resumed?'.format(t))
 
 
-    async def school_task(self, currentSchool):
+    async def school_task(self):
         defaultWeights = (38, 19, 15, 12, 7, 6, 3)
         class2 = (19, 38, 15, 12, 7, 6, 3)
         class3 = (15, 19, 38, 12, 7, 6, 3)
@@ -118,7 +118,7 @@ class MyClient(discord.Client):
             f = open("./data/schoolTime", 'r')
             dayCheck = int(f.readline())
             f.close()
-            if Xi > 70 and dayCheck != now.day:
+            if Xi < 70 and dayCheck != now.day:
                 yI = random.randint(1, 6)
                 if yI == 1:
                     currentSchool = class2
