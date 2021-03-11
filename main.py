@@ -112,7 +112,7 @@ class MyClient(discord.Client):
             Xi = random.randint(1, 100)
             print(f'{Xi} roll')#debug
             now = datetime.datetime.now()
-            f = open('./data/schoolTime, 'r')
+            f = open("./data/schoolTime", 'r')
             dayCheck = int(f.readline())
             f.close()
             if Xi > 70 and dayCheck != now.day:
@@ -138,7 +138,7 @@ class MyClient(discord.Client):
                 #await message.channel.send("""```yaml\nA school of {} fish just swam into the area...```""".format(className))
                 print(f'changing school to {className}')
                 now = datetime.datetime.now()
-                f = open('./data/schoolTime, "w")
+                f = open("./data/schoolTime", "w")
                 f.write(str(now.day))
                 f.close()
                 await asyncio.sleep(30)#debug
