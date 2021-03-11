@@ -65,6 +65,7 @@ class MyClient(discord.Client):
         # create the background task and run it in the background
         self.bg_task = self.loop.create_task(self.my_background_task())
         self.bg_task = self.loop.create_task(self.pokemon_task())
+        self.bg_task = self.loop.create_task(self.school_task())
 
     async def on_ready(self):
         t = get_timestamp_str()
@@ -92,6 +93,56 @@ class MyClient(discord.Client):
     async def on_resumed(self):
         t = get_timestamp_str()
         print('{}Connection resumed?'.format(t))
+
+
+    async def school_task(self):
+        defaultWeights = (38, 19, 15, 12, 7, 6, 3)
+        class2 = (19, 38, 15, 12, 7, 6, 3)
+        class3 = (15, 19, 38, 12, 7, 6, 3)
+        class4 = (7, 15, 19, 38, 12, 6, 3)
+        class5 = (3, 6, 12, 19, 38, 15, 7)
+        class6 = (3, 6, 7, 12, 19, 38, 15)
+        class7 = (3, 6, 7, 12, 15, 19, 38)
+        weightList = [class2, class3, class4, class5, class6, class7]
+        channel = self.get_channel(194028816333537280)
+        await self.wait_until_ready()
+        while not self.is_closed():
+            currentSchool = defaultWeights
+            #await asyncio.sleep(random.randint(3600, 7200))
+            Xi = random.randint(1, 100)
+            print(f'{Xi} roll')#debug
+            now = datetime.datetime.now()
+            f = open('./data/schoolTime, 'r')
+            dayCheck = int(f.readline())
+            f.close()
+            if Xi > 70 and dayCheck != now.day:
+                yI = random.randint(1, 6)
+                if yI == 1:
+                    currentSchool = class2
+                    className = "class2"
+                if yI == 2:
+                    currentSchool = class3
+                    className = "class3"
+                if yI == 3:
+                    currentSchool = class4
+                    className = "class4"
+                if yI == 4:
+                    currentSchool = class5
+                    className = "class5"
+                if yI == 5:
+                    currentSchool = class6
+                    className = "class6"
+                if yI == 6:
+                    currentSchool = class7
+                    className = "class7"
+                #await message.channel.send("""```yaml\nA school of {} fish just swam into the area...```""".format(className))
+                print(f'changing school to {className}')
+                now = datetime.datetime.now()
+                f = open('./data/schoolTime, "w")
+                f.write(str(now.day))
+                f.close()
+                await asyncio.sleep(30)#debug
+                #await asyncio.sleep(random.randint(3000, 4000))
 
     async def pokemon_task(self):
         global pokemonAlive
@@ -453,7 +504,7 @@ class MyClient(discord.Client):
                     #q = addFish(discordId, fish, weight)
                     #await message.channel.send("""```yaml\n{} {}\n{}```""".format(discordId, x, q))
                     #New rogue embedd
-                    x = cast_line(discordId)
+                    x = cast_line(discordId, currentSchool)
                     await message.channel.send(embed=x)
             else:
                 await message.channel.send("""```yaml\nYou are not allowed to fish again this soon {}!```""".format(discordId))

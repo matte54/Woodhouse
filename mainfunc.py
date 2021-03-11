@@ -76,13 +76,13 @@ def get_holiday():
     things = [thing[1].text for thing in result.iter('item')]
     return random.choice(things)
 
-def cast_line(discordId):
+def cast_line(discordId, school):
     #define variables n stuff
     uid = str(discordId)
     fileDir = "./data/fishdata/"
     fishFiles = ["class1.json", "class2.json", "class3.json", "class4.json", "class5.json", "class6.json", "class7.json"]
     #pick random fish with weighted chances
-    chosenClass = random.choices(fishFiles, weights=(38, 19, 15, 12, 7, 6, 3))
+    chosenClass = random.choices(fishFiles, weights=school)
     filePath = fileDir + chosenClass[0]
     #access json should never error but anyways?
     try:
@@ -97,7 +97,7 @@ def cast_line(discordId):
     wL = data[z]['weightLow']
     wH = data[z]['weightHigh']
     #Triangular weighted random weight test.
-    mid = wL+wH / 2
+    mid = (wL + wH) / 2
     w = round(random.triangular(wL, wH, mid),2)
     c = chosenClass[0][:-5]
     #Make the only fish once and hour mark.
