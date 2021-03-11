@@ -144,8 +144,11 @@ class MyClient(discord.Client):
                 f = open("./data/schoolTime", "w")
                 f.write(str(now.day))
                 f.close()
-            await asyncio.sleep(30)#debug
-            #await asyncio.sleep(random.randint(3000, 4000))
+                return(currentSchool)
+            else:
+                print("No school change this time...")
+                await asyncio.sleep(60)#debug
+                #await asyncio.sleep(random.randint(3000, 4000))
 
     async def pokemon_task(self):
         global pokemonAlive
