@@ -122,7 +122,6 @@ class MyClient(discord.Client):
             f.close()
             if Xi < 70 and dayCheck != now.day:
                 yI = random.randint(1, 6)
-                global currentSchool
                 if yI == 1:
                     currentSchool = class2
                     className = "class2"
