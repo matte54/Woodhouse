@@ -59,6 +59,7 @@ BADGE_PATH_PROGRESS = [f'badges/Badge{n}a.png' for n in range(1, 9)] # cumulativ
 
 #school
 defaultWeights = (38, 19, 15, 12, 7, 6, 3)
+global currentSchool
 currentSchool = defaultWeights
 
 class MyClient(discord.Client):
