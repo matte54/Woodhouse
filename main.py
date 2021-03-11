@@ -110,6 +110,7 @@ class MyClient(discord.Client):
         channel = self.get_channel(194028816333537280)
         await self.wait_until_ready()
         while not self.is_closed():
+            global currentSchool
             currentSchool = defaultWeights
             #await asyncio.sleep(random.randint(3600, 7200))
             Xi = random.randint(1, 100)
@@ -121,21 +122,27 @@ class MyClient(discord.Client):
             if Xi < 70 and dayCheck != now.day:
                 yI = random.randint(1, 6)
                 if yI == 1:
+                    global currentSchool
                     currentSchool = class2
                     className = "class2"
                 if yI == 2:
+                    global currentSchool
                     currentSchool = class3
                     className = "class3"
                 if yI == 3:
+                    global currentSchool
                     currentSchool = class4
                     className = "class4"
                 if yI == 4:
+                    global currentSchool
                     currentSchool = class5
                     className = "class5"
                 if yI == 5:
+                    global currentSchool
                     currentSchool = class6
                     className = "class6"
                 if yI == 6:
+                    global currentSchool
                     currentSchool = class7
                     className = "class7"
                 #await message.channel.send("""```yaml\nA school of {} fish just swam into the area...```""".format(className))
@@ -144,7 +151,7 @@ class MyClient(discord.Client):
                 f = open("./data/schoolTime", "w")
                 f.write(str(now.day))
                 f.close()
-                return(currentSchool)
+                #await asyncio.sleep(random.randint(3000, 4000))
             else:
                 print("No school change this time...")
                 await asyncio.sleep(60)#debug
