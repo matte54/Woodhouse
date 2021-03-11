@@ -122,28 +122,23 @@ class MyClient(discord.Client):
             f.close()
             if Xi < 70 and dayCheck != now.day:
                 yI = random.randint(1, 6)
+                global currentSchool
                 if yI == 1:
-                    global currentSchool
                     currentSchool = class2
                     className = "class2"
                 if yI == 2:
-                    global currentSchool
                     currentSchool = class3
                     className = "class3"
                 if yI == 3:
-                    global currentSchool
                     currentSchool = class4
                     className = "class4"
                 if yI == 4:
-                    global currentSchool
                     currentSchool = class5
                     className = "class5"
                 if yI == 5:
-                    global currentSchool
                     currentSchool = class6
                     className = "class6"
                 if yI == 6:
-                    global currentSchool
                     currentSchool = class7
                     className = "class7"
                 #await message.channel.send("""```yaml\nA school of {} fish just swam into the area...```""".format(className))
