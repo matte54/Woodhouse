@@ -109,6 +109,7 @@ class MyClient(discord.Client):
         class7 = (3, 6, 7, 12, 15, 19, 38)
         weightList = [class2, class3, class4, class5, class6, class7]
         channel = self.get_channel(194028816333537280)
+        print(channel)
         await self.wait_until_ready()
         while not self.is_closed():
             global currentSchool
@@ -212,7 +213,7 @@ class MyClient(discord.Client):
                 else:
                     i = random.randint(1, 100)
                     t = get_timestamp_str()
-                    print('{}0-100 Roll came up {}'.format(t, i))
+                    #print('{}0-100 Roll came up {}'.format(t, i))
                     if i > 70 :
                         g = random.randint(1, 100)
                         if g < 75:
