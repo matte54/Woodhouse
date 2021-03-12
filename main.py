@@ -139,7 +139,7 @@ class MyClient(discord.Client):
                 if yI == 6:
                     currentSchool = class7
                     className = "class7"
-                await message.channel.send("""```yaml\nA school of {} fish just swam into the area...```""".format(className))
+                await channel.send("""```yaml\nA school of {} fish just swam into the area...```""".format(className))
                 print(f'changing school to {className}')
                 now = datetime.datetime.now()
                 f = open("./data/schoolTime", "w")
