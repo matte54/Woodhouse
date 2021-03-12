@@ -4,6 +4,8 @@ import os
 import re
 import io
 import random
+import socket
+import requests
 import asyncio
 import credentials
 import socket
@@ -108,9 +110,8 @@ class MyClient(discord.Client):
         class6 = (3, 6, 7, 12, 19, 38, 15)
         class7 = (3, 6, 7, 12, 15, 19, 38)
         weightList = [class2, class3, class4, class5, class6, class7]
-        channel = self.get_channel(194028816333537280)
-        print(channel)
         await self.wait_until_ready()
+        channel = self.get_channel(194028816333537280)
         while not self.is_closed():
             global currentSchool
             currentSchool = defaultWeights
@@ -542,6 +543,18 @@ class MyClient(discord.Client):
             u = message.author
             print('{}{} is listing the fishstats'.format(t, u))
             x = listFishStats()
+            await message.channel.send("""```yaml\n\n{}```""".format(x))
+
+        if message.content.startswith('$where'):
+            t = get_timestamp_str()
+            u = message.author
+            print('{}{} is asking where i am'.format(t, u))
+            url = "http://checkip.dyndns.org"
+            request = requests.get(url)
+            clean = request.text.split(': ', 1)[1]
+            my_ip = clean.split('</body></html>', 1)[0]
+            my_host = socket.gethostname()
+            x = (f'Oh maybe i have a new ip?\n{my_host}\n{my_ip}')
             await message.channel.send("""```yaml\n\n{}```""".format(x))
 
 def get_timestamp_str():
