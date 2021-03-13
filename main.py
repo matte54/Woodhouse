@@ -121,7 +121,7 @@ class MyClient(discord.Client):
             f = open("./data/schoolTime", 'r')
             dayCheck = int(f.readline())
             f.close()
-            if Xi > 70 and dayCheck != now.day:
+            if Xi > 50 and dayCheck != now.day:
                 yI = random.randint(1, 6)
                 if yI == 1:
                     currentSchool = class2
@@ -149,8 +149,8 @@ class MyClient(discord.Client):
                 f.close()
                 await asyncio.sleep(random.randint(3000, 4000))
             else:
-                print(f"No school change this time...roll was {Xi} and or today is {now.day} we have {dayCheck} on file")
-                await asyncio.sleep(random.randint(3000, 4000))
+                print(f"No school change this time...roll was {Xi} needs < 50, and/or today is {now.day} we have {dayCheck} on file")
+                await asyncio.sleep(120)
 
     async def pokemon_task(self):
         global pokemonAlive
