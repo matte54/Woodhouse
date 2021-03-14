@@ -149,7 +149,7 @@ class MyClient(discord.Client):
                 f.close()
                 await asyncio.sleep(random.randint(3000, 4000))
             else:
-                print(f"No school change this time...roll was {Xi} needs < 50, and/or today is {now.day} we have {dayCheck} on file")
+                print(f"No school this time...roll was {Xi} needs > 50, and/or today is {now.day} we have {dayCheck} on file")
                 await asyncio.sleep(120)
 
     async def pokemon_task(self):
