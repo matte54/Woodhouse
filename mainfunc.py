@@ -122,7 +122,7 @@ def cast_line(discordId, school):
     #record stats(wip)
     fishStats(uid, z, w, cI)
     value, xp = profileHandler(uid, z, cI, w) # manage profile system(WIP)
-    x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder, value, xp) #return for rogue embedd
+    x = fishing_embed(uid, z, j, cI, w, value, xp, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
     return(x)
 
 def fishOff():
@@ -311,7 +311,7 @@ def writeJSON(filePath, data):
         f.close()
     #print(f'Finished writing {filePath}')
 
-def fishing_embed(username, fish, joke, fish_class, weight, old_pb=0.0, old_wr=0.0, dethroned="", value, xp):
+def fishing_embed(username, fish, joke, fish_class, weight, value, xp, old_pb=0.0, old_wr=0.0, dethroned=""):
     """Create a discord embed of the caught fish.
 
     Note if old_wr is provided remember to also provide the dethroned parameter.
