@@ -11,6 +11,15 @@ def getFishValues(fishName, className):
         data = json.load(f)
     return(data[fishName]['value'], data[fishName]['xp'])
 
+def getLevel(userId):
+    filePath = f"./data/fishprofiles/{userId}.json"
+    try:
+        with open(filePath, "r") as f:
+            data = json.load(f)
+        x = data["level"]
+    except FileNotFoundError:
+        return(1)
+    return(x)
 
 def handleMoney(userId, money=0, fishName="", classInt=0):
     if classInt != 0:
@@ -23,8 +32,10 @@ def handleMoney(userId, money=0, fishName="", classInt=0):
         return
     if classInt != 0:
         data["money"] += value
+        print(f'{value} money)
     else:
         data["money"] += money
+        print(f'{money} money)
     writeJSON(filePath, data)
 
 def profileHandler(userId, fishName, className):

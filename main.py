@@ -24,7 +24,7 @@ import time
 from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish, fishscore, fishOffHandler
 from fishstats import listFishStats
 from spider_silk import db, Post
-from profileManager import handleMoney
+from profileManager import handleMoney, getLevel
 
 DEBUG = False
 if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '18093712d226974bfc25563025ebdb3c':
@@ -492,8 +492,12 @@ class MyClient(discord.Client):
             f.close()
             #Check if person has fished in the current hour
             if timeCheck != now.hour:
-                #Change this for experience modifier?
-                if random.randint(1,10) < 3:
+                #random xp modifier
+                lvl = getLevel(discordId)
+                diff = 0.05 * lvl
+                roll = random.uniform(3 + diff, 10)
+                #if random.randint(1,10) < 3: #oldroll
+                if roll > 5:
                     await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
                     f = open('./data/fishTime/'+uid, "w")
                     f.write(str(now.hour))
@@ -508,7 +512,8 @@ class MyClient(discord.Client):
                     data["users"][uid]["fails"] += 1
                     writeJSON("./data/fishstats.json", data)
                     f.close()
-                    handleMoney(discordId, -3)
+                    if os.path.isfile(f"./data/fishprofiles/{uid}.json") == True:
+                        handleMoney(discordId, -3)
                 else:
                     x = cast_line(discordId, currentSchool)
                     await message.channel.send(embed=x)

@@ -253,6 +253,8 @@ def fishOffHandler():
                 topFish = next(iter(sortdict))
                 topFishWeight = sortdict[topFish]
                 nameFix = i[:-5]
+                #addmoney
+                handleMoney(nameFix, 100)
                 highscoreDict[nameFix + ' - ' + topFish] = topFishWeight
                 sort_score = sorted(highscoreDict.items(), key=lambda x: x[1], reverse=True)
                 sort_score_dict = dict(sort_score)
