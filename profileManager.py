@@ -1,4 +1,4 @@
-import json
+import json, random
 
 def writeJSON(filePath, data):
     with open(filePath, "w") as f:
