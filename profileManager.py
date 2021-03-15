@@ -100,3 +100,4 @@ def profileHandler(userId, fishName, className, fishWeight):
         data["currentXp"] += xp
         print(f'{xp} XP gained {data["currentXp"]}/{data["xpCap"]}')
     writeJSON(filePath, data)
+    return(value, xp)
