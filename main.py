@@ -24,6 +24,7 @@ import time
 from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish, fishscore, fishOffHandler
 from fishstats import listFishStats
 from spider_silk import db, Post
+from profileManager import handleMoney
 
 DEBUG = False
 if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '18093712d226974bfc25563025ebdb3c':
@@ -149,7 +150,7 @@ class MyClient(discord.Client):
                 f.close()
                 await asyncio.sleep(random.randint(3000, 4000))
             else:
-                print(f"No school this time...roll was {Xi} needs > 50, and/or today is {now.day} we have {dayCheck} on file")
+                #print(f"No school this time...roll was {Xi} needs > 50, and/or today is {now.day} we have {dayCheck} on file")
                 await asyncio.sleep(120)
 
     async def pokemon_task(self):
@@ -491,6 +492,7 @@ class MyClient(discord.Client):
             f.close()
             #Check if person has fished in the current hour
             if timeCheck != now.hour:
+                #Change this for experience modifier?
                 if random.randint(1,10) < 3:
                     await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
                     f = open('./data/fishTime/'+uid, "w")
@@ -506,12 +508,8 @@ class MyClient(discord.Client):
                     data["users"][uid]["fails"] += 1
                     writeJSON("./data/fishstats.json", data)
                     f.close()
+                    handleMoney(discordId, -3)
                 else:
-                    #Old system
-                    #x, fish, weight = cast_line(discordId)
-                    #q = addFish(discordId, fish, weight)
-                    #await message.channel.send("""```yaml\n{} {}\n{}```""".format(discordId, x, q))
-                    #New rogue embedd
                     x = cast_line(discordId, currentSchool)
                     await message.channel.send(embed=x)
             else:

@@ -6,6 +6,7 @@ import json, os
 from lxml import etree as ET
 from discord import Embed
 from fishstats import fishStats
+from profileManager import profileHandler, handleMoney
 
 #Fishing Lists
 fishClass1 = ["Tin can", "Old shoe", "Rusty dagger", "Seaweed", "Magikarp"]
@@ -83,7 +84,7 @@ def cast_line(discordId, school):
     fishFiles = ["class1.json", "class2.json", "class3.json", "class4.json", "class5.json", "class6.json", "class7.json"]
     #pick random fish with weighted chances
     chosenClass = random.choices(fishFiles, weights=school)
-    print(f'[DEBUG]Current school is {school}')
+    #print(f'[DEBUG]Current school is {school}')
     filePath = fileDir + chosenClass[0]
     #access json should never error but anyways?
     try:
@@ -114,12 +115,13 @@ def cast_line(discordId, school):
         wr, holder = 0.0, ""
     elif w > wr:              # if new fish is wr, write it to file
         write_wr(uid, z, w)
-    #addfish to buckets if needed
-    q = addFish(discordId, z, w) #check bucket and add if needed
-    #return for rogue embed
     cI = int(c[5:])
+    #addfish to buckets if needed
+    q = addFish(discordId, z, w, cI) #check bucket and add if needed
+    #return for rogue embed
     #record stats(wip)
     fishStats(uid, z, w, cI)
+    profileHandler(uid, z, cI) #manage profile system(WIP)
     x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
     return(x)
 
@@ -173,7 +175,7 @@ def bucket(discordId):
         return("No fish in the bucket yet , go catch some!")
     return(x)
 
-def addFish(discordId, fish, weight):
+def addFish(discordId, fish, weight, classInt):
     discordIdStr = str(discordId)
     jsonFile = discordIdStr + '.json'
     filePath = "./data/bucket/"+jsonFile
@@ -190,10 +192,12 @@ def addFish(discordId, fish, weight):
                     data[fish] = weight
                     writeJSON(filePath, data)
                     #new rogue
+                    handleMoney(discordIdStr, 0 , fish, classInt)
                     return(oldPb)
                 else:
                     x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
                     currentPb = data[fish]
+                    handleMoney(discordIdStr, 0 , fish, classInt)
                     return(currentPb)
             else:
                 x = (f"New fish type! great addition to your bucket!")
