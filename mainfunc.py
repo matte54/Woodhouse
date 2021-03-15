@@ -193,12 +193,12 @@ def addFish(discordId, fish, weight, classInt):
                     data[fish] = weight
                     writeJSON(filePath, data)
                     #new rogue
-                    handleMoney(discordIdStr, 0 , fish, classInt)
+                    handleMoney(discordIdStr, 0 , fish, classInt, oldPb)
                     return(oldPb)
                 else:
                     x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
                     currentPb = data[fish]
-                    handleMoney(discordIdStr, 0 , fish, classInt)
+                    handleMoney(discordIdStr, 0 , fish, classInt, weight)
                     return(currentPb)
             else:
                 x = (f"New fish type! great addition to your bucket!")
@@ -340,7 +340,7 @@ def fishing_embed(username, fish, joke, fish_class, weight, value, xp, old_pb=0.
     embed = Embed()
     n = 'n' if fish.lower()[0] in 'aeiou' else ''
     embed.title = f"{username} caught a{n} {fish}!"
-    embed.description = f"*{joke}* **class {fish_class}**"
+    embed.description = f"*{joke}*\n**class {fish_class}**"
     embed.colour = 0x99ff
     #embed.add_field(name="Class", value=f"**{fish_class}**", inline=True)
     embed.add_field(name="Weight", value=f"**{weight}**", inline=True)
