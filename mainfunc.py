@@ -121,7 +121,7 @@ def cast_line(discordId, school):
     #return for rogue embed
     #record stats(wip)
     fishStats(uid, z, w, cI)
-    profileHandler(uid, z, cI) #manage profile system(WIP)
+    profileHandler(uid, z, cI, w) #manage profile system(WIP)
     x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
     return(x)
 

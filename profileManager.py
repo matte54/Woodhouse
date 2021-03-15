@@ -20,11 +20,33 @@ def getUserInfo(userId):
         return(txt)
     return(txt)
 
-def getFishValues(fishName, className):
+def getFishValues(fishName, className, fishWeight):
     filePath = (f"./data/fishdata/class{className}.json")
     with open(filePath, "r") as f:
         data = json.load(f)
-    return(data[fishName]['value'], data[fishName]['xp'])
+    money = data[fishName]['value']
+    xp = data[fishName]['xp']
+    wL = data[fishName]["weightLow"]
+    wH = data[fishName]["weightHigh"]
+    mid = (wL + wH) / 2
+    if fishWeight < mid:
+        xp -= 1
+        xp -= random.randint(0,2)
+        if xp < 0:
+            xp = 0
+
+        money -= 1
+        money -= random.randint(0,2)
+        if money < 0:
+            money = 0
+    if fishWeight > mid:
+        xp += 1
+        xp += random.randint(0,2)
+
+        money += 1
+        money += random.randint(0,2)
+
+    return(money, xp)
 
 def getLevel(userId):
     filePath = f"./data/fishprofiles/{userId}.json"
@@ -53,9 +75,9 @@ def handleMoney(userId, money=0, fishName="", classInt=0):
         print(f'{money} money')
     writeJSON(filePath, data)
 
-def profileHandler(userId, fishName, className):
+def profileHandler(userId, fishName, className, fishWeight):
     filePath = f"./data/fishprofiles/{userId}.json"
-    value, xp = getFishValues(fishName, className)
+    value, xp = getFishValues(fishName, className, fishWeight)
     #check if profile excist then load if not create.
     try:
         with open(filePath, "r") as f:
