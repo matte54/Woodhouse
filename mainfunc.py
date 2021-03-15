@@ -117,11 +117,11 @@ def cast_line(discordId, school):
         write_wr(uid, z, w)
     cI = int(c[5:])
     #addfish to buckets if needed
-    q = addFish(discordId, z, w, cI) #check bucket and add if needed
+    q, value = addFish(discordId, z, w, cI) #check bucket and add if needed
     #return for rogue embed
     #record stats(wip)
     fishStats(uid, z, w, cI)
-    value, xp = profileHandler(uid, z, cI, w) # manage profile system(WIP)
+    Xvalue, xp = profileHandler(uid, z, cI, w) # manage profile system(WIP)
     x = fishing_embed(uid, z, j, cI, w, value, xp, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
     return(x)
 
@@ -193,18 +193,18 @@ def addFish(discordId, fish, weight, classInt):
                     data[fish] = weight
                     writeJSON(filePath, data)
                     #new rogue
-                    handleMoney(discordIdStr, 0 , fish, classInt, oldPb)
-                    return(oldPb)
+                    value = handleMoney(discordIdStr, 0 , fish, classInt, oldPb)
+                    return(oldPb, value)
                 else:
                     x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
                     currentPb = data[fish]
-                    handleMoney(discordIdStr, 0 , fish, classInt, weight)
-                    return(currentPb)
+                    value = handleMoney(discordIdStr, 0 , fish, classInt, weight)
+                    return(currentPb, value)
             else:
                 x = (f"New fish type! great addition to your bucket!")
                 data[fish] = weight
                 writeJSON(filePath, data)
-                return(0.0)
+                return(0.0, 0)
     else:
         x = ""
         #print(f"JSON not found! Creating...")
@@ -212,7 +212,7 @@ def addFish(discordId, fish, weight, classInt):
         writeJSON(filePath, data)
     #old system
     #return(x)
-    return(0.0)
+    return(0.0, 0)
 
 
 def fishscore():

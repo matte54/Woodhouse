@@ -75,6 +75,7 @@ def handleMoney(userId, money=0, fishName="", classInt=0, fishWeight=0):
         data["money"] += money
         print(f'{money} money')
     writeJSON(filePath, data)
+    return(value)
 
 def profileHandler(userId, fishName, className, fishWeight):
     filePath = f"./data/fishprofiles/{userId}.json"
