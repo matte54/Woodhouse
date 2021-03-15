@@ -26,25 +26,26 @@ def getFishValues(fishName, className, fishWeight):
         data = json.load(f)
     money = data[fishName]['value']
     xp = data[fishName]['xp']
-    wL = data[fishName]["weightLow"]
-    wH = data[fishName]["weightHigh"]
-    mid = (wL + wH) / 2
-    if fishWeight < mid:
-        xp -= 1
-        xp -= random.randint(0,2)
-        if xp < 0:
-            xp = 0
+    if fishWeight != 0:
+        wL = data[fishName]["weightLow"]
+        wH = data[fishName]["weightHigh"]
+        mid = (wL + wH) / 2
+        if fishWeight < mid:
+            xp -= 1
+            xp -= random.randint(0,2)
+            if xp < 0:
+                xp = 0
 
-        money -= 1
-        money -= random.randint(0,2)
-        if money < 0:
-            money = 0
-    if fishWeight > mid:
-        xp += 1
-        xp += random.randint(0,2)
+            money -= 1
+            money -= random.randint(0,2)
+            if money < 0:
+                money = 0
+        if fishWeight > mid:
+            xp += 1
+            xp += random.randint(0,2)
 
-        money += 1
-        money += random.randint(0,2)
+            money += 1
+            money += random.randint(0,2)
 
     return(money, xp)
 
@@ -58,9 +59,9 @@ def getLevel(userId):
         return(1)
     return(x)
 
-def handleMoney(userId, money=0, fishName="", classInt=0):
+def handleMoney(userId, money=0, fishName="", classInt=0, fishWeight=0):
     if classInt != 0:
-        value, xp = getFishValues(fishName, classInt)
+        value, xp = getFishValues(fishName, classInt, fishWeight)
     filePath = f"./data/fishprofiles/{userId}.json"
     try:
         with open(filePath, "r") as f:
