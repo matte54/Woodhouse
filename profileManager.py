@@ -14,9 +14,9 @@ def getUserInfo(userId):
         lvl = data["level"]
         exp = data["currentXp"]
         xpCap = data["xpCap"]
-        txt = f'-- Lvl: {lvl} - Exp: {exp}/{xpCap} - Money: {money} --'
+        txt = f'-- Lvl: {lvl} - Exp: {exp}/{xpCap} - Bells: {money} --'
     except FileNotFoundError:
-        txt = f'-- Lvl: 1 - Exp: 0/25 - Money: 0 --'
+        txt = f'-- Lvl: 1 - Exp: 0/25 - Bells: 0 --'
         return(txt)
     return(txt)
 
