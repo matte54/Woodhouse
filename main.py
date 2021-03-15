@@ -497,7 +497,7 @@ class MyClient(discord.Client):
                 diff = 0.05 * lvl
                 roll = random.uniform(3 + diff, 10)
                 #if random.randint(1,10) < 3: #oldroll
-                if roll > 5:
+                if roll < 5:
                     await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
                     f = open('./data/fishTime/'+uid, "w")
                     f.write(str(now.hour))
