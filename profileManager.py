@@ -32,10 +32,10 @@ def handleMoney(userId, money=0, fishName="", classInt=0):
         return
     if classInt != 0:
         data["money"] += value
-        print(f'{value} money)
+        print(f'{value} money')
     else:
         data["money"] += money
-        print(f'{money} money)
+        print(f'{money} money')
     writeJSON(filePath, data)
 
 def profileHandler(userId, fishName, className):
