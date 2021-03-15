@@ -5,6 +5,21 @@ def writeJSON(filePath, data):
         json.dump(data, f, indent=4)
         f.close()
 
+def getUserInfo(userId):
+    filePath = f"./data/fishprofiles/{userId}.json"
+    try:
+        with open(filePath, "r") as f:
+            data = json.load(f)
+        money = data["money"]
+        lvl = data["level"]
+        exp = data["currentXp"]
+        xpCap = data["xpCap"]
+        txt = f'-- Lvl: {lvl} - Exp: {exp}/{xpCap} - Money: {money} --'
+    except FileNotFoundError:
+        txt = f'-- Lvl: 1 - Exp: 0/25 - Money: 0 --'
+        return(txt)
+    return(txt)
+
 def getFishValues(fishName, className):
     filePath = (f"./data/fishdata/class{className}.json")
     with open(filePath, "r") as f:

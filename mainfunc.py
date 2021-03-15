@@ -6,7 +6,7 @@ import json, os
 from lxml import etree as ET
 from discord import Embed
 from fishstats import fishStats
-from profileManager import profileHandler, handleMoney
+from profileManager import profileHandler, handleMoney, getUserInfo
 
 #Fishing Lists
 fishClass1 = ["Tin can", "Old shoe", "Rusty dagger", "Seaweed", "Magikarp"]
@@ -157,6 +157,7 @@ def fishOff():
 
 def bucket(discordId):
     discordIdStr = str(discordId)
+    profileText = getUserInfo(discordIdStr)
     jsonFile = discordIdStr + '.json'
     filePath = "./data/bucket/"+jsonFile
     try:
@@ -164,7 +165,7 @@ def bucket(discordId):
             data = json.load(f)
             sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
             sortdict = dict(sort_bucket)
-            x = discordIdStr.upper() + "s BUCKET(TOP 10)\n"
+            x = profileText + "\n" + discordIdStr.upper() + "s BUCKET(TOP 10)\n"
             limit = 0
             for i in sortdict:
                 x += i.upper() + ' - ' + str(sortdict[i]) + ' LBS\n'
