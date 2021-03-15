@@ -340,12 +340,12 @@ def fishing_embed(username, fish, joke, fish_class, weight, value, xp, old_pb=0.
     embed = Embed()
     n = 'n' if fish.lower()[0] in 'aeiou' else ''
     embed.title = f"{username} caught a{n} {fish}!"
-    embed.description = f"*{joke}*"
+    embed.description = f"*{joke}* **class {fish_class}**"
     embed.colour = 0x99ff
-    embed.add_field(name="Class", value=f"**{fish_class}**", inline=True)
+    #embed.add_field(name="Class", value=f"**{fish_class}**", inline=True)
     embed.add_field(name="Weight", value=f"**{weight}**", inline=True)
     embed.add_field(name="Xp", value=f"**{xp}**", inline=True)
-    embed.add_field(name="Bells", value=f"**{value}**")
+    embed.add_field(name="Bells", value=f"**{value}**", inline=True)
     if old_pb == 0.0:
         embed.add_field(name="New fish type!", value="Great addition to your bucket!")
     elif weight > old_pb:
