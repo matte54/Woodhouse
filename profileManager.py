@@ -1,4 +1,4 @@
-import json, random
+import json, random, os
 
 def writeJSON(filePath, data):
     with open(filePath, "w") as f:
@@ -103,3 +103,20 @@ def profileHandler(userId, fishName, className, fishWeight):
         #print(f'{xp} XP gained {data["currentXp"]}/{data["xpCap"]}')
     writeJSON(filePath, data)
     return(value, xp)
+
+def buyCast(discordId):
+    userId = str(discordId)
+    filePath = f"./data/fishprofiles/{userId}.json"
+    try:
+        with open(filePath, "r") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        return False
+    userMoney = data["money"]
+    if userMoney < 50:
+        return False
+    data["money"] -= 50
+    if os.path.isfile(f"./data/fishTime/{userId}"):
+        os.remove(f"./data/fishTime/{userId}")
+    writeJSON(filePath, data)
+    return True

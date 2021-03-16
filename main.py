@@ -24,7 +24,7 @@ import time
 from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish, fishscore, fishOffHandler
 from fishstats import listFishStats
 from spider_silk import db, Post
-from profileManager import handleMoney, getLevel
+from profileManager import handleMoney, getLevel, buyCast
 
 DEBUG = False
 if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '18093712d226974bfc25563025ebdb3c':
@@ -562,6 +562,21 @@ class MyClient(discord.Client):
             my_host = socket.gethostname()
             x = (f'Oh maybe i have a new ip?\n{my_host}\n{my_ip}')
             await message.channel.send("""```yaml\n\n{}```""".format(x))
+
+        if message.content.startswith('$buy'):
+            t = get_timestamp_str()
+            u = message.author
+            x = buyCast(u)
+            if x == True:
+                print('{}{} is bought a extra cast'.format(t, u))
+                xZ = f'{u} bought a extra cast for 50 Bells!'
+                await message.channel.send("""```yaml\n\n{}```""".format(xZ))
+            else:
+                xZ = f'{u} you cant afford a extra cast right now'
+                await message.channel.send("""```yaml\n\n{}```""".format(xZ))            
+
+
+
 
 def get_timestamp_str():
     i = time.strftime("%H:%M:%S - ")
