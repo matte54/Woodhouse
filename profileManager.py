@@ -74,6 +74,7 @@ def handleMoney(userId, money=0, fishName="", classInt=0, fishWeight=0):
     else:
         data["money"] += money
         print(f'{money} money')
+        value = 0
     writeJSON(filePath, data)
     return(value)
 

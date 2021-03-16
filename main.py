@@ -113,6 +113,7 @@ class MyClient(discord.Client):
         weightList = [class2, class3, class4, class5, class6, class7]
         await self.wait_until_ready()
         channel = self.get_channel(194028816333537280)
+        server = self.get_guild(194028816333537280)
         while not self.is_closed():
             global currentSchool
             currentSchool = defaultWeights
@@ -122,7 +123,7 @@ class MyClient(discord.Client):
             f = open("./data/schoolTime", 'r')
             dayCheck = int(f.readline())
             f.close()
-            if Xi > 50 and dayCheck != now.day:
+            if Xi > 70 and dayCheck != now.day:
                 yI = random.randint(1, 6)
                 if yI == 1:
                     currentSchool = class2
@@ -142,7 +143,9 @@ class MyClient(discord.Client):
                 if yI == 6:
                     currentSchool = class7
                     className = "class7"
-                await channel.send("""```yaml\nA school of {} fish just swam into the area...```""".format(className))
+                #821174480775806977 role
+                atStr = server.get_role(821174480775806977).mention
+                await channel.send("""```yaml\nA school of {} fish just swam into the area...{}```""".format(className, atStr))
                 print(f'changing school to {className}')
                 now = datetime.datetime.now()
                 f = open("./data/schoolTime", "w")
