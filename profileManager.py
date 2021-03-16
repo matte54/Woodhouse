@@ -70,10 +70,10 @@ def handleMoney(userId, money=0, fishName="", classInt=0, fishWeight=0):
         return
     if classInt != 0:
         data["money"] += value
-        print(f'{value} money')
+        #print(f'{value} money')
     else:
         data["money"] += money
-        print(f'{money} money')
+        #print(f'{money} money')
         value = 0
     writeJSON(filePath, data)
     return(value)
@@ -97,9 +97,9 @@ def profileHandler(userId, fishName, className, fishWeight):
         data["level"] += 1
         data["currentXp"] = xpDiff
         data["xpCap"] += (10 + data["level"])
-        print(f'DING! {userId} is now level {data["level"]}')
+        #print(f'DING! {userId} is now level {data["level"]}')
     else:
         data["currentXp"] += xp
-        print(f'{xp} XP gained {data["currentXp"]}/{data["xpCap"]}')
+        #print(f'{xp} XP gained {data["currentXp"]}/{data["xpCap"]}')
     writeJSON(filePath, data)
     return(value, xp)

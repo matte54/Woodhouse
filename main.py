@@ -145,7 +145,7 @@ class MyClient(discord.Client):
                     className = "class7"
                 #821174480775806977 role
                 atStr = server.get_role(821174480775806977).mention
-                await channel.send("""```yaml\nA school of {} fish just swam into the area...{}```""".format(className, atStr))
+                await channel.send("""```yaml\nA school of {} fish just swam into the area...```{}""".format(className, atStr))
                 print(f'changing school to {className}')
                 now = datetime.datetime.now()
                 f = open("./data/schoolTime", "w")
