@@ -568,12 +568,12 @@ class MyClient(discord.Client):
             u = message.author
             x = buyCast(u)
             if x == True:
-                print('{}{} is bought a extra cast'.format(t, u))
+                print('{}{} bought a extra cast'.format(t, u))
                 xZ = f'{u} bought a extra cast for 50 Bells!'
                 await message.channel.send("""```yaml\n\n{}```""".format(xZ))
             else:
                 xZ = f'{u} you cant afford a extra cast right now'
-                await message.channel.send("""```yaml\n\n{}```""".format(xZ))            
+                await message.channel.send("""```yaml\n\n{}```""".format(xZ))
 
 
 

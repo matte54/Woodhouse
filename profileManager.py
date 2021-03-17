@@ -31,20 +31,20 @@ def getFishValues(fishName, className, fishWeight):
         wH = data[fishName]["weightHigh"]
         mid = (wL + wH) / 2
         if fishWeight < mid:
-            xp -= 1
+            xp -= random.randint(0,1)
             xp -= random.randint(0,2)
             if xp < 0:
                 xp = 0
 
-            money -= 1
+            money -= random.randint(0,1)
             money -= random.randint(0,2)
             if money < 0:
                 money = 0
         if fishWeight > mid:
-            xp += 1
+            xp += random.randint(0,1)
             xp += random.randint(0,2)
 
-            money += 1
+            money += random.randint(0,1)
             money += random.randint(0,2)
 
     return(money, xp)
