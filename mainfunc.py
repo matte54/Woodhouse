@@ -349,9 +349,9 @@ def fishing_embed(username, fish, joke, fish_class, weight, value, xp, old_pb=0.
     if old_pb == 0.0:
         embed.add_field(name="New fish type!", value="Great addition to your bucket!")
     elif weight > old_pb:
-        embed.add_field(name="NEW RECORD!", value=f"*Your previous one was only {old_pb} lbs*")
+        embed.add_field(name="NEW RECORD! Selling old...", value=f"*Your previous one was only {old_pb} lbs*")
     else:
-        embed.add_field(name=f"Releasing {fish}...", value=f"You already have one at {old_pb} lbs!")
+        embed.add_field(name=f"Selling {fish}...", value=f"You already have one at {old_pb} lbs!")
     if old_wr == 0.0 and dethroned == "":
         embed.add_field(name="NEW WORLD RECORD!", value=f"*You caught the first {fish}!*")
     elif weight> old_wr and dethroned != "":
