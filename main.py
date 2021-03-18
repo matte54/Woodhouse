@@ -497,8 +497,11 @@ class MyClient(discord.Client):
             if timeCheck != now.hour:
                 #random xp modifier
                 lvl = getLevel(discordId)
-                diff = 0.05 * lvl
-                roll = random.uniform(3 + diff, 10)
+                diff = 0.025 * lvl
+                if diff > 2:
+                    diff = 2 #already 100% successrate
+                    print("User is at max fishing sucessrate")
+                roll = random.uniform(3 + diff, 10) #at level 80 you have 100% successrate
                 #if random.randint(1,10) < 3: #oldroll
                 if roll < 5:
                     await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
@@ -566,7 +569,7 @@ class MyClient(discord.Client):
         if message.content.startswith('$buy'):
             t = get_timestamp_str()
             u = message.author
-            x = buyCast(u)
+            x = buyCast(u) #returns True if user can afford it, False if not.
             if x == True:
                 print('{}{} bought a extra cast'.format(t, u))
                 xZ = f'{u} bought a extra cast for 50 Bells!'
