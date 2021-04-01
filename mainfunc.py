@@ -153,7 +153,7 @@ def fishOff():
             x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
         return(x, winner)
     else:
-        return("There is no buckets!")
+        return("There is no buckets!", "")
 
 def bucket(discordId):
     discordIdStr = str(discordId)
@@ -222,7 +222,7 @@ def fishscore():
             data = json.load(f)
             x = " ***** - FISHOFF WINNERS - *****\n"
             limit = 0
-            for i in data:
+            for i in reversed(data):
                 x += str(data[i]) + ' POUNDS\n'
                 limit += 1
                 if limit == 10:

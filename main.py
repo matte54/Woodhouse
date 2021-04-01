@@ -571,11 +571,11 @@ class MyClient(discord.Client):
             u = message.author
             x = buyCast(u) #returns True if user can afford it, False if not.
             if x == True:
-                print('{}{} bought a extra cast'.format(t, u))
-                xZ = f'{u} bought a extra cast for 50 Bells!'
+                print('{}{} bought an extra cast'.format(t, u))
+                xZ = f'{u} bought an extra cast for 50 Bells!'
                 await message.channel.send("""```yaml\n\n{}```""".format(xZ))
             else:
-                xZ = f'{u} you cant afford a extra cast right now'
+                xZ = f'{u} you cant afford a extra cast right now(or you already have a cast this hour)'
                 await message.channel.send("""```yaml\n\n{}```""".format(xZ))
 
 

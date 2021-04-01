@@ -106,6 +106,8 @@ def profileHandler(userId, fishName, className, fishWeight):
 
 def buyCast(discordId):
     userId = str(discordId)
+    if os.path.isfile(f"./data/fishTime/{userId}") == False:
+        return False
     filePath = f"./data/fishprofiles/{userId}.json"
     try:
         with open(filePath, "r") as f:
