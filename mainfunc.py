@@ -254,8 +254,6 @@ def fishOffHandler():
                 topFish = next(iter(sortdict))
                 topFishWeight = sortdict[topFish]
                 nameFix = i[:-5]
-                #addmoney
-                handleMoney(nameFix, 100)
                 highscoreDict[nameFix + ' - ' + topFish] = topFishWeight
                 sort_score = sorted(highscoreDict.items(), key=lambda x: x[1], reverse=True)
                 sort_score_dict = dict(sort_score)
@@ -273,6 +271,7 @@ def fishOffHandler():
                 print(f'{Key} entry already exists...ignoring')
             else:
                 print(f'A fishoff winner been crowned {winnertext}')
+                handleMoney(y, 100)
                 data2[Key] = winnertext
                 writeJSON(filePath2, data2)
                 for f in os.listdir(dir):
