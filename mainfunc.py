@@ -98,10 +98,20 @@ def cast_line(discordId, school):
     j = data[z]['joke']
     wL = data[z]['weightLow']
     wH = data[z]['weightHigh']
+    c = chosenClass[0][:-5]
+    #Shiny check/add
+    if random.randint(1, 100) >= 99:
+        print("Shiny!")
+        shiny = True
+        if c == "class7":
+            wH = wH * 2
+        else:
+            wH = wH * random.randint(2,5)
+    else:
+        shiny = False
     #Triangular weighted random weight test.
     mid = (wL + wH) / 2
     w = round(random.triangular(wL, wH, mid),2)
-    c = chosenClass[0][:-5]
     #Make the only fish once and hour mark.
     now = datetime.datetime.now()
     f = open('./data/fishTime/'+uid, "w")
@@ -122,7 +132,7 @@ def cast_line(discordId, school):
     #record stats(wip)
     fishStats(uid, z, w, cI)
     Xvalue, xp = profileHandler(uid, z, cI, w) # manage profile system(WIP)
-    x = fishing_embed(uid, z, j, cI, w, value, xp, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
+    x = fishing_embed(uid, z, j, cI, w, value, xp, shiny, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
     return(x)
 
 def fishOff():
@@ -310,7 +320,7 @@ def writeJSON(filePath, data):
         f.close()
     #print(f'Finished writing {filePath}')
 
-def fishing_embed(username, fish, joke, fish_class, weight, value, xp, old_pb=0.0, old_wr=0.0, dethroned=""):
+def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, old_pb=0.0, old_wr=0.0, dethroned=""):
     """Create a discord embed of the caught fish.
 
     Note if old_wr is provided remember to also provide the dethroned parameter.
@@ -355,6 +365,8 @@ def fishing_embed(username, fish, joke, fish_class, weight, value, xp, old_pb=0.
         embed.add_field(name="NEW WORLD RECORD!", value=f"*You caught the first {fish}!*")
     elif weight> old_wr and dethroned != "":
         embed.add_field(name="NEW WORLD RECORD!", value=f"*Previous record was {old_wr} lbs by {dethroned}*")
+    if shiny == True:
+        embed.add_field(name="SHINY!", value=f"")
     fishWithoutSpaces = fish.replace(" ", "")
     icon_url = f"http://thedarkzone.se/fishicons/{fishWithoutSpaces}.png"
     embed.set_thumbnail(url=icon_url)
