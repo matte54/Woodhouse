@@ -106,7 +106,7 @@ def cast_line(discordId, school):
         if c == "class7":
             wH = wH * 2
         else:
-            wH = wH * random.randint(3,5)
+            wH = wH * random.randint(2,5)
     else:
         shiny = False
     #Triangular weighted random weight test.
@@ -127,7 +127,10 @@ def cast_line(discordId, school):
         write_wr(uid, z, w)
     cI = int(c[5:])
     #addfish to buckets if needed
-    q, value = addFish(discordId, z, w, cI) #check bucket and add if needed
+    if shiny == True:
+        q, value = addFish(discordId, z+"*", w, cI) #add the asterix to shiny fish to offset.
+    else:
+        q, value = addFish(discordId, z, w, cI) #check bucket and add if needed
     #return for rogue embed
     #record stats(wip)
     fishStats(uid, z, w, cI)
