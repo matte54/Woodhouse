@@ -106,6 +106,7 @@ def cast_line(discordId, school):
         if c == "class7":
             wH = wH * 2
         else:
+            wL = wL * 2
             wH = wH * random.randint(2,5)
     else:
         shiny = False
