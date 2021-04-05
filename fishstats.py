@@ -33,6 +33,20 @@ def line3Calc(statsDict):
     userCatches = userDict[foundUser]
     return(foundUser, userCatches)
 
+def shinyCalc(statsDict):
+    #line3 calculation
+    userList = statsDict["users"].keys()
+    if not userList:
+        print("Theres no data")
+        return("None", 0)
+    userDict = {}
+    for i in userList:
+        y = statsDict["users"][i]["shinys"]
+        userDict[i] = y
+    foundUser = (max(userDict, key=userDict.get))
+    userCatches = userDict[foundUser]
+    return(foundUser, userCatches)
+
 def line4Calc(statsDict):
     #line4 line5 line10 line11 calculations
     userList = statsDict["users"].keys()
@@ -127,7 +141,7 @@ def classPercentages(statsDict):
     classT = (class1P, class2P, class3P, class4P, class5P, class6P, class7P)
     return(classT)
 
-def fishStats(uid, fish, weight, fishClass):
+def fishStats(uid, fish, weight, fishClass, shiny):
     with open("./data/fishstats.json", "r") as f:
         data = json.load(f)
     fishClassStr = str(fishClass)
@@ -141,7 +155,14 @@ def fishStats(uid, fish, weight, fishClass):
         data["users"][uid] = {}
         data["users"][uid]["numbers"] = 0
         data["users"][uid]["fails"] = 0
+        data["users"][uid]["shinys"] = 0
     data["users"][uid]["numbers"] += 1
+    #after statprofile creation add shinys mess...
+    if shiny == True:
+        try:
+            data["users"][uid]["shinys"] += 1
+        except KeyError:
+            data["users"][uid]["shinys"] = 1
     writeJSON("./data/fishstats.json", data)
 
 def listFishStats():
@@ -165,6 +186,8 @@ def listFishStats():
     leastFish, leastFishN = fishCaughtLeast(statsDict)
     #line13-14
     classT = classPercentages(statsDict)
+    #shinys
+    shinyUser, shinyCatches = line3Calc(statsDict)
 
 
     line1 = (f'---- Fishing Simulator Statistics ----')
@@ -173,6 +196,7 @@ def listFishStats():
     line4 = (f'\nUnluckiest fisher : {unluckyUser} {mostFails} fails')
     line5 = (f'\nPercent of failed casts : {percentFail}% (total)')
     line6 = (f'\nMost diverse fisher : {longestBucket} {longestNumb} types in bucket')
+    line6andhalf = (f'\nMost caught shinys : {shinyUser} {shinyCatches}')
     line7 = (f'\nMost world records : {mostWRs}')
     line8 = (f'\nMost caught fish : {mostFish} ({mostFishN})')
     line9 = (f'\nLeast caught fish : {leastFish} ({leastFishN})')
@@ -182,5 +206,5 @@ def listFishStats():
     line13 = (f'\nClass percentages class1: {classT[0]}% class2: {classT[1]}% class3: {classT[2]}% class4: {classT[3]}%')
     line14 = (f'\nclass5: {classT[4]}% class6: {classT[5]}% class7: {classT[6]}%')
 
-    x = line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14
+    x = line1 + line2 + line3 + line4 + line5 + line6 + line6andhalf + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14
     return(x)
