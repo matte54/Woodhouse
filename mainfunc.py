@@ -100,13 +100,13 @@ def cast_line(discordId, school):
     wH = data[z]['weightHigh']
     c = chosenClass[0][:-5]
     #Shiny check/add
-    if random.randint(1, 100) >= 99:
+    if random.randint(1, 100) == 100:
         print("Shiny!")
         shiny = True
         if c == "class7":
             wH = wH * 2
         else:
-            wH = wH * random.randint(2,5)
+            wH = wH * random.randint(3,5)
     else:
         shiny = False
     #Triangular weighted random weight test.
