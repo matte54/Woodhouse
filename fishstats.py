@@ -196,7 +196,7 @@ def listFishStats():
     line4 = (f'\nUnluckiest fisher : {unluckyUser} {mostFails} fails')
     line5 = (f'\nPercent of failed casts : {percentFail}% (total)')
     line6 = (f'\nMost diverse fisher : {longestBucket} {longestNumb} types in bucket')
-    line6andhalf = (f'\nMost caught shinys : {shinyUser} {shinyCatches}')
+    line6andhalf = (f'\nMost caught shinys : {shinyUser} ({shinyCatches})')
     line7 = (f'\nMost world records : {mostWRs}')
     line8 = (f'\nMost caught fish : {mostFish} ({mostFishN})')
     line9 = (f'\nLeast caught fish : {leastFish} ({leastFishN})')
