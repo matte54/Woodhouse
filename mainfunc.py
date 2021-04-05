@@ -100,7 +100,7 @@ def cast_line(discordId, school):
     wH = data[z]['weightHigh']
     c = chosenClass[0][:-5]
     #Shiny check/add
-    if random.randint(1, 140) == 140:
+    if random.randint(1, 150) == 150:
         print("Shiny!")
         shiny = True
         if c == "class7":
@@ -366,7 +366,7 @@ def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, ol
     elif weight> old_wr and dethroned != "":
         embed.add_field(name="NEW WORLD RECORD!", value=f"*Previous record was {old_wr} lbs by {dethroned}*")
     if shiny == True:
-        embed.add_field(name="SHINY!", value=f"")
+        embed.add_field(name="!", value=f"SHINY!")
     fishWithoutSpaces = fish.replace(" ", "")
     icon_url = f"http://thedarkzone.se/fishicons/{fishWithoutSpaces}.png"
     embed.set_thumbnail(url=icon_url)
