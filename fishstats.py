@@ -187,7 +187,7 @@ def listFishStats():
     #line13-14
     classT = classPercentages(statsDict)
     #shinys
-    shinyUser, shinyCatches = line3Calc(statsDict)
+    shinyUser, shinyCatches = shinyCalc(statsDict)
 
 
     line1 = (f'---- Fishing Simulator Statistics ----')
