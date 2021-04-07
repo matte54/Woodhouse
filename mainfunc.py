@@ -100,8 +100,7 @@ def cast_line(discordId, school):
     wH = data[z]['weightHigh']
     c = chosenClass[0][:-5]
     #Shiny check/add
-    if random.randint(1, 150) == 150:
-        print("Shiny!")
+    if random.randint(1, 160) == 160:
         shiny = True
         if c == "class7":
             wH = wH * 2

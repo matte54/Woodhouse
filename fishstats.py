@@ -159,10 +159,8 @@ def fishStats(uid, fish, weight, fishClass, shiny):
     data["users"][uid]["numbers"] += 1
     #after statprofile creation add shinys mess...
     if shiny == True:
-        try:
-            data["users"][uid]["shinys"] += 1
-        except KeyError:
-            data["users"][uid]["shinys"] = 1
+        data["users"][uid]["shinys"] += 1
+        print(f'{uid} got a SHINY {fish} at {weight}')
     writeJSON("./data/fishstats.json", data)
 
 def listFishStats():
