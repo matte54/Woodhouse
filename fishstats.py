@@ -83,6 +83,25 @@ def line6Calc():
     foundValue = typeDict[foundUser]
     return(foundUser[:-5], foundValue)
 
+def combinedWeight():
+    weightDict = {}
+    y = os.listdir("./data/bucket/")
+    if not y:
+        print("No buckets detected")
+        return("None", 0)
+    for i in y:
+        shortName = i[:-5]
+        totalWeight = 0
+        filePath = "./data/bucket/" + i
+        with open(filePath, "r") as f:
+            data = json.load(f)
+        for key in data.keys():
+            totalWeight += data[key]
+        weightDict[shortName] = round(totalWeight, 2)
+
+    foundUser = (max(weightDict, key=weightDict.get))
+    userCatches = weightDict[foundUser]
+    return(foundUser, userCatches)
 
 def getWrStats(wrDict):
     #line7 line12?
@@ -186,6 +205,8 @@ def listFishStats():
     classT = classPercentages(statsDict)
     #shinys
     shinyUser, shinyCatches = shinyCalc(statsDict)
+    #combined total weight leader
+    totalWeightUser, totalWeightUserWeight = combinedWeight()
 
 
     line1 = (f'---- Fishing Simulator Statistics ----')
@@ -199,10 +220,11 @@ def listFishStats():
     line8 = (f'\nMost caught fish : {mostFish} ({mostFishN})')
     line9 = (f'\nLeast caught fish : {leastFish} ({leastFishN})')
     line10 = (f'\nTotal caught fish : {totalCatchesX}')
+    line11andhalf = (f'\Top total weight in bucket : {totalWeightUser} {totalWeightUserWeight} LBS')
     line11 = (f'\nTotal failed casts : {totalFailsX}')
     line12 = (f'\nBiggest fish ever caught : {biggestFishNa} at {biggestFishWe} lbs')
     line13 = (f'\nClass percentages class1: {classT[0]}% class2: {classT[1]}% class3: {classT[2]}% class4: {classT[3]}%')
     line14 = (f'\nclass5: {classT[4]}% class6: {classT[5]}% class7: {classT[6]}%')
 
-    x = line1 + line2 + line3 + line4 + line5 + line6 + line6andhalf + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14
+    x = line1 + line2 + line3 + line4 + line5 + line6 + line6andhalf + line7 + line8 + line9 + line10 + line11andhalf + line11 + line12 + line13 + line14
     return(x)
