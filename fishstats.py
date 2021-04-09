@@ -220,7 +220,7 @@ def listFishStats():
     line8 = (f'\nMost caught fish : {mostFish} ({mostFishN})')
     line9 = (f'\nLeast caught fish : {leastFish} ({leastFishN})')
     line10 = (f'\nTotal caught fish : {totalCatchesX}')
-    line11andhalf = (f'\Top total weight in bucket : {totalWeightUser} {totalWeightUserWeight} LBS')
+    line11andhalf = (f'\nTop total weight in bucket : {totalWeightUser} {totalWeightUserWeight} LBS')
     line11 = (f'\nTotal failed casts : {totalFailsX}')
     line12 = (f'\nBiggest fish ever caught : {biggestFishNa} at {biggestFishWe} lbs')
     line13 = (f'\nClass percentages class1: {classT[0]}% class2: {classT[1]}% class3: {classT[2]}% class4: {classT[3]}%')
