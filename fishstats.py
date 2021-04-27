@@ -34,7 +34,6 @@ def line3Calc(statsDict):
     return(foundUser, userCatches)
 
 def shinyCalc(statsDict):
-    #line3 calculation
     userList = statsDict["users"].keys()
     if not userList:
         print("Theres no data")
@@ -46,6 +45,16 @@ def shinyCalc(statsDict):
     foundUser = (max(userDict, key=userDict.get))
     userCatches = userDict[foundUser]
     return(foundUser, userCatches)
+
+def shinyTotal(statsDict):
+    userList = statsDict["users"].keys()
+    if not userList:
+        print("Theres no data")
+        return(0)
+    shinyNumber = 0
+    for i in userList:
+        shinyNumber += statsDict["users"][i]["shinys"]
+    return(shinyNumber)
 
 def line4Calc(statsDict):
     #line4 line5 line10 line11 calculations
@@ -205,8 +214,10 @@ def listFishStats():
     classT = classPercentages(statsDict)
     #shinys
     shinyUser, shinyCatches = shinyCalc(statsDict)
+    shinyTotalCatch = shinyTotal(statsDict)
     #combined total weight leader
     totalWeightUser, totalWeightUserWeight = combinedWeight()
+
 
 
     line1 = (f'---- Fishing Simulator Statistics ----')
@@ -220,11 +231,12 @@ def listFishStats():
     line8 = (f'\nMost caught fish : {mostFish} ({mostFishN})')
     line9 = (f'\nLeast caught fish : {leastFish} ({leastFishN})')
     line10 = (f'\nTotal caught fish : {totalCatchesX}')
+    line10andhalf = (f'\nTotal caught shinies : {shinyTotalCatch}')
     line11andhalf = (f'\nTop total weight in bucket : {totalWeightUser} {totalWeightUserWeight} LBS')
     line11 = (f'\nTotal failed casts : {totalFailsX}')
     line12 = (f'\nBiggest fish ever caught : {biggestFishNa} at {biggestFishWe} lbs')
     line13 = (f'\nClass percentages class1: {classT[0]}% class2: {classT[1]}% class3: {classT[2]}% class4: {classT[3]}%')
     line14 = (f'\nclass5: {classT[4]}% class6: {classT[5]}% class7: {classT[6]}%')
 
-    x = line1 + line2 + line3 + line4 + line5 + line6 + line6andhalf + line7 + line8 + line9 + line10 + line11andhalf + line11 + line12 + line13 + line14
+    x = line1 + line2 + line3 + line4 + line5 + line6 + line6andhalf + line7 + line8 + line9 + line10 + line10andhalf + line11andhalf + line11 + line12 + line13 + line14
     return(x)
