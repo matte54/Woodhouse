@@ -21,6 +21,7 @@ from pokemon import find_pokemon_sprite
 import csv
 import pandas as pd
 import time
+import pathlib
 from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish, fishscore, fishOffHandler
 from fishstats import listFishStats
 from spider_silk import db, Post
@@ -65,6 +66,9 @@ defaultWeights = (38, 19, 15, 12, 7, 6, 3)
 global currentSchool
 currentSchool = defaultWeights
 
+#Fishing channels
+fishChannels = [194028816333537280, 327131365944590337]
+
 class MyClient(discord.Client):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -84,8 +88,9 @@ class MyClient(discord.Client):
         y = fishOffHandler()
         kY = "A Fishoff season winner has been crowned!\n"
         if y != None:
-            channel = self.get_channel(194028816333537280)
-            await channel.send("""```yaml\n\n{}{}```""".format(kY, y))
+            for h in fishChannels:
+                channel = self.get_channel(h)
+                await channel.send("""```yaml\n\n{}{}```""".format(kY, y))
 
 
 
@@ -257,7 +262,7 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         txt = message.content
         #Make sure the message is from a normal person.
-        if message.author == client.user:
+        if message.author.bot:
             return
         #message mentions woodhouse with or with caps?
         if message.content.__contains__("Woodhouse") or message.content.__contains__("woodhouse"):
@@ -491,7 +496,10 @@ class MyClient(discord.Client):
                 f.write("13")
                 f.close()
                 f = open('./data/fishTime/'+uid, "r")
+            #test check for day
             timeCheck = int(f.readline())
+            #fname = pathlib.Path('./data/fishTime/'+uid)
+            #mtime = datetime.datetime.fromtimestamp(fname.stat().st_mtime)
             f.close()
             #Check if person has fished in the current hour
             if timeCheck != now.hour:
