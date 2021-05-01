@@ -70,10 +70,10 @@ def handleMoney(userId, money=0, fishName="", classInt=0, fishWeight=0):
         return
     if classInt != 0:
         data["money"] += value
-        #print(f'{value} money')
+        print(f'adding {value} of {fishName} money to {userId}')
     else:
         data["money"] += money
-        #print(f'{money} money')
+        print(f'adding {money} money to {userId}')
         value = 0
     writeJSON(filePath, data)
     return(value)
