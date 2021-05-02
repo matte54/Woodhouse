@@ -92,17 +92,19 @@ def profileHandler(userId, fishName, className, fishWeight):
     #add xpvalue
     userXp = data["currentXp"]
     currentXpCap = data["xpCap"]
+    dinged = 0
     if userXp + xp >= currentXpCap:
         xpDiff = (userXp + xp) - currentXpCap
         data["level"] += 1
         data["currentXp"] = xpDiff
         data["xpCap"] += (10 + data["level"])
+        dinged = data["level"]
         #print(f'DING! {userId} is now level {data["level"]}')
     else:
         data["currentXp"] += xp
         #print(f'{xp} XP gained {data["currentXp"]}/{data["xpCap"]}')
     writeJSON(filePath, data)
-    return(value, xp)
+    return(value, xp, dinged)
 
 def buyCast(discordId):
     userId = str(discordId)

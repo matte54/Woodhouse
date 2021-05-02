@@ -134,8 +134,8 @@ def cast_line(discordId, school):
     #return for rogue embed
     #record stats(wip)
     fishStats(uid, z, w, cI, shiny)
-    Xvalue, xp = profileHandler(uid, z, cI, w) # manage profile system(WIP)
-    x = fishing_embed(uid, z, j, cI, w, value, xp, shiny, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
+    Xvalue, xp, dinged = profileHandler(uid, z, cI, w) # manage profile system(WIP)
+    x = fishing_embed(uid, z, j, cI, w, value, xp, shiny, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
     return(x)
 
 def fishOff():
@@ -324,7 +324,7 @@ def writeJSON(filePath, data):
         f.close()
     #print(f'Finished writing {filePath}')
 
-def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, old_pb=0.0, old_wr=0.0, dethroned=""):
+def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, ding, old_pb=0.0, old_wr=0.0, dethroned=""):
     """Create a discord embed of the caught fish.
 
     Note if old_wr is provided remember to also provide the dethroned parameter.
@@ -371,6 +371,8 @@ def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, ol
         embed.add_field(name="NEW WORLD RECORD!", value=f"*Previous record was {old_wr} lbs by {dethroned}*")
     if shiny == True:
         embed.add_field(name="!", value=f"SHINY!")
+    if ding != 0:
+        embed.add_field(name="DING!", value=f"{username} is now level {ding}!")
     fishWithoutSpaces = fish.replace(" ", "")
     icon_url = f"http://thedarkzone.se/fishicons/{fishWithoutSpaces}.png"
     embed.set_thumbnail(url=icon_url)
