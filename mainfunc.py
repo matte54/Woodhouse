@@ -285,6 +285,7 @@ def fishOffHandler():
             else:
                 print(f'A fishoff winner been crowned {winnertext}')
                 handleMoney(y, 100)
+                print(f'{y} is given 100 money and y is {type(y)}')#debugging to find the problem for next season.
                 data2[Key] = winnertext
                 writeJSON(filePath2, data2)
                 for f in os.listdir(dir):
