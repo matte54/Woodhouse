@@ -258,6 +258,8 @@ def fishOffHandler():
         path = "./data/bucket/"
         highscoreDict = {}
         x = os.listdir(path)
+        if len(x) == 0:
+            return
         for i in x:
             filePath = path + i
             with open(filePath, "r") as f:
