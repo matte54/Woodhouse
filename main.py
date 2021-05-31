@@ -168,13 +168,13 @@ class MyClient(discord.Client):
         await self.wait_until_ready()
         channel = self.get_channel(194028816333537280) # channel ID goes here
         while not self.is_closed():
-            await asyncio.sleep(7000)
+            await asyncio.sleep(12000)
             if shutup == 1:
                 t = get_timestamp_str()
                 print('{}Shutup function is ON waiting 6 hours...'.format(t))
                 await asyncio.sleep(21600)
                 shutup = 0
-            async for message in channel.history(limit=1):
+            async for message in channel.history(limit=2):
                 if message.author == self.user:
                     t = get_timestamp_str()
                     print('{}Last message was me, avoiding spam no pokemon now...'.format(t))
@@ -214,7 +214,7 @@ class MyClient(discord.Client):
                 await asyncio.sleep(21600)
                 shutup = 0
 
-            async for message in channel.history(limit=1):
+            async for message in channel.history(limit=2):
                 if message.author == self.user:
                     counter +=1
                     t = get_timestamp_str()
@@ -256,7 +256,7 @@ class MyClient(discord.Client):
                         t = get_timestamp_str()
                         print('{}Can post but waiting...i have waited {} cycle(s)'.format(t, counter))
                         pass
-            x = random.randint(4000, 7000)
+            x = random.randint(8000, 14000)
             await asyncio.sleep(x)
 
     async def on_message(self, message):
