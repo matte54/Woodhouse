@@ -174,7 +174,7 @@ class MyClient(discord.Client):
                 print('{}Shutup function is ON waiting 6 hours...'.format(t))
                 await asyncio.sleep(21600)
                 shutup = 0
-            async for message in channel.history(limit=2):
+            async for message in channel.history(limit=1):
                 if message.author == self.user:
                     t = get_timestamp_str()
                     print('{}Last message was me, avoiding spam no pokemon now...'.format(t))
@@ -214,7 +214,7 @@ class MyClient(discord.Client):
                 await asyncio.sleep(21600)
                 shutup = 0
 
-            async for message in channel.history(limit=2):
+            async for message in channel.history(limit=1):
                 if message.author == self.user:
                     counter +=1
                     t = get_timestamp_str()

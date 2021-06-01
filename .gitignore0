@@ -1,0 +1,12 @@
+.idea/
+data/
+mons/
+*.log
+*.sh
+/generalchat.txt
+/highscore.txt
+__pycache__/
+/test.py
+/credentials.py
+catmaker
+/plans.txt
