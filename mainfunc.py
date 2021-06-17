@@ -107,6 +107,7 @@ def cast_line(discordId, school):
         else:
             wL = wL * 2
             wH = wH * random.randint(2,5)
+        handleMoney(uid, 50)
     else:
         shiny = False
     #Triangular weighted random weight test.

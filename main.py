@@ -527,7 +527,8 @@ class MyClient(discord.Client):
                     writeJSON("./data/fishstats.json", data)
                     f.close()
                     if os.path.isfile(f"./data/fishprofiles/{uid}.json") == True:
-                        x = handleMoney(discordId, -3)
+                        y = random.randint(1, 3)
+                        x = handleMoney(discordId, -y)
                 else:
                     x = cast_line(discordId, currentSchool)
                     await message.channel.send(embed=x)
