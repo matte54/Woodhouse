@@ -5,6 +5,8 @@ import requests
 import json, os
 from lxml import etree as ET
 from discord import Embed
+from fishstats import fishStats
+from profileManager import profileHandler, handleMoney, getUserInfo
 
 #Fishing Lists
 fishClass1 = ["Tin can", "Old shoe", "Rusty dagger", "Seaweed", "Magikarp"]
@@ -75,13 +77,14 @@ def get_holiday():
     things = [thing[1].text for thing in result.iter('item')]
     return random.choice(things)
 
-def cast_line(discordId):
+def cast_line(discordId, school):
     #define variables n stuff
     uid = str(discordId)
     fileDir = "./data/fishdata/"
     fishFiles = ["class1.json", "class2.json", "class3.json", "class4.json", "class5.json", "class6.json", "class7.json"]
     #pick random fish with weighted chances
-    chosenClass = random.choices(fishFiles, weights=(38, 19, 15, 12, 7, 6, 3))
+    chosenClass = random.choices(fishFiles, weights=school)
+    #print(f'[DEBUG]Current school is {school}')
     filePath = fileDir + chosenClass[0]
     #access json should never error but anyways?
     try:
@@ -95,10 +98,21 @@ def cast_line(discordId):
     j = data[z]['joke']
     wL = data[z]['weightLow']
     wH = data[z]['weightHigh']
-    #Triangular weighted random weight test.
-    mid = wL+wH / 2
-    w = round(random.triangular(wL, wH, mid),2)
     c = chosenClass[0][:-5]
+    #Shiny check/add
+    if random.randint(1, 160) == 160:
+        shiny = True
+        if c == "class7":
+            wH = wH * 2
+        else:
+            wL = wL * 2
+            wH = wH * random.randint(2,5)
+        handleMoney(uid, 50)
+    else:
+        shiny = False
+    #Triangular weighted random weight test.
+    mid = (wL + wH) / 2
+    w = round(random.triangular(wL, wH, mid),2)
     #Make the only fish once and hour mark.
     now = datetime.datetime.now()
     f = open('./data/fishTime/'+uid, "w")
@@ -112,11 +126,17 @@ def cast_line(discordId):
         wr, holder = 0.0, ""
     elif w > wr:              # if new fish is wr, write it to file
         write_wr(uid, z, w)
-    #addfish to buckets if needed
-    q = addFish(discordId, z, w) #check bucket and add if needed
-    #return for rogue embed
     cI = int(c[5:])
-    x = fishing_embed(uid, z, j, cI, w, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
+    #addfish to buckets if needed
+    if shiny == True:
+        q, value = addFish(discordId, z+"*", w, cI) #add the asterix to shiny fish to offset.
+    else:
+        q, value = addFish(discordId, z, w, cI) #check bucket and add if needed
+    #return for rogue embed
+    #record stats(wip)
+    fishStats(uid, z, w, cI, shiny)
+    Xvalue, xp, dinged = profileHandler(uid, z, cI, w) # manage profile system(WIP)
+    x = fishing_embed(uid, z, j, cI, w, value, xp, shiny, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
     return(x)
 
 def fishOff():
@@ -147,10 +167,11 @@ def fishOff():
             x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
         return(x, winner)
     else:
-        return("There is no buckets!")
+        return("There is no buckets!", "")
 
 def bucket(discordId):
     discordIdStr = str(discordId)
+    profileText = getUserInfo(discordIdStr)
     jsonFile = discordIdStr + '.json'
     filePath = "./data/bucket/"+jsonFile
     try:
@@ -158,7 +179,7 @@ def bucket(discordId):
             data = json.load(f)
             sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
             sortdict = dict(sort_bucket)
-            x = discordIdStr.upper() + "s BUCKET(TOP 10)\n"
+            x = profileText + "\n" + discordIdStr.upper() + "s BUCKET(TOP 10)\n"
             limit = 0
             for i in sortdict:
                 x += i.upper() + ' - ' + str(sortdict[i]) + ' LBS\n'
@@ -169,7 +190,7 @@ def bucket(discordId):
         return("No fish in the bucket yet , go catch some!")
     return(x)
 
-def addFish(discordId, fish, weight):
+def addFish(discordId, fish, weight, classInt):
     discordIdStr = str(discordId)
     jsonFile = discordIdStr + '.json'
     filePath = "./data/bucket/"+jsonFile
@@ -186,16 +207,18 @@ def addFish(discordId, fish, weight):
                     data[fish] = weight
                     writeJSON(filePath, data)
                     #new rogue
-                    return(oldPb)
+                    value = handleMoney(discordIdStr, 0 , fish, classInt, oldPb)
+                    return(oldPb, value)
                 else:
                     x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
                     currentPb = data[fish]
-                    return(currentPb)
+                    value = handleMoney(discordIdStr, 0 , fish, classInt, weight)
+                    return(currentPb, value)
             else:
                 x = (f"New fish type! great addition to your bucket!")
                 data[fish] = weight
                 writeJSON(filePath, data)
-                return(0.0)
+                return(0.0, 0)
     else:
         x = ""
         #print(f"JSON not found! Creating...")
@@ -203,7 +226,7 @@ def addFish(discordId, fish, weight):
         writeJSON(filePath, data)
     #old system
     #return(x)
-    return(0.0)
+    return(0.0, 0)
 
 
 def fishscore():
@@ -213,7 +236,7 @@ def fishscore():
             data = json.load(f)
             x = " ***** - FISHOFF WINNERS - *****\n"
             limit = 0
-            for i in data:
+            for i in reversed(data):
                 x += str(data[i]) + ' POUNDS\n'
                 limit += 1
                 if limit == 10:
@@ -236,6 +259,8 @@ def fishOffHandler():
         path = "./data/bucket/"
         highscoreDict = {}
         x = os.listdir(path)
+        if len(x) == 0:
+            return
         for i in x:
             filePath = path + i
             with open(filePath, "r") as f:
@@ -262,6 +287,9 @@ def fishOffHandler():
                 print(f'{Key} entry already exists...ignoring')
             else:
                 print(f'A fishoff winner been crowned {winnertext}')
+                userIdSplit = y.split()[0]
+                handleMoney(userIdSplit, 100)
+                print(f'{y} is given 100 money')#debugging to find the problem for next season.
                 data2[Key] = winnertext
                 writeJSON(filePath2, data2)
                 for f in os.listdir(dir):
@@ -292,7 +320,7 @@ def write_wr(uid, fish, weight):
     data[fish]['weight'] = weight
     data[fish]['holder'] = uid
     writeJSON(filePath, data)
-    print(f'Wrote to file {filePath}')
+    #print(f'Wrote to file {filePath}')
 
 def writeJSON(filePath, data):
     with open(filePath, "w") as f:
@@ -300,7 +328,7 @@ def writeJSON(filePath, data):
         f.close()
     #print(f'Finished writing {filePath}')
 
-def fishing_embed(username, fish, joke, fish_class, weight, old_pb=0.0, old_wr=0.0, dethroned=""):
+def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, ding, old_pb=0.0, old_wr=0.0, dethroned=""):
     """Create a discord embed of the caught fish.
 
     Note if old_wr is provided remember to also provide the dethroned parameter.
@@ -329,20 +357,26 @@ def fishing_embed(username, fish, joke, fish_class, weight, old_pb=0.0, old_wr=0
     embed = Embed()
     n = 'n' if fish.lower()[0] in 'aeiou' else ''
     embed.title = f"{username} caught a{n} {fish}!"
-    embed.description = f"*{joke}*"
+    embed.description = f"*{joke}*\n**class {fish_class}**"
     embed.colour = 0x99ff
-    embed.add_field(name="Class", value=f"**{fish_class}**", inline=True)
+    #embed.add_field(name="Class", value=f"**{fish_class}**", inline=True)
     embed.add_field(name="Weight", value=f"**{weight}**", inline=True)
+    embed.add_field(name="Xp", value=f"**{xp}**", inline=True)
+    embed.add_field(name="Bells", value=f"**{value}**", inline=True)
     if old_pb == 0.0:
         embed.add_field(name="New fish type!", value="Great addition to your bucket!")
     elif weight > old_pb:
-        embed.add_field(name="NEW RECORD!", value=f"*Your previous one was only {old_pb} lbs*")
+        embed.add_field(name="NEW RECORD! Selling old...", value=f"*Your previous one was only {old_pb} lbs*")
     else:
-        embed.add_field(name=f"Releasing {fish}...", value=f"You already have one at {old_pb} lbs!")
+        embed.add_field(name=f"Selling {fish}...", value=f"You already have one at {old_pb} lbs!")
     if old_wr == 0.0 and dethroned == "":
         embed.add_field(name="NEW WORLD RECORD!", value=f"*You caught the first {fish}!*")
     elif weight> old_wr and dethroned != "":
         embed.add_field(name="NEW WORLD RECORD!", value=f"*Previous record was {old_wr} lbs by {dethroned}*")
+    if shiny == True:
+        embed.add_field(name="!", value=f"SHINY!")
+    if ding != 0:
+        embed.add_field(name="DING!", value=f"{username} is now level {ding}!")
     fishWithoutSpaces = fish.replace(" ", "")
     icon_url = f"http://thedarkzone.se/fishicons/{fishWithoutSpaces}.png"
     embed.set_thumbnail(url=icon_url)

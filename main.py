@@ -4,11 +4,14 @@ import os
 import re
 import io
 import random
+import socket
+import requests
 import asyncio
 import credentials
 import socket
 import hashlib
 import datetime
+import json
 from discord.ext import tasks, commands
 from urlhandler import pick_url
 from mmo import playMMO
@@ -18,8 +21,11 @@ from pokemon import find_pokemon_sprite
 import csv
 import pandas as pd
 import time
+import pathlib
 from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish, fishscore, fishOffHandler
+from fishstats import listFishStats
 from spider_silk import db, Post
+from profileManager import handleMoney, getLevel, buyCast
 
 DEBUG = False
 if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '18093712d226974bfc25563025ebdb3c':
@@ -55,6 +61,13 @@ THRESHOLDS = [111 * n + 6 for n in range(1, 9)] # 8 badges
 BADGE_PATH_SINGLE = [f'badges/Badge{n}.png' for n in range(1, 9)] # individual badge icons
 BADGE_PATH_PROGRESS = [f'badges/Badge{n}a.png' for n in range(1, 9)] # cumulative badges
 
+#school
+defaultWeights = (38, 19, 15, 12, 7, 6, 3)
+global currentSchool
+currentSchool = defaultWeights
+
+#Fishing channels
+fishChannels = [194028816333537280, 327131365944590337]
 
 class MyClient(discord.Client):
     def __init__(self, *args, **kwargs):
@@ -63,6 +76,7 @@ class MyClient(discord.Client):
         # create the background task and run it in the background
         self.bg_task = self.loop.create_task(self.my_background_task())
         self.bg_task = self.loop.create_task(self.pokemon_task())
+        self.bg_task = self.loop.create_task(self.school_task())
 
     async def on_ready(self):
         t = get_timestamp_str()
@@ -74,8 +88,9 @@ class MyClient(discord.Client):
         y = fishOffHandler()
         kY = "A Fishoff season winner has been crowned!\n"
         if y != None:
-            channel = self.get_channel(194028816333537280)
-            await channel.send("""```yaml\n\n{}{}```""".format(kY, y))
+            for h in fishChannels:
+                channel = self.get_channel(h)
+                await channel.send("""```yaml\n\n{}{}```""".format(kY, y))
 
 
 
@@ -91,6 +106,61 @@ class MyClient(discord.Client):
         t = get_timestamp_str()
         print('{}Connection resumed?'.format(t))
 
+
+    async def school_task(self):
+        defaultWeights = (38, 19, 15, 12, 7, 6, 3)
+        class2 = (19, 38, 15, 12, 7, 6, 3)
+        class3 = (15, 19, 38, 12, 7, 6, 3)
+        class4 = (7, 15, 19, 38, 12, 6, 3)
+        class5 = (3, 6, 12, 19, 38, 15, 7)
+        class6 = (3, 6, 7, 12, 19, 38, 15)
+        class7 = (3, 6, 7, 12, 15, 19, 38)
+        weightList = [class2, class3, class4, class5, class6, class7]
+        await self.wait_until_ready()
+        channel = self.get_channel(194028816333537280)
+        server = self.get_guild(194028816333537280)
+        while not self.is_closed():
+            global currentSchool
+            currentSchool = defaultWeights
+            await asyncio.sleep(random.randint(3600, 7200))
+            Xi = random.randint(1, 100)
+            now = datetime.datetime.now()
+            f = open("./data/schoolTime", 'r')
+            dayCheck = int(f.readline())
+            f.close()
+            if Xi > 70 and dayCheck != now.day:
+                yI = random.randint(1, 6)
+                if yI == 1:
+                    currentSchool = class2
+                    className = "class2"
+                if yI == 2:
+                    currentSchool = class3
+                    className = "class3"
+                if yI == 3:
+                    currentSchool = class4
+                    className = "class4"
+                if yI == 4:
+                    currentSchool = class5
+                    className = "class5"
+                if yI == 5:
+                    currentSchool = class6
+                    className = "class6"
+                if yI == 6:
+                    currentSchool = class7
+                    className = "class7"
+                #821174480775806977 role
+                atStr = server.get_role(821174480775806977).mention
+                await channel.send("""```yaml\nA school of {} fish just swam into the area...```{}""".format(className, atStr))
+                print(f'changing school to {className}')
+                now = datetime.datetime.now()
+                f = open("./data/schoolTime", "w")
+                f.write(str(now.day))
+                f.close()
+                await asyncio.sleep(random.randint(3000, 4000))
+            else:
+                #print(f"No school this time...roll was {Xi} needs > 50, and/or today is {now.day} we have {dayCheck} on file")
+                await asyncio.sleep(120)
+
     async def pokemon_task(self):
         global pokemonAlive
         global shutup
@@ -98,7 +168,7 @@ class MyClient(discord.Client):
         await self.wait_until_ready()
         channel = self.get_channel(194028816333537280) # channel ID goes here
         while not self.is_closed():
-            await asyncio.sleep(7000)
+            await asyncio.sleep(12000)
             if shutup == 1:
                 t = get_timestamp_str()
                 print('{}Shutup function is ON waiting 6 hours...'.format(t))
@@ -153,7 +223,7 @@ class MyClient(discord.Client):
                 else:
                     i = random.randint(1, 100)
                     t = get_timestamp_str()
-                    print('{}0-100 Roll came up {}'.format(t, i))
+                    #print('{}0-100 Roll came up {}'.format(t, i))
                     if i > 70 :
                         g = random.randint(1, 100)
                         if g < 75:
@@ -186,13 +256,13 @@ class MyClient(discord.Client):
                         t = get_timestamp_str()
                         print('{}Can post but waiting...i have waited {} cycle(s)'.format(t, counter))
                         pass
-            x = random.randint(4000, 7000)
+            x = random.randint(8000, 14000)
             await asyncio.sleep(x)
 
     async def on_message(self, message):
         txt = message.content
         #Make sure the message is from a normal person.
-        if message.author == client.user:
+        if message.author.bot:
             return
         #message mentions woodhouse with or with caps?
         if message.content.__contains__("Woodhouse") or message.content.__contains__("woodhouse"):
@@ -426,22 +496,41 @@ class MyClient(discord.Client):
                 f.write("13")
                 f.close()
                 f = open('./data/fishTime/'+uid, "r")
+            #test check for day
             timeCheck = int(f.readline())
+            #fname = pathlib.Path('./data/fishTime/'+uid)
+            #mtime = datetime.datetime.fromtimestamp(fname.stat().st_mtime)
             f.close()
             #Check if person has fished in the current hour
             if timeCheck != now.hour:
-                if random.randint(1,10) < 3:
+                #random xp modifier
+                lvl = getLevel(discordId)
+                diff = 0.025 * lvl
+                if diff > 2:
+                    diff = 2 #already 100% successrate
+                    print("User is at max fishing sucessrate")
+                roll = random.uniform(3 + diff, 10) #at level 80 you have 100% successrate
+                #if random.randint(1,10) < 3: #oldroll
+                if roll < 5:
                     await message.channel.send("""```yaml\n{} Casts their line but {}!```""".format(discordId, random.choice(failFlare)))
                     f = open('./data/fishTime/'+uid, "w")
                     f.write(str(now.hour))
                     f.close()
+                    #write fail into stats
+                    with open("./data/fishstats.json", "r") as f:
+                        data = json.load(f)
+                    if uid not in data["users"]:
+                        data["users"][uid] = {}
+                        data["users"][uid]["numbers"] = 0
+                        data["users"][uid]["fails"] = 0
+                    data["users"][uid]["fails"] += 1
+                    writeJSON("./data/fishstats.json", data)
+                    f.close()
+                    if os.path.isfile(f"./data/fishprofiles/{uid}.json") == True:
+                        y = random.randint(1, 3)
+                        x = handleMoney(discordId, -y)
                 else:
-                    #Old system
-                    #x, fish, weight = cast_line(discordId)
-                    #q = addFish(discordId, fish, weight)
-                    #await message.channel.send("""```yaml\n{} {}\n{}```""".format(discordId, x, q))
-                    #New rogue embedd
-                    x = cast_line(discordId)
+                    x = cast_line(discordId, currentSchool)
                     await message.channel.send(embed=x)
             else:
                 await message.channel.send("""```yaml\nYou are not allowed to fish again this soon {}!```""".format(discordId))
@@ -467,9 +556,48 @@ class MyClient(discord.Client):
             x = fishscore()
             await message.channel.send("""```yaml\n\n{}```""".format(x))
 
+        if message.content.startswith('$fishstats'):
+            t = get_timestamp_str()
+            u = message.author
+            print('{}{} is listing the fishstats'.format(t, u))
+            x = listFishStats()
+            await message.channel.send("""```yaml\n\n{}```""".format(x))
+
+        if message.content.startswith('$where'):
+            t = get_timestamp_str()
+            u = message.author
+            print('{}{} is asking where i am'.format(t, u))
+            url = "http://checkip.dyndns.org"
+            request = requests.get(url)
+            clean = request.text.split(': ', 1)[1]
+            my_ip = clean.split('</body></html>', 1)[0]
+            my_host = socket.gethostname()
+            x = (f'Oh maybe i have a new ip?\n{my_host}\n{my_ip}')
+            await message.channel.send("""```yaml\n\n{}```""".format(x))
+
+        if message.content.startswith('$buy'):
+            t = get_timestamp_str()
+            u = message.author
+            x = buyCast(u) #returns True if user can afford it, False if not.
+            if x == True:
+                print('{}{} bought an extra cast'.format(t, u))
+                xZ = f'{u} bought an extra cast for 50 Bells!'
+                await message.channel.send("""```yaml\n\n{}```""".format(xZ))
+            else:
+                xZ = f'{u} you cant afford a extra cast right now(or you already have a cast this hour)'
+                await message.channel.send("""```yaml\n\n{}```""".format(xZ))
+
+
+
+
 def get_timestamp_str():
     i = time.strftime("%H:%M:%S - ")
     return(i)
+
+def writeJSON(filePath, data):
+    with open(filePath, "w") as f:
+        json.dump(data, f, indent=4)
+        f.close()
 
 client = MyClient()
 client.run(TOKEN)
