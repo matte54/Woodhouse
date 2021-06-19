@@ -24,7 +24,7 @@ import time
 import pathlib
 from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish, fishscore, fishOffHandler
 from fishstats import listFishStats
-from spider_silk import db, Post
+from spider_silk import db, Post, check_new_user
 from profileManager import handleMoney, getLevel, buyCast
 
 DEBUG = False
@@ -455,6 +455,8 @@ class MyClient(discord.Client):
                             print('{}{} caught {}'.format(t, discordId, pokePick))
                             #Catch history entry
                             try:
+                                dbname = discordName[:discordName.find('#')]
+                                check_new_user(dbname, discordId.id)
                                 postCatch = Post(body='{} CAUGHT {}!'.format(discordName, pokePick), pokemon=pokePick, user_id=discordId.id)
                                 db.session.add(postCatch)
                                 db.session.commit()
