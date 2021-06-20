@@ -316,6 +316,7 @@ def fishOffHandler():
 
         winnertext = monthStr + " " + yearStr + " " + y + " " + z
 
+
         Key = monthStr+yearStr
         filePath2 = "./data/fishoffwinners.json"
         with open(filePath2, "r") as f2:
@@ -324,6 +325,11 @@ def fishOffHandler():
                 print(f'{Key} entry already exists...ignoring')
             else:
                 print(f'A fishoff winner been crowned {winnertext}')
+                list, specialWinner = specialFishOff()
+                print(f'Special fishoff winner is {specialWinner}') #rewards and stuff to come
+                specialWinnerText = f'Special fish off winner is {specialWinner}'
+                userIdSplitSpecial = specialWinner.split()[0].lower()
+                handleMoney(userIdSplitSpecial, 75)
                 userIdSplit = y.split()[0]
                 handleMoney(userIdSplit, 100)
                 print(f'{y} is given 100 money')#debugging to find the problem for next season.
@@ -333,9 +339,9 @@ def fishOffHandler():
                     os.remove(os.path.join(dir, f))
                     print(f'Deleting {f}')
                 chooseSpecialFish() #pick the new special fish for next season
-                return(winnertext)
+                return(winnertext, specialWinnerText)
     else:
-        print(f'Today is NOT the first of the month, its {now.day}...keep fishing')
+        print(f'Today is NOT the first of the month, its {now.day}...keep fishing', "")
 
 
 def get_wr(fish):

@@ -22,7 +22,7 @@ import csv
 import pandas as pd
 import time
 import pathlib
-from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish, fishscore, fishOffHandler
+from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucket, addFish, fishscore, fishOffHandler, specialFishOff
 from fishstats import listFishStats
 from spider_silk import db, Post, check_new_user
 from profileManager import handleMoney, getLevel, buyCast
@@ -85,12 +85,13 @@ class MyClient(discord.Client):
         z = self.user.id
         print ('{}{} {} id {} - READY'.format(t, x, y, z))
         #Check Fishing
-        y = fishOffHandler()
+        y, s = fishOffHandler()
         kY = "A Fishoff season winner has been crowned!\n"
         if y != None:
             for h in fishChannels:
                 channel = self.get_channel(h)
                 await channel.send("""```yaml\n\n{}{}```""".format(kY, y))
+                await channel.send("""```yaml\n\n{}```""".format(s))
 
 
 
@@ -550,7 +551,7 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             u = message.author
             print('{}{} is listing the special fishoff highscores'.format(t, u))
-            x, winner = fishOff()
+            x, winner = specialFishOff()
             await message.channel.send("""```yaml\n\n SPECIAL {} FISH OFF MONTHLY HIGHSCORE\n{}```""".format(specialFish, x))
 
         if message.content.startswith('$bucket'):
