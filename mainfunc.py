@@ -169,6 +169,43 @@ def fishOff():
     else:
         return("There is no buckets!", "")
 
+def specialFishOff():
+    f1 = open('./data/specialfish', "r")
+    specialFish = str(f1.readline())
+    path = "./data/bucket/"
+    highscoreDict = {}
+    x = os.listdir(path)
+    if len(x) != 0:
+        for i in x:
+            filePath = path + i
+            with open(filePath, "r") as f:
+                data = json.load(f)
+                if specialFish in data.keys():
+                    sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
+                    sortdict = dict(sort_bucket)
+                    #topFish = next(iter(sortdict))
+                    topFish = specialFish
+                    topFishWeight = sortdict[topFish]
+                    nameFix = i[:-5]
+                    highscoreDict[nameFix + ' - ' + topFish] = topFishWeight
+
+        sort_score = sorted(highscoreDict.items(), key=lambda x: x[1], reverse=True)
+        sort_score_dict = dict(sort_score)
+        #Code to return the winner for future winnerlist.
+        try:
+            y = next(iter(sort_score_dict))
+        except StopIteration:
+            return(f'There is no {specialFish} caught yet...', '')
+        z = str(sort_score_dict[y])
+        winner = y.upper() + ' - '+ z + ' LBS'
+
+        x = ""
+        for i in sort_score_dict:
+            x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
+        return(x, winner)
+    else:
+        return("There is no buckets!", "")
+
 def bucket(discordId):
     discordIdStr = str(discordId)
     profileText = getUserInfo(discordIdStr)
@@ -295,6 +332,7 @@ def fishOffHandler():
                 for f in os.listdir(dir):
                     os.remove(os.path.join(dir, f))
                     print(f'Deleting {f}')
+                chooseSpecialFish() #pick the new special fish for next season
                 return(winnertext)
     else:
         print(f'Today is NOT the first of the month, its {now.day}...keep fishing')
@@ -321,6 +359,25 @@ def write_wr(uid, fish, weight):
     data[fish]['holder'] = uid
     writeJSON(filePath, data)
     #print(f'Wrote to file {filePath}')
+
+def chooseSpecialFish():
+    fileDir = "./data/fishdata/"
+    fishFiles = ["class2.json", "class3.json", "class4.json", "class5.json", "class6.json", "class7.json"]
+    chosenClass = random.choices(fishFiles)
+
+    filePath = fileDir + chosenClass[0]
+    try:
+        with open(filePath, "r") as f:
+            data = json.load(f)
+            print(f'LOADED {filePath}!')
+    except FileNotFoundError:
+        return(f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
+
+    pickedSpecialFish = random.choice(list(data))
+    f1 = open('./data/specialfish', "w")
+    f1.write(pickedSpecialFish)
+    f1.close()
+    f.close()
 
 def writeJSON(filePath, data):
     with open(filePath, "w") as f:

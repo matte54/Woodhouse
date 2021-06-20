@@ -544,6 +544,15 @@ class MyClient(discord.Client):
             x, winner = fishOff()
             await message.channel.send("""```yaml\n\n     FISH OFF MONTHLY HIGHSCORE\n{}```""".format(x))
 
+        if message.content.startswith('$specialfishoff'):
+            f1 = open('./data/specialfish', "r")
+            specialFish = str(f1.readline()).upper()
+            t = get_timestamp_str()
+            u = message.author
+            print('{}{} is listing the special fishoff highscores'.format(t, u))
+            x, winner = fishOff()
+            await message.channel.send("""```yaml\n\n SPECIAL {} FISH OFF MONTHLY HIGHSCORE\n{}```""".format(specialFish, x))
+
         if message.content.startswith('$bucket'):
             t = get_timestamp_str()
             u = message.author
