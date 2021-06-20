@@ -87,7 +87,7 @@ class MyClient(discord.Client):
         #Check Fishing
         y, s = fishOffHandler()
         kY = "A Fishoff season winner has been crowned!\n"
-        if y != None:
+        if y != None and s != None:
             for h in fishChannels:
                 channel = self.get_channel(h)
                 await channel.send("""```yaml\n\n{}{}```""".format(kY, y))

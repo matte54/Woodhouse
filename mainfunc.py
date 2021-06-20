@@ -341,7 +341,7 @@ def fishOffHandler():
                 chooseSpecialFish() #pick the new special fish for next season
                 return(winnertext, specialWinnerText)
     else:
-        print(f'Today is NOT the first of the month, its {now.day}...keep fishing', "")
+        print(f'Today is NOT the first of the month, its {now.day}...keep fishing')
 
 
 def get_wr(fish):
