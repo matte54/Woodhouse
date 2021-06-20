@@ -342,6 +342,7 @@ def fishOffHandler():
                 return(winnertext, specialWinnerText)
     else:
         print(f'Today is NOT the first of the month, its {now.day}...keep fishing')
+        return None, None
 
 
 def get_wr(fish):
