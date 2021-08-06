@@ -326,14 +326,14 @@ def fishOffHandler():
             else:
                 print(f'A fishoff winner been crowned {winnertext}')
                 list, specialWinner = specialFishOff()
-                print(f'Special fishoff winner is {specialWinner}') #rewards and stuff to come
-                specialWinnerText = f'Special fish off winner is {specialWinner}'
+                print(f'challenge winner is {specialWinner}') #rewards and stuff to come
+                specialWinnerText = f'challenge winner is {specialWinner}'
                 userIdSplitSpecial = specialWinner.split()[0].lower()
                 handleMoney(userIdSplitSpecial, 75)
-                print(f'{userIdSplitSpecial} is given 75 money for the special win')#debugging to find the problem for next season.
+                print(f'{userIdSplitSpecial} is given 75 bells for the special win')#debugging to find the problem for next season.
                 userIdSplit = y.split()[0]
                 handleMoney(userIdSplit, 100)
-                print(f'{y} is given 100 money for the season win')#debugging to find the problem for next season.
+                print(f'{y} is given 100 bells for the season win')#debugging to find the problem for next season.
                 data2[Key] = winnertext
                 writeJSON(filePath2, data2)
                 for f in os.listdir(dir):

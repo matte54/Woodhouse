@@ -31,6 +31,13 @@ DEBUG = False
 if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '18093712d226974bfc25563025ebdb3c':
     DEBUG = True
 
+#To fix the hour problem we delete excisting timefiles on startup
+timeDir = './data/fishTime'
+for timefiles in os.listdir(timeDir):
+    os.remove(os.path.join(timeDir, timefiles))
+    print(f'Deleting {timefiles}s timefile.')
+
+
 try:
     TOKEN = credentials.KEY
 except AttributeError:
@@ -54,7 +61,7 @@ global shutup
 shutup = 0
 
 #Flare?
-response_flare = ["Yes", "No", "you talking to me?", "what was that?", "uhm...", "suuuure...", "Thats my name dont wear it out", "Oh hey!", "whats up?"]
+response_flare = ["Yes.", "No", "you talking to me?", "what was that?", "uhm...", "suuuure...", "Thats my name dont wear it out", "Oh hey!", "whats up?", "what do you mean?", "biscuits"]
 
 # Badges constants
 THRESHOLDS = [111 * n + 6 for n in range(1, 9)] # 8 badges
@@ -157,7 +164,7 @@ class MyClient(discord.Client):
                 f = open("./data/schoolTime", "w")
                 f.write(str(now.day))
                 f.close()
-                await asyncio.sleep(random.randint(3000, 4000))
+                await asyncio.sleep(random.randint(3000, 6000))
             else:
                 #print(f"No school this time...roll was {Xi} needs > 50, and/or today is {now.day} we have {dayCheck} on file")
                 await asyncio.sleep(120)
@@ -489,7 +496,7 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             print('{}{} is casting a line...'.format(t, discordId))
             uid = str(discordId)
-            failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "reels in the empty line...", "broke the fishing pole", "lost the fish and spilled their beer", "with all their force throwing their entire fishing rod, hook, line and sinker.", "after a long tough fight the fish got away"]
+            failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "reels in the empty line...", "broke the fishing pole", "lost the fish and spilled their beer", "with all their force throwing their entire fishing rod, hook, line and sinker.", "with all their force throwing their entire fishing rod, hook, line and stinker.", "after a long tough fight the fish got away"]
             #This whole mess is to combat a File not found and just placing in the number 13 to get started
             now = datetime.datetime.now()
             try:
@@ -545,14 +552,14 @@ class MyClient(discord.Client):
             x, winner = fishOff()
             await message.channel.send("""```yaml\n\n     FISH OFF MONTHLY HIGHSCORE\n{}```""".format(x))
 
-        if message.content.startswith('$specialfishoff'):
+        if message.content.startswith('$challenge'):
             f1 = open('./data/specialfish', "r")
             specialFish = str(f1.readline()).upper()
             t = get_timestamp_str()
             u = message.author
-            print('{}{} is listing the special fishoff highscores'.format(t, u))
+            print('{}{} is listing the challenge highscores'.format(t, u))
             x, winner = specialFishOff()
-            await message.channel.send("""```yaml\n\n SPECIAL {} FISH OFF MONTHLY HIGHSCORE\n{}```""".format(specialFish, x))
+            await message.channel.send("""```yaml\n\n THE {} CHALLENGE MONTHLY HIGHSCORE\n{}```""".format(specialFish, x))
 
         if message.content.startswith('$bucket'):
             t = get_timestamp_str()
