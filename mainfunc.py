@@ -128,11 +128,6 @@ def get_speech(client, trigger):
         scoreD[answer] = score
     sorted_scores = {k: v for k, v in sorted(scoreD.items(), key=lambda item: item[1])}
     for k, v in sorted_scores.items():
-        if v > 0.1 and v < 3.0:
-            print(f'{k} --> {v}')
-        if v > 3.0 and v < 8.0:
-            print(f'{k} --> {v}')
-        if v > 8.0 and v < 50.0:
             print(f'{k} --> {v}')
 
     pickedresponse = max(sorted_scores, key=sorted_scores.get)
