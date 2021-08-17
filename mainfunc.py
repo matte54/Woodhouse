@@ -38,6 +38,8 @@ text_model.compile()
 
 def get_speech(client, trigger):
     #Markovify instead of random line.
+    if trigger is None:
+        trigger = " "
     r = []
     for l in range(10):
         r.append(text_model.make_sentence())
