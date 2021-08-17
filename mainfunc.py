@@ -82,7 +82,7 @@ def get_speech(client, trigger):
         if word in removeList:
             trigger_words.remove(word)
     #print(trigger_words)
-
+    print(washing)
     for answer in washing:
         wordschecked = []
         i_count = answer.count("I")-1
