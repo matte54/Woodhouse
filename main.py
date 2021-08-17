@@ -59,7 +59,7 @@ logger.addHandler(handler)
 global pokemonAlive
 global shutup
 shutup = 0
-
+emptyTrigger =
 #Flare?
 response_flare = ["Yes.", "No", "you talking to me?", "what was that?", "uhm...", "suuuure...", "Thats my name dont wear it out", "Oh hey!", "whats up?", "what do you mean?", "biscuits"]
 
@@ -236,7 +236,7 @@ class MyClient(discord.Client):
                         g = random.randint(1, 100)
                         if g < 75:
                             t = get_timestamp_str()
-                            x = get_speech(self)
+                            x = get_speech(self, emptyTrigger)
                             print('{}Automatic trigger chosen reply was -----> {}'.format(t, x))
                             await message.channel.send(x)
                             counter = 0
@@ -252,7 +252,7 @@ class MyClient(discord.Client):
                         t = get_timestamp_str()
                         print('{}URL post triggered -----> {}'.format(t, z))
                         await message.channel.send(z)
-                        x = get_speech(self)
+                        x = get_speech(self, emptyTrigger)
                         t = get_timestamp_str()
                         print('{}Automatic trigger chosen reply was -----> {}'.format(t, x))
                         await message.channel.send(x)
