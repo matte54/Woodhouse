@@ -69,10 +69,10 @@ def get_speech(client, trigger):
     #x = random.choice(washing)
     #scoring system?
     scoreD = {}
-    good_endings = ['"', ".", ")", ":", "!", "?"]
-    good_topics = ["dan", "Dan", "matte", "Matte", "rogue", "Rogue", "Mandy", "mandy", "jerry", "Jerry", "lol", "lul", "cool", "lmao", "hey", "hi", "yes", "no", "im", "ill"]
+    good_endings = ['"', ".", ")", ">", "!", "?"]
+    good_topics = ["dan", "Dan", "matte", "Matte", "rogue", "Rogue", "Mandy", "mandy", "jerry", "Jerry", "lol", "lul", "cool", "lmao", "hey", "hi", "yes", "no", "im"]
     good_ending_val = 5
-    emoji_val = 3
+    emoji_val = 5
     good_topic_val = 5
     matching_topic_val = 5
     to_long_val = 2
@@ -82,7 +82,7 @@ def get_speech(client, trigger):
         if word in removeList:
             trigger_words.remove(word)
     #print(trigger_words)
-    print(washing)
+
     for answer in washing:
         wordschecked = []
         i_count = answer.count("I")-1
