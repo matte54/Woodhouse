@@ -59,7 +59,7 @@ logger.addHandler(handler)
 global pokemonAlive
 global shutup
 shutup = 0
-emptyTrigger =
+emptyTrigger = None
 #Flare?
 response_flare = ["Yes.", "No", "you talking to me?", "what was that?", "uhm...", "suuuure...", "Thats my name dont wear it out", "Oh hey!", "whats up?", "what do you mean?", "biscuits"]
 
