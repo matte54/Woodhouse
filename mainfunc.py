@@ -36,7 +36,7 @@ text_model.compile()
 #    x = random.choices(lines, k=10)
 #    return(x)
 
-def get_speech(client):
+def get_speech(client, trigger):
     #Markovify instead of random line.
     r = []
     for l in range(5):
@@ -64,8 +64,79 @@ def get_speech(client):
                 old_text = f':{emoji.name}:'
                 new_text = f'<:{emoji.name}:{emoji.id}>'
                 washing[j] = reply.replace(old_text, new_text)
-    x = random.choice(washing)
-    return (x)
+    #x = random.choice(washing)
+    #scoring system?
+    scoreD = {}
+
+    good_endings = ['"', ".", ")", ":", "!", "?"]
+    good_topics = ["dan", "Dan", "matte", "Matte", "rogue", "Rogue", "Mandy", "mandy", "jerry", "Jerry", "lol", "lul", "cool", "lmao", "hey", "hi", "yes", "no", "im", "ill"]
+    good_ending_val = 5
+    emoji_val = 10
+    good_topic_val = 5
+    matching_topic_val = 5
+    to_long_val = 2
+    trigger_words = trigger.split(" ")
+    removeList = ["Woodhouse", "woodhouse", "Woodhouse?", "woodhouse?", "Woodhouse!", "woodhouse!"]
+    for word in trigger_words:
+        if word in removeList:
+            trigger_words.remove(word)
+    #print(trigger_words)
+
+    for answer in washing:
+        wordschecked = []
+        i_count = answer.count("I")-1
+        if i_count < 0:
+            i_count = 0
+        good_end = 0
+        repetitions = 1
+        emojiscore = 0
+        topic_score = 0
+        matching_score = 0
+        lengthscore = 0
+        tolongscore = 0
+        if answer[-1] in good_endings:
+            good_end = good_ending_val
+
+        words = [i.strip() for i in answer.split(" ")]
+        trigger_words = trigger.split(" ")
+        answer_length = len(words)
+        if answer_length < 5:
+            lengthscore =+ 5
+        else:
+            lengthscore =+ answer_length / 2
+        if answer_length > 13:
+            tolongscore = to_long_val
+
+        for word in words:
+            c = words.count(word)
+            if c >= 2 and word not in wordschecked:
+                repetitions += 0.5
+                wordschecked.append(word)
+            if word.startswith("<:"):
+                emojiscore = emoji_val
+            if word in good_topics:
+                topic_score = good_topic_val
+            if trigger:
+                if word in trigger_words:
+                    if len(word) > 3:
+                        matching_score = matching_topic_val
+                        #print(f'{word} {matching_score}')
+
+        score = round((lengthscore + good_end + emojiscore + topic_score + matching_score + i_count) / (repetitions + tolongscore), 2)
+        #print(f'{answer} SCORE: {score} --> length {lengthscore}, + ending {good_end}, + emoji {emojiscore}, + topic {topic_score}, + match {matching_score}, + icount {i_count} / repetitions {repetitions}, + to long {tolongscore}')
+        scoreD[answer] = score
+    sorted_scores = {k: v for k, v in sorted(scoreD.items(), key=lambda item: item[1])}
+    for k, v in sorted_scores.items():
+        if v > 0.1 and v < 3.0:
+            print(f'{Fore.RED}{k} --> {v}{Style.RESET_ALL}')
+        if v > 3.0 and v < 8.0:
+            print(f'{Fore.YELLOW}{k} --> {v}{Style.RESET_ALL}')
+        if v > 8.0 and v < 50.0:
+            print(f'{Fore.GREEN}{k} --> {v}{Style.RESET_ALL}')
+
+    pickedresponse = max(sorted_scores, key=sorted_scores.get)
+    #print(f'chosen reply was = {pickedresponse}')
+    return(pickedresponse)
 
 # Test for markovify, left in for the $speech command just because
 def ranswer():

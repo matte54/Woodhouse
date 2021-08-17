@@ -278,7 +278,7 @@ class MyClient(discord.Client):
             u = message.author
             u_str = str(u)[:-5]
             #TODO move this get_speech call to where its needed to improve response time
-            i = get_speech(self)
+            i = get_speech(self, message.content)
             p = bool(random.getrandbits(1))
             if p == True:
                 await message.channel.send(i)
