@@ -39,7 +39,7 @@ text_model.compile()
 def get_speech(client, trigger):
     #Markovify instead of random line.
     r = []
-    for l in range(5):
+    for l in range(10):
         r.append(text_model.make_sentence())
     for k in range(5):
         r.append(text_model.make_short_sentence(15, tries=100))
@@ -67,7 +67,6 @@ def get_speech(client, trigger):
     #x = random.choice(washing)
     #scoring system?
     scoreD = {}
-
     good_endings = ['"', ".", ")", ":", "!", "?"]
     good_topics = ["dan", "Dan", "matte", "Matte", "rogue", "Rogue", "Mandy", "mandy", "jerry", "Jerry", "lol", "lul", "cool", "lmao", "hey", "hi", "yes", "no", "im", "ill"]
     good_ending_val = 5

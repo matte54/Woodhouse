@@ -287,7 +287,7 @@ class MyClient(discord.Client):
                 o = bool(random.getrandbits(1))
                 if o == True:
                     i2 = random.choice(response_flare)
-                    c_response = u_str + ", " + i2
+                    c_response = u_str + " " + i2
                     await message.channel.send(c_response)
                     print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, c_response))
                 else:
