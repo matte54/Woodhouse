@@ -115,7 +115,7 @@ def get_speech(client, trigger):
                 wordschecked.append(word)
             if word.startswith("<:"):
                 emojiscore = emoji_val
-                rY = random.randint(-4, 4)
+                rY = random.randint(-4, 5)
                 emojiscore =+ rY
             if word in good_topics:
                 topic_score = good_topic_val

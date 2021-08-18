@@ -291,7 +291,7 @@ class MyClient(discord.Client):
                     await message.channel.send(c_response)
                     print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, c_response))
                 else:
-                    b_response = i + ", " + u_str
+                    b_response = i + " " + u_str
                     await message.channel.send(b_response)
                     print('{} {} mentioned woodhouse by name , response was -----> {}'.format(t, u, b_response))
 
