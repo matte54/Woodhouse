@@ -95,6 +95,7 @@ def get_speech(client, trigger):
         matching_score = 0
         lengthscore = 0
         tolongscore = 0
+        fuzzyness = random.uniform(0.1, 0.4)
         if answer[-1] in good_endings:
             good_end = good_ending_val
 
@@ -125,7 +126,7 @@ def get_speech(client, trigger):
                         matching_score = matching_topic_val
                         #print(f'{word} {matching_score}')
 
-        score = round((lengthscore + good_end + emojiscore + topic_score + matching_score + i_count) / (repetitions + tolongscore), 2)
+        score = round((lengthscore + good_end + emojiscore + topic_score + matching_score + i_count) + fuzzyness / (repetitions + tolongscore), 2)
         #print(f'{answer} SCORE: {score} --> length {lengthscore}, + ending {good_end}, + emoji {emojiscore}, + topic {topic_score}, + match {matching_score}, + icount {i_count} / repetitions {repetitions}, + to long {tolongscore}')
         scoreD[answer] = score
     sorted_scores = {k: v for k, v in sorted(scoreD.items(), key=lambda item: item[1])}
