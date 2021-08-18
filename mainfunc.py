@@ -73,8 +73,8 @@ def get_speech(client, trigger):
     good_topics = ["dan", "Dan", "matte", "Matte", "rogue", "Rogue", "Mandy", "mandy", "jerry", "Jerry", "lol", "lul", "cool", "lmao", "hey", "hi", "yes", "no", "im"]
     good_ending_val = 5
     emoji_val = 2
-    good_topic_val = 5
-    matching_topic_val = 5
+    good_topic_val = 4
+    matching_topic_val = 4
     to_long_val = 2
     trigger_words = trigger.split(" ")
     removeList = ["Woodhouse", "woodhouse", "Woodhouse?", "woodhouse?", "Woodhouse!", "woodhouse!"]
@@ -116,7 +116,7 @@ def get_speech(client, trigger):
                 wordschecked.append(word)
             if word.startswith("<:"):
                 emojiscore = emoji_val
-                rY = random.randint(-4, 9)
+                rY = random.randint(-4, 12)
                 emojiscore =+ rY
             if word in good_topics:
                 topic_score = good_topic_val
