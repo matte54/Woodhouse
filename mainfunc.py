@@ -138,7 +138,7 @@ def get_speech(client, trigger):
     for i, item in enumerate(sorted_scores.items()):
         k, v = item
         print(f'{k} --> {v}')
-        if i == 6: break
+        if i == 4: break
 
     pickedresponse = max(sorted_scores, key=sorted_scores.get)
     #print(f'chosen reply was = {pickedresponse}')
