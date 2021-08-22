@@ -59,7 +59,6 @@ def get_speech(client, trigger):
     for emoji in client.emojis:
         if emoji.animated == False:
             emoji_names.append(emoji.name) #testing new
-    print(emoji_names)
     #add 10 emoji choices
     sEmo = random.choices(emoji_names, k=10)
     sEmo = [':%s:' % emoji_name for emoji_name in sEmo]
@@ -136,8 +135,9 @@ def get_speech(client, trigger):
         #print(f'{answer} SCORE: {score} --> length {lengthscore}, + ending {good_end}, + emoji {emojiscore}, + topic {topic_score}, + match {matching_score}, + icount {i_count} / repetitions {repetitions}, + to long {tolongscore}')
         scoreD[answer] = score
     sorted_scores = {k: v for k, v in sorted(scoreD.items(), key=lambda item: item[1])}
-    for k, v in sorted_scores.items():
+    for i, k, v in enumerate(sorted_scores.items()):
             print(f'{k} --> {v}')
+            if i == 6: break
 
     pickedresponse = max(sorted_scores, key=sorted_scores.get)
     #print(f'chosen reply was = {pickedresponse}')
