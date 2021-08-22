@@ -135,9 +135,10 @@ def get_speech(client, trigger):
         #print(f'{answer} SCORE: {score} --> length {lengthscore}, + ending {good_end}, + emoji {emojiscore}, + topic {topic_score}, + match {matching_score}, + icount {i_count} / repetitions {repetitions}, + to long {tolongscore}')
         scoreD[answer] = score
     sorted_scores = {k: v for k, v in sorted(scoreD.items(), key=lambda item: item[1])}
-    for i, k, v in enumerate(sorted_scores.items()):
-            print(f'{k} --> {v}')
-            if i == 6: break
+    for i, item in enumerate(sorted_scores.items()):
+        k, v = item
+        print(f'{k} --> {v}')
+        if i == 6: break
 
     pickedresponse = max(sorted_scores, key=sorted_scores.get)
     #print(f'chosen reply was = {pickedresponse}')
