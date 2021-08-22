@@ -54,12 +54,15 @@ def get_speech(client, trigger):
     washing = []
     washing.extend(r)
     emojis = client.emojis
+    print(emojis)#debug
     emoji_names = [emoji.name for emoji in client.emojis]
+    print(emoji_names)#debug
+
     #add 10 emoji choices
     sEmo = random.choices(emoji_names, k=10)
     sEmo = [':%s:' % emoji_name for emoji_name in sEmo]
     washing.extend(sEmo)
-    print(washing)#debug
+
 
     for i, emoji in enumerate(emojis):
         for j, reply in enumerate(washing):
