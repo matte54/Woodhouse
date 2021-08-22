@@ -134,7 +134,7 @@ def get_speech(client, trigger):
         score = round((lengthscore + good_end + emojiscore + topic_score + matching_score + i_count) + fuzzyness / (repetitions + tolongscore), 2)
         #print(f'{answer} SCORE: {score} --> length {lengthscore}, + ending {good_end}, + emoji {emojiscore}, + topic {topic_score}, + match {matching_score}, + icount {i_count} / repetitions {repetitions}, + to long {tolongscore}')
         scoreD[answer] = score
-    sorted_scores = {k: v for k, v in sorted(scoreD.items(), key=lambda item: item[1])}
+    sorted_scores = {k: v for k, v in sorted(scoreD.items(), key=lambda item: item[1], reverse=True)}
     for i, item in enumerate(sorted_scores.items()):
         k, v = item
         print(f'{k} --> {v}')
