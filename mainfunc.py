@@ -59,6 +59,7 @@ def get_speech(client, trigger):
     sEmo = random.choices(emoji_names, k=10)
     sEmo = [':%s:' % emoji_name for emoji_name in sEmo]
     washing.extend(sEmo)
+    print(washing)#debug
 
     for i, emoji in enumerate(emojis):
         for j, reply in enumerate(washing):
@@ -116,7 +117,7 @@ def get_speech(client, trigger):
                 wordschecked.append(word)
             if word.startswith("<:"):
                 emojiscore = emoji_val
-                rY = random.randint(-4, 12)
+                rY = random.randint(-4, 11) #this value is a nightmare
                 emojiscore =+ rY
             if word in good_topics:
                 topic_score = good_topic_val
