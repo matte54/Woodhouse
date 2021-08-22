@@ -54,12 +54,12 @@ def get_speech(client, trigger):
     washing = []
     washing.extend(r)
     emojis = client.emojis
-    print(emojis)#debug
     #emoji_names = [emoji.name for emoji in client.emojis]
     emoji_names = []
     for emoji in client.emojis:
         if emoji.animated == False:
             emoji_names.append(emoji.name) #testing new
+    print(emoji_names)
     #add 10 emoji choices
     sEmo = random.choices(emoji_names, k=10)
     sEmo = [':%s:' % emoji_name for emoji_name in sEmo]
