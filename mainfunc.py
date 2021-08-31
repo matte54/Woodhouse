@@ -400,6 +400,7 @@ def fishOffHandler():
             data2 = json.load(f2)
             if Key in data2:
                 print(f'{Key} entry already exists...ignoring')
+                return None, None
             else:
                 print(f'A fishoff winner been crowned {winnertext}')
                 list, specialWinner = specialFishOff()
