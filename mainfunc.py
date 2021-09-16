@@ -190,6 +190,8 @@ def cast_line(discordId, school):
     #Triangular weighted random weight test.
     mid = (wL + wH) / 2
     w = round(random.triangular(wL, wH, mid),2)
+    #get weight category here todo!
+    weightCategory = wCategory(wL, wH, w)
     #Make the only fish once and hour mark.
     now = datetime.datetime.now()
     f = open('./data/fishTime/'+uid, "w")
@@ -213,7 +215,7 @@ def cast_line(discordId, school):
     #record stats(wip)
     fishStats(uid, z, w, cI, shiny)
     Xvalue, xp, dinged = profileHandler(uid, z, cI, w) # manage profile system(WIP)
-    x = fishing_embed(uid, z, j, cI, w, value, xp, shiny, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
+    x = fishing_embed(uid, z, j, cI, w, value, xp, shiny, ding=dinged, weightCategory, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
     return(x)
 
 def fishOff():
@@ -471,7 +473,23 @@ def writeJSON(filePath, data):
         f.close()
     #print(f'Finished writing {filePath}')
 
-def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, ding, old_pb=0.0, old_wr=0.0, dethroned=""):
+def wCategory(wL, wH, w):
+    l = 0
+    sizes = ['', 'tiny', 'small', 'medium', 'large', 'big', 'huge']
+    stops = []
+    difference = wH - wL
+    stage_range = difference / 7
+    for i in range (1, 7):
+        stop = stage_range * i + wL
+        stops.append(stop)
+    for y in stops:
+        l += 1
+        if y > w:
+            o = y
+            break
+    return(sizes[l])
+
+def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, ding, wCat, old_pb=0.0, old_wr=0.0, dethroned=""):
     """Create a discord embed of the caught fish.
 
     Note if old_wr is provided remember to also provide the dethroned parameter.
@@ -499,7 +517,7 @@ def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, di
 
     embed = Embed()
     n = 'n' if fish.lower()[0] in 'aeiou' else ''
-    embed.title = f"{username} caught a{n} {fish}!"
+    embed.title = f"{username} caught a{n} {wCat} {fish}!"
     embed.description = f"*{joke}*\n**class {fish_class}**"
     embed.colour = 0x99ff
     #embed.add_field(name="Class", value=f"**{fish_class}**", inline=True)
