@@ -446,7 +446,7 @@ class MyClient(discord.Client):
                             if count in THRESHOLDS:
                                 badge_num = THRESHOLDS.index(count)
                                 badge_pic = BADGE_PATH_SINGLE[badge_num]
-                                msg += f'\n {discordId} EARNED A NEW BADGE!'
+                                msg += f'\n{discordId} EARNED A NEW BADGE!'
                                 await message.channel.send(f'```{msg}```', file=discord.File(badge_pic))
                             else:
                                 await message.channel.send(f'```{msg}```')

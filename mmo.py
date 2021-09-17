@@ -43,15 +43,15 @@ def playMMO(playerName, className):
     yW = random.choice(Second)
     zW = random.choice(Third)
     rW = bool(random.getrandbits(1))
-    if rW == True:
-        selectedWeapon = "{} {} of {}".format(xW,yW,zW)
+    if rW:
+        selectedWeapon = f"{xW} {yW} of {zW}"
     else:
-        selectedWeapon = "{} {}".format(xW,yW)
+        selectedWeapon = f"{xW} {yW}"
 
     monsters = ['Orc', 'Dragon', 'Human', 'Trap', 'Goblin', 'Golem', 'Vampire', 'Flumph', 'Mimic', 'Modron', 'Drider', 'Rust Monster', 'Troll', 'Wraith', 'Gnoll', 'Lich', 'Beholder', 'Gelatinous Cube', 'Githyanki', 'Illithid', 'Slaad', 'Owlbear', 'Displacer Beast', 'Tarrasque', 'Kobold', 'Skeleton', 'Duckbunny', 'Prismatic Dragon']
     flavor = ['Your valor will be remembered...', 'His/Her courage was admirable...', 'R.I.P', 'Rest in pepperonis...', 'Watch out for those claws...']
 
-    while player == True:
+    while player:
         rDif = random.uniform(0.0,2.0)+powerCreep #random diffculty roll
         mDif = random.uniform(-1.0,1.0) #monster diffculty roll
         fDif = playerLevel+rDif+mDif-playerGearLvl #final diffculty
@@ -100,17 +100,15 @@ def playMMO(playerName, className):
     deathMonster = random.choice(monsters)
     pFlavor = random.choice(flavor)
     deathXp = round(xp, 2)
-    line1 = "```{} the {} died , {}\n".format(playerName, className, pFlavor)
-    line2 = "Your level was {}, you survived {} encounters\n".format(deathLevel, fights)
-    line3 = "Your chosen weapon was: {}, and your gear level was {}\n".format(selectedWeapon, deathILevel)
-    line4 = "Your demise came from a lvl {} {}, your foe rolled {} and your roll was only {}\n".format(deathMonsterLevel, deathMonster, deathDiff, deathRoll)
-    line5 = "Your experience was {}/{}```".format(deathXp, xpRoof)
-    endscreen = line1+line2+line3+line4+line5
+    endscreen = f"""```{playerName} the {className} died, {pFlavor}
+Your level was {deathLevel}, you survived {fights} encounters
+Your chosen weapon was: {selectedWeapon}, and your gear level was {deathILevel}
+Your demise came from a lvl {deathMonsterLevel} {deathMonster}, your foe rolled {deathDiff} and your roll was only {deathRoll}
+Your experience was {deathXp}/{xpRoof}```"""
     playerData = [[playerName, className, deathLevel, fights, deathILevel]]
 
-    f = open('highscore.txt', 'a')
-    with f:
+    with open('highscore.txt', 'a') as f:
         writer = csv.writer(f)
         writer.writerows(playerData)
-    f.close()
+
     return(endscreen)
