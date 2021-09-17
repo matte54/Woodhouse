@@ -516,8 +516,7 @@ def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, wC
     """
 
     embed = Embed()
-    n = 'n' if fish.lower()[0] in 'aeiou' else ''
-    embed.title = f"{username} caught a{n} {wCat} {fish}!"
+    embed.title = f"{username} caught a {wCat} {fish}!"
     embed.description = f"*{joke}*\n**class {fish_class}**"
     embed.colour = 0x99ff
     #embed.add_field(name="Class", value=f"**{fish_class}**", inline=True)
