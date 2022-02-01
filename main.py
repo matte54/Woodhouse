@@ -495,7 +495,7 @@ class MyClient(discord.Client):
                 f = open('./data/fishTime/'+uid, 'r')
             except FileNotFoundError:
                 f = open('./data/fishTime/'+uid, "w")
-                f.write("13")
+                f.write("25")
                 f.close()
                 f = open('./data/fishTime/'+uid, "r")
             #test check for day
