@@ -2,28 +2,13 @@ import json
 import random
 
 def pick_url():
-    with open('data.json') as json_file:
-        data = json.load(json_file)
+    with open('data.json') as f:
+        data = json.load(f)
         urls = []
-        for i in data['https://www.reddit.com/r/gifs/.rss']:
-            x = data['https://www.reddit.com/r/gifs/.rss'][i]['dlink']
-            urls.append(x)
+    for i in data.keys():
+        for e in data[i].keys():
+            urls.append(e)
 
-        for i in data['https://www.reddit.com/r/aww/.rss']:
-            x = data['https://www.reddit.com/r/aww/.rss'][i]['dlink']
-            urls.append(x)
-
-        for i in data['https://www.reddit.com/r/funny/.rss']:
-            x = data['https://www.reddit.com/r/funny/.rss'][i]['dlink']
-            urls.append(x)
-
-        for i in data['https://www.rockpapershotgun.com/feed/']:
-            x = data['https://www.rockpapershotgun.com/feed/'][i]['link']
-            urls.append(x)
-
-        for i in data['https://www.gamespot.com/feeds/news/']:
-            x = data['https://www.gamespot.com/feeds/news/'][i]['link']
-            urls.append(x)
-
-        picked = random.choice(urls)
-        return(picked)
+    picked = random.choice(urls)
+    #maybe here add something that checks if "picked" is a v.reddit?
+    return(picked)
