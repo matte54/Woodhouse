@@ -1,6 +1,7 @@
 .idea/
 data/
 mons/
+venv/
 *.log
 *.sh
 /generalchat.txt
