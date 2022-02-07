@@ -1,5 +1,8 @@
-https://www.rockpapershotgun.com/feed/
 https://www.reddit.com/r/gifs/.rss
-https://www.gamespot.com/feeds/news/
 https://www.reddit.com/r/aww/.rss
 https://www.reddit.com/r/funny/.rss
+https://www.reddit.com/r/HighQualityGifs/.rss
+https://www.reddit.com/r/photoshopbattles/.rss
+https://www.reddit.com/r/videos/.rss
+https://www.reddit.com/r/trailers/.rss
+https://www.reddit.com/r/gamingphotography/.rss

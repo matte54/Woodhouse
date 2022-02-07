@@ -243,10 +243,12 @@ class MyClient(discord.Client):
                         t = get_timestamp_str()
                         print(f'{t}URL post triggered -----> {z}')
                         await message.channel.send(z)
-                        x = get_speech(self, emptyTrigger)
-                        t = get_timestamp_str()
-                        print(f'{t}Automatic trigger chosen reply was -----> {x}')
-                        await message.channel.send(x)
+                        oX = bool(random.getrandbits(1))
+                        if oX:
+                            x = get_speech(self, emptyTrigger)
+                            t = get_timestamp_str()
+                            print(f'{t}Automatic trigger chosen reply was -----> {x}')
+                            await message.channel.send(x)
                         print("-----------------------")
                         counter = 0
 
