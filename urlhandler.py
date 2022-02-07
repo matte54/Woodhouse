@@ -7,8 +7,11 @@ def pick_url():
         urls = []
     for i in data.keys():
         for e in data[i].keys():
-            urls.append(data[i][e]["dlink"])
+            link = data[i][e]["dlink"]
+            # check if post is a reddit video
+            if link.startswith("https://v.redd.it"):
+                link = data[i][e]["link"]
+            urls.append(link)
 
     picked = random.choice(urls)
-    #maybe here add something that checks if "picked" is a v.reddit?
     return(picked)
