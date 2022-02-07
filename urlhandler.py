@@ -7,7 +7,7 @@ def pick_url():
         urls = []
     for i in data.keys():
         for e in data[i].keys():
-            urls.append(e)
+            urls.append(data[i][e]["dlink"])
 
     picked = random.choice(urls)
     #maybe here add something that checks if "picked" is a v.reddit?
