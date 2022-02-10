@@ -1,6 +1,7 @@
 from difflib import SequenceMatcher
 import time
 import os
+import random
 
 texte = ""
 logfolderpath = "./rdata/"
@@ -34,12 +35,16 @@ def rspeak(question):
 
     start_time = time.time()
     best = ("", "", 0.00)
+    bestlist = []
     for l in data2:
         s = l[0]
         x = round(SequenceMatcher(a=i, b=s).ratio(), 2)
         if best[2] < x:
            best = (l[0], l[1], x)
-    print(f'completed in {round(time.time() - start_time, 4)}s')
-    print(f'{i} <-{best[2]}-> {best[0]}')
+           bestlist.append(best)
+    rpicked = random.choice(bestlist[5:])
 
-    return(best[1])
+    print(f'completed in {round(time.time() - start_time, 4)}s')
+    print(f'{i} <-{rpicked[2]}-> {rpicked[0]}')
+
+    return(rpicked[1])
