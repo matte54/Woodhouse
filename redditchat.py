@@ -41,7 +41,7 @@ def rspeak(question):
         if best[2] < x:
            best = (l[0], l[1], x)
            bestlist.append(best)
-    if not bestlist:
+    if len(bestlist) == 0:
         return('Something weird happend...')
     else:
         rpicked = random.choice(bestlist[5:])
