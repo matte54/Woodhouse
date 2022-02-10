@@ -26,6 +26,7 @@ from mainfunc import get_speech, ranswer, get_holiday, cast_line, fishOff, bucke
 from fishstats import listFishStats
 from spider_silk import db, Post, check_new_user
 from profileManager import handleMoney, getLevel, buyCast
+from redditchat import rspeak
 
 DEBUG = False
 if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '18093712d226974bfc25563025ebdb3c':
@@ -265,27 +266,15 @@ class MyClient(discord.Client):
         if message.author.bot:
             return
         #message mentions woodhouse with or with caps?
-        if 'woodhouse' in message.content.lower():
+        sentence, count = re.subn('(?:woodhouse|%s)' % self.user.mention, '', message.content, flags=re.IGNORECASE)
+        if count:
             t = get_timestamp_str()
             u = message.author
             u_str = str(u)[:-5]
-            #TODO move this get_speech call to where its needed to improve response time
-            i = get_speech(self, message.content)
-            p = bool(random.getrandbits(1))
-            if p:
-                await message.channel.send(i)
-                print(f'{t} {u} mentioned woodhouse by name , response was -----> {i}')
-            else:
-                o = bool(random.getrandbits(1))
-                if o:
-                    i2 = random.choice(response_flare)
-                    c_response = u_str + " " + i2
-                    await message.channel.send(c_response)
-                    print(f'{t} {u} mentioned woodhouse by name , response was -----> {c_response}')
-                else:
-                    b_response = i + " " + u_str
-                    await message.channel.send(b_response)
-                    print(f'{t} {u} mentioned woodhouse by name , response was -----> {b_response}')
+            #Testing new reddit answers when talking to woodhouse.
+            sentence.replace('  ', '')
+            i = rspeak(sentence)
+            await message.channel.send(i)
 
         if message.content.startswith('$url'):
             i = pick_url()
