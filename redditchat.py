@@ -33,7 +33,6 @@ def rspeak(question):
 
     print(f'database found {len(data2)} matches')
 
-    start_time = time.time()
     best = ("", "", 0.00)
     bestlist = []
     for l in data2:
@@ -42,9 +41,11 @@ def rspeak(question):
         if best[2] < x:
            best = (l[0], l[1], x)
            bestlist.append(best)
-    rpicked = random.choice(bestlist[5:])
+    if not bestlist:
+        return('Something weird happend...')
+    else:
+        rpicked = random.choice(bestlist[5:])
 
-    print(f'completed in {round(time.time() - start_time, 4)}s')
     print(f'{i} <-{rpicked[2]}-> {rpicked[0]}')
 
     return(rpicked[1])
