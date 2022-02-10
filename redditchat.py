@@ -7,7 +7,7 @@ logfolderpath = "./rdata/"
 for path, dirs, files in os.walk(logfolderpath):
     pass
 for e in files:
-    with open(f'./data/{e}', 'r' , encoding='UTF-8') as f:
+    with open(f'./rdata/{e}', 'r' , encoding='UTF-8') as f:
         texte += f.read()
 
 text = texte.splitlines()
@@ -41,5 +41,5 @@ def rspeak(question):
            best = (l[0], l[1], x)
     print(f'completed in {round(time.time() - start_time, 4)}s')
     print(f'{i} <-{best[2]}-> {best[0]}')
-    
+
     return(best[1])
