@@ -273,7 +273,10 @@ class MyClient(discord.Client):
             u_str = str(u)[:-5]
             #Testing new reddit answers when talking to woodhouse.
             sentence.replace('  ', '')
-            i = rspeak(sentence)
+            if not sentence:
+                i = "stop that!"
+            else:
+                i = rspeak(sentence)
             await message.channel.send(i)
 
         if message.content.startswith('$url'):
