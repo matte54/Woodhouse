@@ -266,7 +266,7 @@ class MyClient(discord.Client):
         if message.author.bot:
             return
         #message mentions woodhouse with or with caps?
-        sentence, count = re.subn('(?:woodhouse|<@327138137371574282>', '', message.content, flags=re.IGNORECASE)
+        sentence, count = re.subn('(?:woodhouse|<@327138137371574282>)', '', message.content, flags=re.IGNORECASE)
         if count:
             t = get_timestamp_str()
             u = message.author
