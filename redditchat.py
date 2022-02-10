@@ -17,7 +17,7 @@ data = []
 data2 = []
 for i in text:
     data.append((i.split(" / ")))
-print(f'main database has {len(data)} entries.')
+#print(f'main database has {len(data)} entries.')
 
 
 def rspeak(question):
@@ -41,10 +41,8 @@ def rspeak(question):
         if best[2] < x:
            best = (l[0], l[1], x)
            bestlist.append(best)
-    if len(bestlist) == 0:
-        return('Something weird happend...')
-    else:
-        rpicked = random.choice(bestlist[5:])
+    bestlist.sort(key=lambda y: y[2])
+    rpicked = random.choice(bestlist[-5:])
 
     print(f'{i} <-{rpicked[2]}-> {rpicked[0]}')
 
