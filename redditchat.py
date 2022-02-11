@@ -35,6 +35,7 @@ def rspeak(question):
 
     #check the next least longestword?
     if not data2:
+        print('Found nothing on best word, going to secondary')
         for l in data:
             a = l[0].split()
             if leastlongestword in a:
