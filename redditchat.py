@@ -14,13 +14,13 @@ for e in files:
 text = texte.splitlines()
 
 data = []
-data2 = []
 for i in text:
     data.append((i.split(" / ")))
 #print(f'main database has {len(data)} entries.')
 
 
 def rspeak(question):
+    data2 = []
     i = question
     longestword = i.split()
     xa = sorted(longestword, key=len)
