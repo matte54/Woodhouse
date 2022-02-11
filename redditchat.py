@@ -36,14 +36,13 @@ def rspeak(question):
     #check the next least longestword?
     if not data2:
         print('Found nothing on best word, going to secondary')
-        for l in data:
-            a = l[0].split()
-            if leastlongestword in a:
-                data2.append(l)
-
-    #last ditch effort if not finding anything
-    if not data2:
-        return('I dont know man...')
+        if "leastlongestword" in locals():
+            for l2 in data:
+                a2 = l2[0].split()
+                if leastlongestword in a2:
+                    data2.append(l2)
+        else:
+            return('I dont know man...')
 
     print(f'database found {len(data2)} matches')
 
