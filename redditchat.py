@@ -25,7 +25,8 @@ def rspeak(question):
     longestword = i.split()
     xa = sorted(longestword, key=len)
     longestword1 = xa[-1]
-    leastlongestword = xa[-2]
+    if len(xa) >= 1:
+        leastlongestword = xa[-2]
 
     for l in data:
         a = l[0].split()
@@ -38,7 +39,7 @@ def rspeak(question):
             a = l[0].split()
             if leastlongestword in a:
                 data2.append(l)
-    
+
     #last ditch effort if not finding anything
     if not data2:
         return('I dont know man...')
