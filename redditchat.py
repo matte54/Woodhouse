@@ -10,7 +10,7 @@ avoidpath = "./avoidwords.txt"
 with open(avoidpath, 'r' , encoding='UTF-8') as avoidfile:
     avoidtext = avoidfile.read().splitlines()
 for w in avoidtext:
-    avoidwordlist.append(w)
+    avoidwordlist.append(w.lower())
 
 ###load data from reddit
 texte = ""
@@ -31,7 +31,7 @@ for i in text:
 
 def rspeak(question):
     data2 = []
-    i = question
+    i = question.lower()
     #check for illeagal chars
     for ele in i:
         if ele in nopeChars:
@@ -40,9 +40,9 @@ def rspeak(question):
     longestword = i.split()
     #word filtering
     for wordsx in longestword:
-        if wordsx.lower() in avoidwordlist:
-            print(f'Found "{wordsx.lower()}" in avoidfile')
-            longestword.remove(wordsx.lower())
+        if wordsx in avoidwordlist:
+            print(f'Found "{wordsx}" in avoidfile')
+            longestword.remove(wordsx)
 
     xa = sorted(longestword, key=len)
     print(xa)
