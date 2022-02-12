@@ -43,7 +43,9 @@ def rspeak(question):
     for wordsx in longestword:
         if wordsx in avoidwordlist:
             removedList.append(wordsx)
-            longestword.remove(wordsx)
+    # remove words in separate loop
+    for w2 in removedList:
+        longestword.remove(w2)
     if removedList:
         print(f'Removed words: {removedList}')
 
