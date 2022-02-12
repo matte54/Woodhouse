@@ -41,8 +41,8 @@ def rspeak(question):
     #word filtering
     for wordsx in longestword:
         if wordsx.lower() in avoidwordlist:
-            print(f'Found "{wordsx}" in avoidfile')
-            longestword.remove(wordsx)
+            print(f'Found "{wordsx.lower()}" in avoidfile')
+            longestword.remove(wordsx.lower())
 
     xa = sorted(longestword, key=len)
     print(xa)
