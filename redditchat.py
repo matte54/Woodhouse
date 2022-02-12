@@ -3,6 +3,16 @@ import time
 import os
 import random
 
+#### sentence filtering stuff
+nopeChars = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+avoidwordlist = []
+avoidpath = "./avoidwords.txt"
+with open(avoidpath, 'r' , encoding='UTF-8') as avoidfile:
+    avoidtext = avoidfile.read().splitlines()
+for w in avoidtext:
+    avoidwordlist.append(w)
+
+###load data from reddit
 texte = ""
 logfolderpath = "./rdata/"
 for path, dirs, files in os.walk(logfolderpath):
@@ -22,8 +32,20 @@ for i in text:
 def rspeak(question):
     data2 = []
     i = question
+    #check for illeagal chars
+    for ele in i:
+        if ele in nopeChars:
+            i = i.replace(ele, '')
+
     longestword = i.split()
+    #word filtering
+    for wordsx in longestword:
+        if wordsx.lower() in avoidwordlist:
+            print(f'Found "{wordsx}" in avoidfile')
+            longestword.remove(wordsx)
+
     xa = sorted(longestword, key=len)
+    print(xa)
     longestword1 = xa[-1]
     if len(xa) >= 2:
         leastlongestword = xa[-2]
