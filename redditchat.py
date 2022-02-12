@@ -39,6 +39,7 @@ def rspeak(question):
 
     longestword = i.split()
     #word filtering
+    print(avoidwordlist)
     for wordsx in longestword:
         if wordsx in avoidwordlist:
             print(f'Found "{wordsx}" in avoidfile')
