@@ -47,6 +47,7 @@ def rspeak(question):
     if removedList:
         print(f'Removed words: {removedList}')
 
+    #Get the longest word
     xa = sorted(longestword, key=len)
     print(xa)
     longestword1 = xa[-1]
@@ -70,6 +71,10 @@ def rspeak(question):
             return('I dont know man...')
 
     print(f'database found {len(data2)} matches')
+
+    if not data2:
+        print(f'Found absolutley nothing...')
+        return('I dont know man...')
 
     best = ("", "", 0.00)
     bestlist = []
