@@ -49,6 +49,8 @@ def rspeak(question):
     if removedList:
         print(f'Removed words: {removedList}')
 
+    if not xa:
+        return(f'All those words are ill-eagle...')
     #Get the longest word
     xa = sorted(longestword, key=len)
     print(xa)
