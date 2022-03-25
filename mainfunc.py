@@ -41,9 +41,9 @@ def get_speech(client, trigger):
     if trigger is None:
         trigger = " "
     r = []
-    for l in range(10):
-        r.append(text_model.make_sentence())
-    for k in range(5):
+    #for l in range(10):
+    #    r.append(text_model.make_sentence())
+    for k in range(15):
         r.append(text_model.make_short_sentence(15, tries=100))
     #Short sentences leaves None entries ghetto remove those...
     cla_list = []
