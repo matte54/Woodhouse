@@ -602,11 +602,11 @@ class MyClient(discord.Client):
             words = quizmessage.split()
 
             if self.quiz_on == True and words[0] != "a":
-                msg = f'quiz in progress QUESTION: {self.quiz_var[0]}'
+                msg = f'quiz in progress QUESTION: {self.quiz_var[0].upper()}'
                 await message.channel.send(f'```yaml\n\n{msg}```')
 
             if words[0] == "q" and len(words) == 2 and self.quiz_on == False:
-                print(f'request quiz question')
+                #print(f'request quiz question')
                 check = self.quiz.getcategories()
                 if words[1] in check:
                     self.quiz_var = self.quiz.getquestion(words[1])
