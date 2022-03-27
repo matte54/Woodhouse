@@ -27,6 +27,7 @@ from fishstats import listFishStats
 from spider_silk import db, Post, check_new_user
 from profileManager import handleMoney, getLevel, buyCast
 from redditchat import rspeak
+from quizhandler import Quizhandler
 
 DEBUG = False
 if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '18093712d226974bfc25563025ebdb3c':
@@ -86,6 +87,11 @@ class MyClient(discord.Client):
         self.bg_task = self.loop.create_task(self.pokemon_task())
         self.bg_task = self.loop.create_task(self.school_task())
 
+        #quizhandler init and class vars
+        self.quiz_on = False
+        self.quiz_var = []
+        self.quiz = Quizhandler()
+
     async def on_ready(self):
         print(f'{get_timestamp_str()}Logged in as {self.user.name} with id {self.user.id}')
         #Check Fishing
@@ -96,8 +102,6 @@ class MyClient(discord.Client):
                 channel = self.get_channel(h)
                 await channel.send(f'```yaml\n\n{kY}{y}```')
                 await channel.send(f'```yaml\n\n{s}```')
-
-
 
     async def on_disconnect(self):
         t = get_timestamp_str()
@@ -591,6 +595,43 @@ class MyClient(discord.Client):
             else:
                 xZ = f'{u} you cant afford a extra cast right now(or you already have a cast this hour)'
                 await message.channel.send(f'```yaml\n\n{xZ}```')
+
+        # quiz stuff
+        if message.content.startswith('$quiz'):
+            quizmessage = message.content.replace('$quiz ', '').lower()
+            words = quizmessage.split()
+
+            if self.quiz_on == True and words[0] != "a":
+                msg = f'quiz in progress: {self.quiz_var[0]}'
+                await message.channel.send(f'```yaml\n\n{msg}```')
+                continue
+
+            if words[0] == "q" and len(words) == 2:
+                print(f'request quiz question')
+                check = self.quiz.getcategories()
+                if words[1] in check:
+                    self.quiz_var = self.quiz.getquestion(words[1])
+                    self.quiz_on = True
+                    await message.channel.send(f'```yaml\n\n{quiz_var[0]}```')
+                else:
+                    msg = f'No category by that name'
+                    await message.channel.send(f'```yaml\n\n{msg}```')
+                    continue
+
+            elif words[0] == "a" and self.quiz_on == True:
+                print(f'answer quiz question')
+                user_answer = quizmessage.split(' ', 1)[1]
+                flare, ratio = self.quiz.answer(self.quiz_var, user_answer)
+                msg = (f'{flare} - {ratio}% \nCorrect answer: {quiz_var[1]}')
+                await message.channel.send(f'```yaml\n\n{msg}```')
+                self.quiz_on = False
+
+            elif words[0] == "l" and len(words) == 1:
+                print(f'request quiz categories')
+                msg = f"CATEGORIES ARE: {(' '.join(self.quiz.getcategories()))}"
+                await message.channel.send(f'```yaml\n\n{msg}```')
+            else:
+                print(f'Invalid quiz syntax')
 
 
 

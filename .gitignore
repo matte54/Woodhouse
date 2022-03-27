@@ -1,5 +1,6 @@
 .idea/
 data/
+quizdata/
 mons/
 venv/
 *.log
