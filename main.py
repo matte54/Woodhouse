@@ -611,7 +611,7 @@ class MyClient(discord.Client):
                 if words[1] in check:
                     self.quiz_var = self.quiz.getquestion(words[1])
                     self.quiz_on = True
-                    await message.channel.send(f'```yaml\n\n{quiz_var[0]}```')
+                    await message.channel.send(f'```yaml\n\n{self.quiz_var[0]}```')
                 else:
                     msg = f'No category by that name'
                     await message.channel.send(f'```yaml\n\n{msg}```')
@@ -620,7 +620,7 @@ class MyClient(discord.Client):
                 print(f'answer quiz question')
                 user_answer = quizmessage.split(' ', 1)[1]
                 flare, ratio = self.quiz.answer(self.quiz_var, user_answer)
-                msg = (f'{flare} - {ratio}% \nCorrect answer: {quiz_var[1]}')
+                msg = (f'{flare} - {ratio}% \nCorrect answer: {self.quiz_var[1]}')
                 await message.channel.send(f'```yaml\n\n{msg}```')
                 self.quiz_on = False
 
