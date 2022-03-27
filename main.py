@@ -604,7 +604,6 @@ class MyClient(discord.Client):
             if self.quiz_on == True and words[0] != "a":
                 msg = f'quiz in progress: {self.quiz_var[0]}'
                 await message.channel.send(f'```yaml\n\n{msg}```')
-                continue
 
             if words[0] == "q" and len(words) == 2:
                 print(f'request quiz question')
@@ -616,7 +615,6 @@ class MyClient(discord.Client):
                 else:
                     msg = f'No category by that name'
                     await message.channel.send(f'```yaml\n\n{msg}```')
-                    continue
 
             elif words[0] == "a" and self.quiz_on == True:
                 print(f'answer quiz question')
