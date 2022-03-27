@@ -602,7 +602,7 @@ class MyClient(discord.Client):
             words = quizmessage.split()
 
             if self.quiz_on == True and words[0] != "a":
-                msg = f'quiz in progress: {self.quiz_var[0]}'
+                msg = f'quiz in progress QUESTION: {self.quiz_var[0]}'
                 await message.channel.send(f'```yaml\n\n{msg}```')
 
             if words[0] == "q" and len(words) == 2:
@@ -611,22 +611,23 @@ class MyClient(discord.Client):
                 if words[1] in check:
                     self.quiz_var = self.quiz.getquestion(words[1])
                     self.quiz_on = True
-                    await message.channel.send(f'```yaml\n\n{self.quiz_var[0]}```')
+                    await message.channel.send(f'```yaml\n\n{self.quiz_var[0].upper()}```')
                 else:
                     msg = f'No category by that name'
                     await message.channel.send(f'```yaml\n\n{msg}```')
 
             elif words[0] == "a" and self.quiz_on == True:
-                print(f'answer quiz question')
+                #print(f'answer quiz question')
+                u = message.author
                 user_answer = quizmessage.split(' ', 1)[1]
                 flare, ratio = self.quiz.answer(self.quiz_var, user_answer)
-                msg = (f'{flare} - {ratio}% \nCorrect answer: {self.quiz_var[1]}')
+                msg = (f"{u} ANSWERED: {user_answer}\n{flare} - {ratio}% \nCorrect answer: {self.quiz_var[1]}")
                 await message.channel.send(f'```yaml\n\n{msg}```')
                 self.quiz_on = False
 
             elif words[0] == "l" and len(words) == 1:
-                print(f'request quiz categories')
-                msg = f"CATEGORIES ARE: {(' '.join(self.quiz.getcategories()))}"
+                #print(f'request quiz categories')
+                msg = f" -- CATEGORIES ARE -- \n{(' '.join(self.quiz.getcategories()))}"
                 await message.channel.send(f'```yaml\n\n{msg}```')
             else:
                 print(f'Invalid quiz syntax')
