@@ -602,13 +602,17 @@ class MyClient(discord.Client):
             words = quizmessage.split()
             u = str(message.author)
 
-            if self.quiz_on == False and len(words) == 1 and words[0] == "reset":
+            if self.quiz_on == True:
+                # answer quiz question
+                user_answer = quizmessage
+                flare, ratio = self.quiz.answer(self.quiz_var, user_answer, u)
+                msg = (f"{u} ANSWERED: {user_answer}\n{flare} - {ratio}% \nCorrect answer: {self.quiz_var[1]}")
+                await message.channel.send(f'```yaml\n\n{msg}```')
+                self.quiz_on = False
+
+            elif self.quiz_on == False and len(words) == 1 and words[0] == "reset":
                 self.quiz.resetscores()
                 msg = f'Quiz scores RESET by {u}'
-                await message.channel.send(f'```yaml\n\n{msg}```')
-
-            elif self.quiz_on == True and words[0] != "a":
-                msg = f'quiz in progress QUESTION: {self.quiz_var[0].upper()}'
                 await message.channel.send(f'```yaml\n\n{msg}```')
 
             elif self.quiz_on == False and len(words) == 1 and words[0] == "scores":
@@ -638,18 +642,15 @@ class MyClient(discord.Client):
                     msg = f'No category by that name'
                     await message.channel.send(f'```yaml\n\n{msg}```')
 
-            elif words[0] == "a" and self.quiz_on == True:
-                # answer quiz question
-                user_answer = quizmessage.split(' ', 1)[1]
-                flare, ratio = self.quiz.answer(self.quiz_var, user_answer, u)
-                msg = (f"{u} ANSWERED: {user_answer}\n{flare} - {ratio}% \nCorrect answer: {self.quiz_var[1]}")
-                await message.channel.send(f'```yaml\n\n{msg}```')
-                self.quiz_on = False
-
             elif words[0] == "l" and len(words) == 1 and self.quiz_on == False:
                 # request quiz categories
                 msg = f"CATEGORIES ARE: \n{(' '.join(self.quiz.getcategories()))}"
                 await message.channel.send(f'```yaml\n\n{msg}```')
+
+            #elif self.quiz_on == True and words[0] != "a":
+            #    msg = f'quiz in progress QUESTION: {self.quiz_var[0].upper()}'
+            #    await message.channel.send(f'```yaml\n\n{msg}```')
+
             else:
                 print(f'Invalid quiz syntax')
 
