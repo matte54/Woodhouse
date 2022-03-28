@@ -605,8 +605,16 @@ class MyClient(discord.Client):
                 msg = f'quiz in progress QUESTION: {self.quiz_var[0].upper()}'
                 await message.channel.send(f'```yaml\n\n{msg}```')
 
+            if words[0] == "q" and len(words) == 1 and self.quiz_on == False:
+                # random question
+                check = self.quiz.getcategories()
+                rc = random.choice(check)
+                self.quiz_var = self.quiz.getquestion(rc)
+                self.quiz_on = True
+                await message.channel.send(f'```yaml\n\nCATEGORY: {rc}\n{self.quiz_var[0].upper()}```')
+
             if words[0] == "q" and len(words) == 2 and self.quiz_on == False:
-                #print(f'request quiz question')
+                # get chose category question
                 check = self.quiz.getcategories()
                 if words[1] in check:
                     self.quiz_var = self.quiz.getquestion(words[1])
@@ -617,7 +625,7 @@ class MyClient(discord.Client):
                     await message.channel.send(f'```yaml\n\n{msg}```')
 
             elif words[0] == "a" and self.quiz_on == True:
-                #print(f'answer quiz question')
+                # answer quiz question
                 u = message.author
                 user_answer = quizmessage.split(' ', 1)[1]
                 flare, ratio = self.quiz.answer(self.quiz_var, user_answer)
@@ -626,7 +634,7 @@ class MyClient(discord.Client):
                 self.quiz_on = False
 
             elif words[0] == "l" and len(words) == 1 and self.quiz_on == False:
-                #print(f'request quiz categories')
+                # request quiz categories
                 msg = f"CATEGORIES ARE: \n{(' '.join(self.quiz.getcategories()))}"
                 await message.channel.send(f'```yaml\n\n{msg}```')
             else:
