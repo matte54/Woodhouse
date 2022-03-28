@@ -600,6 +600,7 @@ class MyClient(discord.Client):
         if message.content.startswith('$quiz'):
             quizmessage = message.content.replace('$quiz ', '').lower()
             words = quizmessage.split()
+            u = message.author
 
             if self.quiz_on == True and words[0] != "a":
                 msg = f'quiz in progress QUESTION: {self.quiz_var[0].upper()}'
@@ -626,9 +627,8 @@ class MyClient(discord.Client):
 
             elif words[0] == "a" and self.quiz_on == True:
                 # answer quiz question
-                u = message.author
                 user_answer = quizmessage.split(' ', 1)[1]
-                flare, ratio = self.quiz.answer(self.quiz_var, user_answer)
+                flare, ratio = self.quiz.answer(self.quiz_var, user_answer, u)
                 msg = (f"{u} ANSWERED: {user_answer}\n{flare} - {ratio}% \nCorrect answer: {self.quiz_var[1]}")
                 await message.channel.send(f'```yaml\n\n{msg}```')
                 self.quiz_on = False

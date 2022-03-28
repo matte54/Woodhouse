@@ -1,5 +1,6 @@
 import os
 import random
+import json
 from difflib import SequenceMatcher
 
 
@@ -11,7 +12,40 @@ class Quizhandler:
             pass
         if not files:
             print(f'no files found in quizdata/')
+
+        self.scoredata, self.lifetimedata = self.loadscores()
         self.files = files
+        self.limbo = []
+
+        def loadscores(self):
+        with open("./quizstats/score.json", "r") as scorefile:
+            scoredata = json.load(scorefile)
+        scorefile.close()
+        with open("./quizstats/lifetime.json", "r") as lifetimefile:
+            lifetimedata = json.load(lifetimefile)
+        lifetimefile.close()
+        return scoredata, lifetimedata
+
+    def savescore(self, user, points):
+        if user in self.scoredata:
+            self.scoredata[user] += points
+        else:
+            self.scoredata[user] = points
+
+        if user in self.lifetimedata:
+            self.lifetimedata[user] += points
+        else:
+            self.lifetimedata[user] = points
+        self.writescores()
+        print('Saving score data')
+
+    def writescores(self):
+        with open("./quizstats/score.json", "w") as scorefile:
+            json.dump(self.scoredata, scorefile, indent=4)
+            scorefile.close()
+        with open("./quizstats/lifetime.json", "w") as lifetimefile:
+            json.dump(self.lifetimedata, lifetimefile, indent=4)
+            lifetimefile.close()
 
     def getquestion(self, category):
         # needs a correct str of category
@@ -27,8 +61,18 @@ class Quizhandler:
         for i in questions:
             i = i.lower()
             data.append((i.split(" / ")))
-        pickedquestion = random.choice(data)
-        return pickedquestion  # returns q/a as list
+        datasize = len(data)
+        for xi in range(datasize):
+            pickedquestion = random.choice(data)
+            qid = pickedquestion.pop(0)
+            if qid not in self.limbo:
+                self.limbo.append(qid)
+                return pickedquestion  # returns q/a as list
+        else:
+            # cant rly think of any better solution then this for now
+            print('Found no question not in limbo , fallback.')
+            pickedquestion = random.choice(data)
+            return pickedquestion  # returns q/a as list
 
     def getcategories(self):
         categorylist = []
@@ -37,16 +81,21 @@ class Quizhandler:
         categorylist = list(dict.fromkeys(categorylist))
         return categorylist
 
-    def answer(self, question, useranswer):
+    def answer(self, question, useranswer, username):
         # compare strings and return flare + % of answer likeness
         ratio = SequenceMatcher(a=question[1], b=useranswer).ratio()
         ratio = round(ratio * 100)
         if ratio == 100:
+            points = 5
             flare = "CORRECT!"
         elif ratio >= 90:
+            points = 3
             flare = "RIGHT!"
         elif ratio >= 50:
+            points = 1
             flare = "Close..."
         else:
+            points = 0
             flare = "Wrong"
+        self.savescore(username, points)
         return flare, ratio
