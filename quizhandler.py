@@ -37,7 +37,6 @@ class Quizhandler:
         else:
             self.lifetimedata[user] = points
         self.writescores()
-        print('Saving score data')
 
     def writescores(self):
         with open("./quizstats/score.json", "w") as scorefile:
@@ -100,6 +99,7 @@ class Quizhandler:
             qid = pickedquestion.pop(0)
             if qid not in self.limbo:
                 self.limbo.append(qid)
+                self.keeptime(30)
                 return pickedquestion  # returns q/a as list
         else:
             # cant rly think of any better solution then this for now

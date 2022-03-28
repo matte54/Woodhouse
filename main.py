@@ -90,6 +90,7 @@ class MyClient(discord.Client):
         #quizhandler init and class vars
         self.quiz_on = False
         self.quiz_var = []
+        self.quiz_answers = []
         self.quiz = Quizhandler()
 
     async def on_ready(self):
