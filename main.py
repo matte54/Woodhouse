@@ -613,7 +613,7 @@ class MyClient(discord.Client):
                 self.quiz_on = True
                 await message.channel.send(f'```yaml\n\nCATEGORY: {rc}\n{self.quiz_var[0].upper()}```')
 
-            if words[0] == "q" and len(words) == 2 and self.quiz_on == False:
+            elif words[0] == "q" and len(words) == 2 and self.quiz_on == False:
                 # get chose category question
                 check = self.quiz.getcategories()
                 if words[1] in check:
