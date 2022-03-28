@@ -47,6 +47,13 @@ class Quizhandler:
             json.dump(self.lifetimedata, lifetimefile, indent=4)
             lifetimefile.close()
 
+    def resetscores(self):
+        self.scoredata.clear()
+        with open("./quizstats/score.json", "w") as scorefile:
+            json.dump(self.scoredata, scorefile, indent=4)
+            scorefile.close()
+        print('Quiz scores reset')
+
     def getquestion(self, category):
         # needs a correct str of category
         categoryfiles = []
@@ -87,15 +94,15 @@ class Quizhandler:
         ratio = round(ratio * 100)
         if ratio == 100:
             points = 5
-            flare = "CORRECT!"
+            flare = f"CORRECT! {points} points"
         elif ratio >= 90:
             points = 3
-            flare = "RIGHT!"
+            flare = f"RIGHT! {points} points"
         elif ratio >= 50:
             points = 1
-            flare = "Close..."
+            flare = f"Close... {points} points"
         else:
             points = 0
-            flare = "Wrong"
+            flare = f"Wrong {points} points"
         self.savescore(username, points)
         return flare, ratio

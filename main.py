@@ -602,6 +602,11 @@ class MyClient(discord.Client):
             words = quizmessage.split()
             u = str(message.author)
 
+            if self.quiz_on == False and len(words) == 1 and words[0] == "reset":
+                self.quiz.resetscores()
+                msg = f'Quiz scores RESET by {u}'
+                await message.channel.send(f'```yaml\n\n{msg}```')
+
             if self.quiz_on == True and words[0] != "a":
                 msg = f'quiz in progress QUESTION: {self.quiz_var[0].upper()}'
                 await message.channel.send(f'```yaml\n\n{msg}```')
