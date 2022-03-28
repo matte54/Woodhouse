@@ -586,7 +586,7 @@ class MyClient(discord.Client):
 
         if message.content.startswith('$buy'):
             t = get_timestamp_str()
-            u = str(message.author)
+            u = message.author
             x = buyCast(u) #returns True if user can afford it, False if not.
             if x:
                 msg = f'{u} bought an extra cast for 50 Bells!'
@@ -600,7 +600,7 @@ class MyClient(discord.Client):
         if message.content.startswith('$quiz'):
             quizmessage = message.content.replace('$quiz ', '').lower()
             words = quizmessage.split()
-            u = message.author
+            u = str(message.author)
 
             if self.quiz_on == True and words[0] != "a":
                 msg = f'quiz in progress QUESTION: {self.quiz_var[0].upper()}'
