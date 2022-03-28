@@ -611,6 +611,14 @@ class MyClient(discord.Client):
                 msg = f'quiz in progress QUESTION: {self.quiz_var[0].upper()}'
                 await message.channel.send(f'```yaml\n\n{msg}```')
 
+            elif self.quiz_on == False and len(words) == 1 and words[0] == "scores":
+                msg = self.quiz.listscores()
+                await message.channel.send(f'```yaml\n\n{msg}```')
+
+            elif self.quiz_on == False and len(words) == 1 and words[0] == "alltime":
+                msg = self.quiz.listlifetime()
+                await message.channel.send(f'```yaml\n\n{msg}```')
+
             elif words[0] == "q" and len(words) == 1 and self.quiz_on == False:
                 # random question
                 check = self.quiz.getcategories()

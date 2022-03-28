@@ -54,6 +54,32 @@ class Quizhandler:
             scorefile.close()
         print('Quiz scores reset')
 
+    def listscores(self):
+        scorestring = "----- current scores -----\n"
+        with open("./quizstats/score.json", "r") as f:
+            scoredata = json.load(f)
+        f.close()
+        if len(scoredata) != 0:
+            sorted_scores = sorted(scoredata.items(), key=lambda x: x[1], reverse=True)
+            for key, value in sorted_scores:
+                scorestring += f'{key} - {value} points\n'
+            return scorestring
+        else:
+            return "There is no scores to list"
+
+    def listlifetime(self):
+        scorestring = "----- lifetime scores -----\n"
+        with open("./quizstats/lifetime.json", "r") as f:
+            scoredata = json.load(f)
+        f.close()
+        if len(scoredata) != 0:
+            sorted_scores = sorted(scoredata.items(), key=lambda x: x[1], reverse=True)
+            for key, value in sorted_scores:
+                scorestring += f'{key} - {value} points\n'
+            return scorestring
+        else:
+            return "There is no lifetime scores to list"
+
     def getquestion(self, category):
         # needs a correct str of category
         categoryfiles = []
