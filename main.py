@@ -586,7 +586,7 @@ class MyClient(discord.Client):
 
         if message.content.startswith('$buy'):
             t = get_timestamp_str()
-            u = message.author
+            u = str(message.author)
             x = buyCast(u) #returns True if user can afford it, False if not.
             if x:
                 msg = f'{u} bought an extra cast for 50 Bells!'
