@@ -99,7 +99,6 @@ class Quizhandler:
             qid = pickedquestion.pop(0)
             if qid not in self.limbo:
                 self.limbo.append(qid)
-                self.keeptime(30)
                 return pickedquestion  # returns q/a as list
         else:
             # cant rly think of any better solution then this for now
