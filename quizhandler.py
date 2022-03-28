@@ -17,7 +17,7 @@ class Quizhandler:
         self.files = files
         self.limbo = []
 
-        def loadscores(self):
+    def loadscores(self):
         with open("./quizstats/score.json", "r") as scorefile:
             scoredata = json.load(scorefile)
         scorefile.close()
