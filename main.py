@@ -641,7 +641,7 @@ class MyClient(discord.Client):
             #     self.quiz_on = False
 
             if self.quiz_on == True:
-                if u not in quiz_answers:
+                if u not in self.quiz_answers:
                     self.quiz_answers[u] = quizmessage
 
             elif self.quiz_on == False and len(words) == 1 and words[0] == "reset":
