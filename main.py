@@ -116,6 +116,10 @@ class MyClient(discord.Client):
         t = get_timestamp_str()
         print(f'{t}Connection resumed?')
 
+    async def quiztimer(self):
+        print('60s Timer started')
+        await asyncio.sleep(60)
+        print('60s are up!')
 
     async def school_task(self):
         defaultWeights = (38, 19, 15, 12, 7, 6, 3)
@@ -662,6 +666,9 @@ class MyClient(discord.Client):
 
             else:
                 print(f'Invalid quiz syntax')
+
+        if message.content.startswith('$test'):
+            self.timer = self.loop.create_task(self.quiztimer())
 
 
 
