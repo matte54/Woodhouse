@@ -94,7 +94,7 @@ class MyClient(discord.Client):
         self.quiz = Quizhandler()
 
         # timekeeper
-        self.timekeeper = self.loop.create_task(self.ticker())
+        #self.timekeeper = self.loop.create_task(self.ticker())
 
     async def on_ready(self):
         print(f'{get_timestamp_str()}Logged in as {self.user.name} with id {self.user.id}')
@@ -120,11 +120,13 @@ class MyClient(discord.Client):
         print(f'{t}Connection resumed?')
 
     async def ticker(self):
-        await self.wait_until_ready()
-        while not self.is_closed():
-            print('60s Timer started')
+        #await self.wait_until_ready()
+        while True:
+            print('Waiting 60 seconds')
             await asyncio.sleep(60)
-            print('60s are up!')
+            print('60s are up')
+            break
+
 
     async def school_task(self):
         defaultWeights = (38, 19, 15, 12, 7, 6, 3)
@@ -671,6 +673,9 @@ class MyClient(discord.Client):
 
             else:
                 print(f'Invalid quiz syntax')
+
+        if message.content.startswith('$test'):
+            self.timekeeper = self.loop.create_task(self.ticker())
 
 def get_timestamp_str():
     i = time.strftime("%H:%M:%S - ")
