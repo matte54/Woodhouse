@@ -123,15 +123,11 @@ class Quizhandler:
         ratio = round(ratio * 100)
         if ratio == 100:
             points = 5
-            flare = f"CORRECT! {points} points"
         elif ratio >= 90:
             points = 3
-            flare = f"RIGHT! {points} points"
         elif ratio >= 50:
             points = 1
-            flare = f"Close... {points} points"
         else:
             points = 0
-            flare = f"Wrong {points} points"
         self.savescore(username, points)
-        return flare, ratio
+        return ratio, points

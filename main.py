@@ -90,7 +90,7 @@ class MyClient(discord.Client):
         #quizhandler init and class vars
         self.quiz_on = False
         self.quiz_var = []
-        self.quiz_answers = []
+        self.quiz_answers = {}
         self.quiz = Quizhandler()
 
         # timekeeper
@@ -119,13 +119,31 @@ class MyClient(discord.Client):
         t = get_timestamp_str()
         print(f'{t}Connection resumed?')
 
-    async def ticker(self):
-        #await self.wait_until_ready()
+    async def quizkeeper(self):
         while True:
-            print('Waiting 60 seconds')
             await asyncio.sleep(60)
-            print('60s are up')
-            break
+            if self.quiz_answers:
+                playerlist = []
+                msg = ""
+                for i in quiz_answers:
+                    player = i
+                    answer = testdict[i]
+                    ratio, points = self.quiz.answer(self.quiz_var, answer, player)
+                    usertuple = (player, answer, ratio, points)
+                    playerlist.append(usertuple)
+                playerlist.sort(key=lambda y: y[2], reverse=True)
+                for w in playerlist:
+                    msg += f"{w[0]}: {w[1]} {w[2]}% - {w[3]}p\n"
+                msg += f'Correct answer: {self.quiz_var[1]}'
+                await message.channel.send(f'```yaml\n\n{msg}```')
+                self.quiz_on = False  # set game to off
+                self.quiz_answers.clear()  # clear the answers dict
+                break
+            else:
+                msg = f"No answers...\nCorrect answer was: {self.quiz_var[1]}"
+                await message.channel.send(f'```yaml\n\n{msg}```')
+                self.quiz_on = False
+                break
 
 
     async def school_task(self):
@@ -614,13 +632,17 @@ class MyClient(discord.Client):
             words = quizmessage.split()
             u = str(message.author)
 
+            # if self.quiz_on == True:
+            #     # answer quiz question
+            #     user_answer = quizmessage
+            #     flare, ratio = self.quiz.answer(self.quiz_var, user_answer, u)
+            #     msg = (f"{u} ANSWERED: {user_answer}\n{flare} - {ratio}% \nCorrect answer: {self.quiz_var[1]}")
+            #     await message.channel.send(f'```yaml\n\n{msg}```')
+            #     self.quiz_on = False
+
             if self.quiz_on == True:
-                # answer quiz question
-                user_answer = quizmessage
-                flare, ratio = self.quiz.answer(self.quiz_var, user_answer, u)
-                msg = (f"{u} ANSWERED: {user_answer}\n{flare} - {ratio}% \nCorrect answer: {self.quiz_var[1]}")
-                await message.channel.send(f'```yaml\n\n{msg}```')
-                self.quiz_on = False
+                if u not in quiz_answers:
+                    self.quiz_answers[u] = quizmessage
 
             elif self.quiz_on == False and len(words) == 1 and words[0] == "reset":
                 self.quiz.resetscores()
@@ -643,6 +665,7 @@ class MyClient(discord.Client):
                 if invalid == False:
                     self.quiz_on = True
                     await message.channel.send(f'```yaml\n\nCATEGORY: {rc}\n{self.quiz_var[0].upper()}```')
+                    self.loop.create_task(self.quizkeeper())
                 else:
                     await message.channel.send(f'```yaml\n\nERROR FOUND INVALID QUESTION\n{self.quiz_var}\n RESETTING```')
                     self.quiz_on = False
@@ -655,6 +678,7 @@ class MyClient(discord.Client):
                     if invalid == False:
                         self.quiz_on = True
                         await message.channel.send(f'```yaml\n\nCATEGORY: {words[1]}\n{self.quiz_var[0].upper()}```')
+                        self.loop.create_task(self.quizkeeper())
                     else:
                         await message.channel.send(f'```yaml\n\nERROR FOUND INVALID QUESTION\n{self.quiz_var}\n RESETTING```')
                         self.quiz_on = False
@@ -673,9 +697,6 @@ class MyClient(discord.Client):
 
             else:
                 print(f'Invalid quiz syntax')
-
-        if message.content.startswith('$timer'):
-            self.timekeeper = self.loop.create_task(self.ticker())
 
 def get_timestamp_str():
     i = time.strftime("%H:%M:%S - ")
