@@ -674,7 +674,7 @@ class MyClient(discord.Client):
             else:
                 print(f'Invalid quiz syntax')
 
-        if message.content.startswith('$test'):
+        if message.content.startswith('$timer'):
             self.timekeeper = self.loop.create_task(self.ticker())
 
 def get_timestamp_str():
