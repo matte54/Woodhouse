@@ -125,7 +125,7 @@ class MyClient(discord.Client):
             if self.quiz_answers:
                 playerlist = []
                 msg = ""
-                for i in quiz_answers:
+                for i in self.quiz_answers:
                     player = i
                     answer = testdict[i]
                     ratio, points = self.quiz.answer(self.quiz_var, answer, player)
