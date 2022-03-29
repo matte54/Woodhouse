@@ -97,7 +97,7 @@ class Quizhandler:
         datasize = len(data)
         for xi in range(datasize):
             pickedquestion = random.choice(data)
-            if len[pickedquestion] != 3:
+            if len(pickedquestion) != 3:
                 invalid = True
                 return pickedquestion, invalid
             qid = pickedquestion.pop(0)
