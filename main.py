@@ -119,7 +119,7 @@ class MyClient(discord.Client):
         t = get_timestamp_str()
         print(f'{t}Connection resumed?')
 
-    async def quizkeeper(self):
+    async def quizkeeper(self, message):
         while True:
             await asyncio.sleep(60)
             if self.quiz_answers:
@@ -665,7 +665,7 @@ class MyClient(discord.Client):
                 if invalid == False:
                     self.quiz_on = True
                     await message.channel.send(f'```yaml\n\nCATEGORY: {rc}\n{self.quiz_var[0].upper()}```')
-                    self.loop.create_task(self.quizkeeper())
+                    self.loop.create_task(self.quizkeeper(message))
                 else:
                     await message.channel.send(f'```yaml\n\nERROR FOUND INVALID QUESTION\n{self.quiz_var}\n RESETTING```')
                     self.quiz_on = False
@@ -678,7 +678,7 @@ class MyClient(discord.Client):
                     if invalid == False:
                         self.quiz_on = True
                         await message.channel.send(f'```yaml\n\nCATEGORY: {words[1]}\n{self.quiz_var[0].upper()}```')
-                        self.loop.create_task(self.quizkeeper())
+                        self.loop.create_task(self.quizkeeper(message))
                     else:
                         await message.channel.send(f'```yaml\n\nERROR FOUND INVALID QUESTION\n{self.quiz_var}\n RESETTING```')
                         self.quiz_on = False
