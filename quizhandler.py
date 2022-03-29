@@ -83,6 +83,7 @@ class Quizhandler:
         # needs a correct str of category
         categoryfiles = []
         questions = []
+        invalid = False
         for f in self.files:
             if f.startswith(category):
                 categoryfiles.append(f)
@@ -96,10 +97,13 @@ class Quizhandler:
         datasize = len(data)
         for xi in range(datasize):
             pickedquestion = random.choice(data)
+            if len[pickedquestion] != 3:
+                invalid = True
+                return pickedquestion, invalid
             qid = pickedquestion.pop(0)
             if qid not in self.limbo:
                 self.limbo.append(qid)
-                return pickedquestion  # returns q/a as list
+                return pickedquestion, invalid  # returns q/a as list
         else:
             # cant rly think of any better solution then this for now
             print('Found no question not in limbo , fallback.')

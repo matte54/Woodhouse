@@ -628,17 +628,25 @@ class MyClient(discord.Client):
                 # random question
                 check = self.quiz.getcategories()
                 rc = random.choice(check)
-                self.quiz_var = self.quiz.getquestion(rc)
-                self.quiz_on = True
-                await message.channel.send(f'```yaml\n\nCATEGORY: {rc}\n{self.quiz_var[0].upper()}```')
+                self.quiz_var, invalid = self.quiz.getquestion(rc)
+                if invalid == False:
+                    self.quiz_on = True
+                    await message.channel.send(f'```yaml\n\nCATEGORY: {rc}\n{self.quiz_var[0].upper()}```')
+                else:
+                    await message.channel.send(f'```yaml\n\nERROR FOUND INVALID QUESTION\n{self.quiz_var}\n RESETTING```')
+                    self.quiz_on = False
 
             elif words[0] == "q" and len(words) == 2 and self.quiz_on == False:
                 # get chose category question
                 check = self.quiz.getcategories()
                 if words[1] in check:
-                    self.quiz_var = self.quiz.getquestion(words[1])
-                    self.quiz_on = True
-                    await message.channel.send(f'```yaml\n\nCATEGORY: {words[1]}\n{self.quiz_var[0].upper()}```')
+                    self.quiz_var, invalid = self.quiz.getquestion(words[1])
+                    if invalid == False:
+                        self.quiz_on = True
+                        await message.channel.send(f'```yaml\n\nCATEGORY: {words[1]}\n{self.quiz_var[0].upper()}```')
+                    else:
+                        await message.channel.send(f'```yaml\n\nERROR FOUND INVALID QUESTION\n{self.quiz_var}\n RESETTING```')
+                        self.quiz_on = False
                 else:
                     msg = f'No category by that name'
                     await message.channel.send(f'```yaml\n\n{msg}```')
