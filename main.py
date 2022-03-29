@@ -127,7 +127,7 @@ class MyClient(discord.Client):
                 msg = ""
                 for i in self.quiz_answers:
                     player = i
-                    answer = testdict[i]
+                    answer = self.quiz_answers[i]
                     ratio, points = self.quiz.answer(self.quiz_var, answer, player)
                     usertuple = (player, answer, ratio, points)
                     playerlist.append(usertuple)
