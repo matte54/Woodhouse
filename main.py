@@ -667,7 +667,7 @@ class MyClient(discord.Client):
                     await message.channel.send(f'```yaml\n\nCATEGORY: {rc}\n{self.quiz_var[0].upper()}```')
                     self.loop.create_task(self.quizkeeper(message))
                 else:
-                    await message.channel.send(f'```yaml\n\nERROR FOUND INVALID QUESTION\n{self.quiz_var}\n RESETTING```')
+                    await message.channel.send(f'```yaml\n\nERROR FOUND INVALID QUESTION\nQID: {self.quiz_var[0]} {rc}\n RESETTING```')
                     self.quiz_on = False
 
             elif words[0] == "q" and len(words) == 2 and self.quiz_on == False:
@@ -680,7 +680,7 @@ class MyClient(discord.Client):
                         await message.channel.send(f'```yaml\n\nCATEGORY: {words[1]}\n{self.quiz_var[0].upper()}```')
                         self.loop.create_task(self.quizkeeper(message))
                     else:
-                        await message.channel.send(f'```yaml\n\nERROR FOUND INVALID QUESTION\n{self.quiz_var}\n RESETTING```')
+                        await message.channel.send(f'```yaml\n\nERROR FOUND INVALID QUESTION\nQID: {self.quiz_var[0]} {words[1]}\n RESETTING```')
                         self.quiz_on = False
                 else:
                     msg = f'No category by that name'
