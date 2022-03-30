@@ -89,6 +89,7 @@ class MyClient(discord.Client):
 
         #quizhandler init and class vars
         self.quiz_on = False
+        self.quiz_toggle_change = False
         self.quiz_var = []
         self.quiz_answers = {}
         self.quiz = Quizhandler()
@@ -632,21 +633,25 @@ class MyClient(discord.Client):
             words = quizmessage.split()
             u = str(message.author)
 
-            # if self.quiz_on == True:
-            #     # answer quiz question
-            #     user_answer = quizmessage
-            #     flare, ratio = self.quiz.answer(self.quiz_var, user_answer, u)
-            #     msg = (f"{u} ANSWERED: {user_answer}\n{flare} - {ratio}% \nCorrect answer: {self.quiz_var[1]}")
-            #     await message.channel.send(f'```yaml\n\n{msg}```')
-            #     self.quiz_on = False
-
             if self.quiz_on == True:
-                if u not in self.quiz_answers:
+                if self.quiz_toggle_change:
                     self.quiz_answers[u] = quizmessage
+                else:
+                    if u not in self.quiz_answers:
+                        self.quiz_answers[u] = quizmessage
 
             elif self.quiz_on == False and len(words) == 1 and words[0] == "reset":
                 self.quiz.resetscores()
                 msg = f'Quiz scores RESET by {u}'
+                await message.channel.send(f'```yaml\n\n{msg}```')
+
+            elif self.quiz_on == False and len(words) == 1 and words[0] == "change":
+                if self.quiz_toggle_change == False:
+                    self.quiz_toggle_change = True
+                    msg = f'Change your mind = ON'
+                else:
+                    self.quiz_toggle_change = False
+                    msg = f'Change your mind = OFF'
                 await message.channel.send(f'```yaml\n\n{msg}```')
 
             elif self.quiz_on == False and len(words) == 1 and words[0] == "scores":
