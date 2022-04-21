@@ -30,7 +30,7 @@ from redditchat import rspeak
 from quizhandler import Quizhandler
 
 DEBUG = False
-if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '18093712d226974bfc25563025ebdb3c':
+if hashlib.sha1(socket.gethostname().encode('utf-8')).hexdigest() == 'a3a79233dd7ad768cd5bad8e8dc5163df5b58b34':
     DEBUG = True
 
 #To fix the hour problem we delete excisting timefiles on startup
@@ -429,6 +429,11 @@ class MyClient(discord.Client):
                 embed.add_field(name='CAUGHT', value=f'{count}/894', inline=True)
                 if badge_num >= 0:
                     embed.add_field(name='BADGES', value=f'{badge_num + 1}/8', inline=True)
+                    if badge_num < 8:
+                        to_next = THRESHOLDS[badge_num + 1] - count
+                        if count < THRESHOLDS[0]:
+                            to_next = THRESHOLDS[0] - count
+                        embed.add_field(name='TO NEXT', value=f'{to_next}')
                 embed.add_field(name='Last 5 Pokémon', value=last_five, inline=False)
 
                 if badge_num >= 0:
