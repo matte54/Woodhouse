@@ -431,9 +431,10 @@ class MyClient(discord.Client):
                     embed.add_field(name='BADGES', value=f'{badge_num + 1}/8', inline=True)
                     if badge_num < 8:
                         to_next = THRESHOLDS[badge_num + 1] - count
-                        if count < THRESHOLDS[0]:
-                            to_next = THRESHOLDS[0] - count
                         embed.add_field(name='TO NEXT', value=f'{to_next}')
+                elif count < THRESHOLDS[0]:
+                    to_next = THRESHOLDS[0] - count
+                    embed.add_field(name='TO NEXT', value=f'{to_next}')
                 embed.add_field(name='Last 5 Pokémon', value=last_five, inline=False)
 
                 if badge_num >= 0:
