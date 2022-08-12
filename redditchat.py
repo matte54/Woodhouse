@@ -91,6 +91,8 @@ def rspeak(question):
     rpicked = random.choice(bestlist[-5:])
 
     print(f'{i} <-{rpicked[2]}-> {rpicked[0]}')
-    debugstuff = f'{i} <-{rpicked[2]}-> {rpicked[0]}'
+    sortdebugstuff = [i, rpicked[2], rpicked[0], len(data2),]
 
-    return rpicked[1], debugstuff
+    debugstring = f'```yaml\nInput: {i}\n\n{len(data2)} potencial matches...\n\n{round(rpicked[2] * 100)}% matched with \n\nOutput: {rpicked[0]} ```'
+
+    return rpicked[1], debugstring
