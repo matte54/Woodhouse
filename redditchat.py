@@ -51,7 +51,7 @@ def rspeak(question):
     #Get the longest word
     xa = sorted(longestword, key=len)
     if not xa:
-        return(f'All those words are ill-eagle...')
+        return f'All those words are ill-eagle...', f'```yaml\nERROR: All words in input where filtered out!```'
     print(xa)
     longestword1 = xa[-1]
     if len(xa) >= 2:
@@ -71,13 +71,13 @@ def rspeak(question):
                 if leastlongestword in a2:
                     data2.append(l2)
         else:
-            return('I dont know man...')
+            return 'I dont know man...', f'```yaml\nERROR: All words in input where filtered out!```'
 
     print(f'database found {len(data2)} matches')
 
     if not data2:
         print(f'Found absolutley nothing...')
-        return('I dont know man...')
+        return 'I dont know man...', f'```yaml\nERROR: No database matches!```'
 
     best = ("", "", 0.00)
     bestlist = []
