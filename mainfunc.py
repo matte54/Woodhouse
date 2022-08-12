@@ -406,11 +406,15 @@ def fishOffHandler():
             else:
                 print(f'A fishoff winner been crowned {winnertext}')
                 list, specialWinner = specialFishOff()
-                print(f'challenge winner is {specialWinner}') #rewards and stuff to come
-                specialWinnerText = f'challenge winner is {specialWinner}'
-                userIdSplitSpecial = specialWinner.split()[0].lower()
-                handleMoney(userIdSplitSpecial, 75)
-                print(f'{userIdSplitSpecial} is given 75 bells for the special win')#debugging to find the problem for next season.
+                if specialWinner: #Added this check to make sure nothing breaks when no one gets the challenge fish
+                    print(f'challenge winner is {specialWinner}') #rewards and stuff to come
+                    specialWinnerText = f'challenge winner is {specialWinner}'
+                    userIdSplitSpecial = specialWinner.split()[0].lower()
+                    handleMoney(userIdSplitSpecial, 75)
+                    print(f'{userIdSplitSpecial} is given 75 bells for the special win')#debugging to find the problem for next season.
+                else:
+                    specialWinnerText = f'There was no challenge winner'
+                    print("No challenge winner")
                 userIdSplit = y.split()[0]
                 handleMoney(userIdSplit, 100)
                 print(f'{y} is given 100 bells for the season win')#debugging to find the problem for next season.

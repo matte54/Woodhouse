@@ -311,7 +311,9 @@ class MyClient(discord.Client):
             if not sentence:
                 i = "stop that!"
             else:
-                i = rspeak(sentence)
+                i, debugstuff = rspeak(sentence)
+            debugchannel = self.get_channel(1007604139657789470) #debugchannel addition
+            await debugchannel.send(debugstuff)
             await message.channel.send(i)
 
         if message.content.startswith('$url'):

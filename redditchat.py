@@ -91,5 +91,6 @@ def rspeak(question):
     rpicked = random.choice(bestlist[-5:])
 
     print(f'{i} <-{rpicked[2]}-> {rpicked[0]}')
+    debugstuff = f'{i} <-{rpicked[2]}-> {rpicked[0]}'
 
-    return(rpicked[1])
+    return rpicked[1], debugstuff
