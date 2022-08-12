@@ -93,6 +93,6 @@ def rspeak(question):
     print(f'{i} <-{rpicked[2]}-> {rpicked[0]}')
     sortdebugstuff = [i, rpicked[2], rpicked[0], len(data2),]
 
-    debugstring = f'```yaml\nInput: {i}\n\n{len(data2)} potencial matches...\n\n{round(rpicked[2] * 100)}% matched with \n\nOutput: {rpicked[0]} ```'
+    debugstring = f'```yaml\nInput: {i}\n\n{len(data2)} potencial matches...\n{round(rpicked[2] * 100)}% matched with \nDatabase match: {rpicked[0]}\n\nOutput: {rpicked[1]}```'
 
     return rpicked[1], debugstring
