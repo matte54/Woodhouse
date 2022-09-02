@@ -720,7 +720,7 @@ def writeJSON(filePath, data):
         json.dump(data, f, indent=4)
         f.close()
 
-intents = discord.Intents(messages=True, guilds=True, members=True, emojis=True)
+intents = discord.Intents(messages=True, guilds=True, members=True, emojis=True, message_content=True)
 
 client = MyClient(intents=intents)
 client.run(TOKEN)
