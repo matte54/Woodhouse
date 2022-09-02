@@ -82,11 +82,6 @@ class MyClient(discord.Client):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # create the background task and run it in the background
-        self.bg_task = self.loop.create_task(self.my_background_task())
-        self.bg_task = self.loop.create_task(self.pokemon_task())
-        self.bg_task = self.loop.create_task(self.school_task())
-
         #quizhandler init and class vars
         self.quiz_on = False
         self.quiz_toggle_change = False
@@ -96,6 +91,12 @@ class MyClient(discord.Client):
 
         # timekeeper
         #self.timekeeper = self.loop.create_task(self.ticker())
+
+    async def setup_hook(self):
+        # create the background task and run it in the background
+        self.bg_task = self.loop.create_task(self.my_background_task())
+        self.bg_task = self.loop.create_task(self.pokemon_task())
+        self.bg_task = self.loop.create_task(self.school_task())
 
     async def on_ready(self):
         print(f'{get_timestamp_str()}Logged in as {self.user.name} with id {self.user.id}')
