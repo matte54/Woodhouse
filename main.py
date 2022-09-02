@@ -49,8 +49,8 @@ if DEBUG:
     with open('catmaker', encoding='utf-8') as f:
         TOKEN = f.read()
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
-                   description='Heroin addict')
+#bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
+#                   description='Heroin addict')
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
