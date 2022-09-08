@@ -542,6 +542,6 @@ def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, wC
     if ding != 0:
         embed.add_field(name="DING!", value=f"{username} is now level {ding}!")
     fishWithoutSpaces = fish.replace(" ", "")
-    icon_url = f"http://thedarkzone.se/fishicons/{fishWithoutSpaces}.png"
+    icon_url = f"http://thedarkzone.se:8080/fishicons/{fishWithoutSpaces}.png"
     embed.set_thumbnail(url=icon_url)
     return embed
