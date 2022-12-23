@@ -36,7 +36,7 @@ def gathergamedata():
         if DEBUG:
             print("theres stuff in the list")
             print(current_free_dicts)
-        f = open('./data/freegames.txt', "a+")
+        f = open('./data/freegames.txt', "a")
         for game in current_free_dicts:
             f.write(game["id"]+"\n")
         f.close()
