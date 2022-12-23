@@ -28,6 +28,7 @@ from spider_silk import db, Post, check_new_user
 from profileManager import handleMoney, getLevel, buyCast
 from redditchat import rspeak
 from quizhandler import Quizhandler
+from epicfreegames import getfreegames
 
 DEBUG = False
 if hashlib.sha1(socket.gethostname().encode('utf-8')).hexdigest() == 'a3a79233dd7ad768cd5bad8e8dc5163df5b58b34':
@@ -97,6 +98,7 @@ class MyClient(discord.Client):
         self.bg_task = self.loop.create_task(self.my_background_task())
         self.bg_task = self.loop.create_task(self.pokemon_task())
         self.bg_task = self.loop.create_task(self.school_task())
+        self.bg_task = self.loop.create_task(self.freegamechecker())
 
     async def on_ready(self):
         print(f'{get_timestamp_str()}Logged in as {self.user.name} with id {self.user.id}')
@@ -120,6 +122,17 @@ class MyClient(discord.Client):
     async def on_resumed(self):
         t = get_timestamp_str()
         print(f'{t}Connection resumed?')
+
+    async def freegamechecker(self):
+        while True:
+            # channel id for alerts 1055924391390752920
+            trygames = getfreegames()
+            if trygames:
+                alertchannel = self.get_channel(194028816333537280)
+                for i in trygames:
+                    await alertchannel.send(i)
+
+            await asyncio.sleep(6000)
 
     async def quizkeeper(self, message):
         while True:
