@@ -128,7 +128,7 @@ class MyClient(discord.Client):
         await self.wait_until_ready()
         while True:
             # channel id for alerts 1055924391390752920
-            trygames = self.getfreegames()
+            trygames = getfreegames()
             if trygames:
                 alertchannel = self.get_channel(1055924391390752920)
                 for i in trygames:
