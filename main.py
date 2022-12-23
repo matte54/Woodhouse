@@ -127,7 +127,7 @@ class MyClient(discord.Client):
         while True:
             # channel id for alerts 1055924391390752920
             trygames = getfreegames()
-            if trygames:
+            if not trygames:
                 print("Trying to post Free games")
                 alertchannel = self.get_channel(1055924391390752920)
                 for i in trygames:
