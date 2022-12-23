@@ -125,6 +125,7 @@ class MyClient(discord.Client):
 
     async def freegamechecker(self):
         print("Starting epic checker loop...")
+        await self.wait_until_ready()
         while True:
             # channel id for alerts 1055924391390752920
             trygames = self.getfreegames()
