@@ -29,6 +29,7 @@ from profileManager import handleMoney, getLevel, buyCast
 from redditchat import rspeak
 from quizhandler import Quizhandler
 from epicfreegames import getfreegames
+from essential_generators import DocumentGenerator
 
 DEBUG = False
 if hashlib.sha1(socket.gethostname().encode('utf-8')).hexdigest() == 'a3a79233dd7ad768cd5bad8e8dc5163df5b58b34':
@@ -122,6 +123,10 @@ class MyClient(discord.Client):
     async def on_resumed(self):
         t = get_timestamp_str()
         print(f'{t}Connection resumed?')
+
+    async def textgenerator(self):
+        textgen = DocumentGenerator()
+        return textgen.sentence()
 
     async def freegamechecker(self):
         #print("Starting epic checker loop...")
@@ -279,7 +284,9 @@ class MyClient(discord.Client):
                         g = random.randint(1, 100)
                         if g < 75:
                             t = get_timestamp_str()
-                            x = get_speech(self, emptyTrigger)
+                            #x = get_speech(self, emptyTrigger)
+                            randomgensentence = self.textgenerator()
+                            x, debugstuff = rspeak(randomgensentence)
                             print(f'{t}Automatic trigger chosen reply was -----> {x}')
                             await message.channel.send(x)
                             counter = 0
@@ -297,7 +304,9 @@ class MyClient(discord.Client):
                         await message.channel.send(z)
                         oX = bool(random.getrandbits(1))
                         if oX:
-                            x = get_speech(self, emptyTrigger)
+                            #x = get_speech(self, emptyTrigger)
+                            randomgensentence = self.textgenerator()
+                            x, debugstuff = rspeak(randomgensentence)
                             t = get_timestamp_str()
                             print(f'{t}Automatic trigger chosen reply was -----> {x}')
                             await message.channel.send(x)
