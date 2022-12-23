@@ -124,7 +124,7 @@ class MyClient(discord.Client):
         print(f'{t}Connection resumed?')
 
     async def freegamechecker(self):
-        print("Starting epic checker loop...")
+        #print("Starting epic checker loop...")
         await self.wait_until_ready()
         while True:
             # channel id for alerts 1055924391390752920

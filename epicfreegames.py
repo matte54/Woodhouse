@@ -1,6 +1,6 @@
 from epicstore_api import EpicGamesStoreAPI
 
-DEBUG = True  # turn off for live
+DEBUG = False  # turn off for live
 
 api = EpicGamesStoreAPI()
 free = api.get_free_games()
