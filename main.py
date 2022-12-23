@@ -124,10 +124,6 @@ class MyClient(discord.Client):
         t = get_timestamp_str()
         print(f'{t}Connection resumed?')
 
-    async def textgenerator(self):
-        textgen = DocumentGenerator()
-        return textgen.sentence()
-
     async def freegamechecker(self):
         #print("Starting epic checker loop...")
         await self.wait_until_ready()
@@ -263,6 +259,7 @@ class MyClient(discord.Client):
     async def my_background_task(self):
         global shutup
         counter = 0
+        sentencegen = DocumentGenerator()
         await self.wait_until_ready()
         channel = self.get_channel(194028816333537280) # channel ID goes here
         while not self.is_closed():
@@ -285,8 +282,7 @@ class MyClient(discord.Client):
                         if g < 75:
                             t = get_timestamp_str()
                             #x = get_speech(self, emptyTrigger)
-                            randomgensentence = self.textgenerator()
-                            x, debugstuff = rspeak(randomgensentence)
+                            x, debugstuff = rspeak(sentencegen.sentence())
                             print(f'{t}Automatic trigger chosen reply was -----> {x}')
                             await message.channel.send(x)
                             counter = 0
@@ -305,8 +301,7 @@ class MyClient(discord.Client):
                         oX = bool(random.getrandbits(1))
                         if oX:
                             #x = get_speech(self, emptyTrigger)
-                            randomgensentence = self.textgenerator()
-                            x, debugstuff = rspeak(randomgensentence)
+                            x, debugstuff = rspeak(sentencegen.sentence())
                             t = get_timestamp_str()
                             print(f'{t}Automatic trigger chosen reply was -----> {x}')
                             await message.channel.send(x)
