@@ -128,7 +128,8 @@ class MyClient(discord.Client):
             # channel id for alerts 1055924391390752920
             trygames = getfreegames()
             if trygames:
-                alertchannel = self.get_channel(194028816333537280)
+                print("Trying to post Free games")
+                alertchannel = self.get_channel(1055924391390752920)
                 for i in trygames:
                     await alertchannel.send(i)
 

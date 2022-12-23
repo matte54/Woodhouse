@@ -1,6 +1,6 @@
 from epicstore_api import EpicGamesStoreAPI
 
-DEBUG = False  # turn off for live
+DEBUG = True  # turn off for live
 
 api = EpicGamesStoreAPI()
 free = api.get_free_games()
@@ -59,6 +59,4 @@ def getfreegames():
             msg = f'FREE GAME! UNTIL {end3}\n {hc_url}{i["productSlug"]}'
             msg_list.append(msg)
 
-        for x in msg_list:
-            print(x)
         return msg_list  # return list of games to send
