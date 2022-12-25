@@ -1,6 +1,8 @@
 from epicstore_api import EpicGamesStoreAPI
+import requests
+import datetime
 
-DEBUG = False  # turn off for live
+DEBUG = True  # turn off for live
 
 api = EpicGamesStoreAPI()
 free = api.get_free_games()
@@ -10,7 +12,35 @@ msg_list = []
 hc_url = "https://store.epicgames.com/en-US/p/"
 
 
-def filter_games():
+
+def filter_steam_games():
+    gamesalelist = []
+    url = "http://store.steampowered.com/api/featuredcategories/?l=english"
+    res = requests.get(url)
+    saledict = dict(res.json())
+
+    for i in saledict["specials"]["items"]:
+        if i["discount_percent"] > 40:
+            gamesalelist.append(i)
+
+    # check ids
+    with open('./data/freegames.txt') as id_f:
+        id_database = id_f.read().splitlines()
+    for games in gamesalelist:
+        if games["id"] in id_database:
+            if DEBUG:
+                print(f'found dupe {games["id"]}')
+            gamesalelist.remove(games)
+
+    if gamesalelist:
+        f = open('./data/freegames.txt', "a")
+        for game in gamesalelist:
+            f.write(game["id"] + "\n")
+        f.close()
+
+    msgformat = f'{i["name"]} {i["discount_percent"]}% sale price {i["final_price"]} EUR until {datetime.datetime.fromtimestamp(i["discount_expiration"])}'
+
+def filter_epic_games():
     for x in gamelist:
         current_free_dicts.append(x)
 
@@ -28,17 +58,16 @@ def filter_games():
             if DEBUG:
                 print(f'found dupe {games["id"]}')
             current_free_dicts.remove(games)
-    id_f.close()
 
 
-def gathergamedata():
+def gatherepic_gamedata():
     if len(current_free_dicts) > 0:
         if DEBUG:
             print("theres stuff in the list")
             print(current_free_dicts)
         f = open('./data/freegames.txt', "a")
         for game in current_free_dicts:
-            f.write(game["id"]+"\n")
+            f.write(f'{game["id"]}\n')
         f.close()
         return True
 
@@ -49,8 +78,9 @@ def gathergamedata():
 
 
 def getfreegames():
-    filter_games()
-    b = gathergamedata()
+    # epic games stuff
+    filter_epic_games()
+    b = gatherepic_gamedata()
     if b:
         for i in current_free_dicts:
             end = i["promotions"]["promotionalOffers"][0]
@@ -59,4 +89,7 @@ def getfreegames():
             msg = f'FREE GAME! UNTIL {end3}\n {hc_url}{i["productSlug"]}'
             msg_list.append(msg)
 
+    # steam stuff here eventually
+
+    if len(msg_list) > 0:
         return msg_list  # return list of games to send
