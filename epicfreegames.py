@@ -3,14 +3,7 @@ import requests
 import datetime
 
 DEBUG = True  # turn off for live
-
-api = EpicGamesStoreAPI()
-free = api.get_free_games()
-gamelist = free["data"]["Catalog"]["searchStore"]["elements"]
-current_free_dicts = []
-msg_list = []
 hc_url = "https://store.epicgames.com/en-US/p/"
-
 
 
 def filter_steam_games():
@@ -40,7 +33,7 @@ def filter_steam_games():
 
     msgformat = f'{i["name"]} {i["discount_percent"]}% sale price {i["final_price"]} EUR until {datetime.datetime.fromtimestamp(i["discount_expiration"])}'
 
-def filter_epic_games():
+def filter_epic_games(gamelist, current_free_dicts):
     for x in gamelist:
         current_free_dicts.append(x)
 
@@ -58,9 +51,10 @@ def filter_epic_games():
             if DEBUG:
                 print(f'found dupe {games["id"]}')
             current_free_dicts.remove(games)
+    return current_free_dicts
 
 
-def gatherepic_gamedata():
+def gatherepic_gamedata(current_free_dicts):
     if len(current_free_dicts) > 0:
         if DEBUG:
             print("theres stuff in the list")
@@ -69,18 +63,25 @@ def gatherepic_gamedata():
         for game in current_free_dicts:
             f.write(f'{game["id"]}\n')
         f.close()
-        return True
+        return True, current_free_dicts
 
     else:
         if DEBUG:
             print("No new free games, doing nothing.")
-        return False
+        return False, current_free_dicts
+
 
 
 def getfreegames():
+    api = EpicGamesStoreAPI()
+    free = api.get_free_games()
+    gamelist = free["data"]["Catalog"]["searchStore"]["elements"]
+    current_free_dicts = []
+    msg_list = []
+
     # epic games stuff
-    filter_epic_games()
-    b = gatherepic_gamedata()
+    thedict = filter_epic_games(gamelist, current_free_dicts)
+    b, current_free_dicts = gatherepic_gamedata(thedict)
     if b:
         for i in current_free_dicts:
             end = i["promotions"]["promotionalOffers"][0]
