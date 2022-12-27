@@ -81,16 +81,24 @@ def getfreegames():
 
     # epic games stuff
     thedict = filter_epic_games(gamelist, current_free_dicts)
-    b, current_free_dicts = gatherepic_gamedata(thedict)
+    b, end_current_free_dicts = gatherepic_gamedata(thedict)
+    if DEBUG:
+        print(f'dict contains {end_current_free_dicts}')
     if b:
-        for i in current_free_dicts:
+        if DEBUG:
+            print(f'Creating post message!')
+        for i in end_current_free_dicts:
             end = i["promotions"]["promotionalOffers"][0]
             end2 = end["promotionalOffers"][0]
             end3 = end2["endDate"]
             msg = f'FREE GAME! UNTIL {end3}\n {hc_url}{i["productSlug"]}'
             msg_list.append(msg)
+            if DEBUG:
+                print(f'Msg list contains: {msg}')
 
     # steam stuff here eventually
 
     if len(msg_list) > 0:
+        if DEBUG:
+            print('f Returning msg_list to main file')
         return msg_list  # return list of games to send
