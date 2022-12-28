@@ -89,8 +89,11 @@ def getfreegames():
             print(f'Creating post message!')
         for i in end_current_free_dicts:
             end = i["promotions"]["promotionalOffers"][0]
+            print(end)
             end2 = end["promotionalOffers"][0]
+            print(end2)
             end3 = end2["endDate"]
+            print(end3)
             msg = f'FREE GAME! UNTIL {end3}\n {hc_url}{i["productSlug"]}'
             msg_list.append(msg)
             if DEBUG:
