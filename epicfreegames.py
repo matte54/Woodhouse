@@ -51,6 +51,8 @@ def filter_epic_games(gamelist, current_free_dicts):
             if DEBUG:
                 print(f'found dupe {games["id"]}')
             current_free_dicts.remove(games)
+            print(f'removing {games}')
+    print(f'There are {len(current_free_dicts)} entries')
     return current_free_dicts
 
 
