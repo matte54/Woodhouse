@@ -99,7 +99,7 @@ class MyClient(discord.Client):
         self.bg_task = self.loop.create_task(self.my_background_task())
         self.bg_task = self.loop.create_task(self.pokemon_task())
         self.bg_task = self.loop.create_task(self.school_task())
-        self.bg_task = self.loop.create_task(self.freegamechecker())
+        #self.bg_task = self.loop.create_task(self.freegamechecker())
 
     async def on_ready(self):
         print(f'{get_timestamp_str()}Logged in as {self.user.name} with id {self.user.id}')
