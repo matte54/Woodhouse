@@ -213,7 +213,7 @@ def cast_line(user_obj, school):
         q, value = addFish(user_obj, z, w, cI) #check bucket and add if needed
     #return for rogue embed
     #record stats(wip)
-    fishStats(uid, z, w, cI, shiny)
+    fishStats(uid, z, w, cI, shiny, user_obj.name)
     Xvalue, xp, dinged = profileHandler(uid, z, cI, w) # manage profile system(WIP)
     x = fishing_embed(user_obj.name, z, j, cI, w, value, xp, shiny, weightCategory, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embed
     return x
