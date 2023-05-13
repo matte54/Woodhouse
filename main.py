@@ -108,7 +108,7 @@ class MyClient(discord.Client):
             if guild.id == 194028816333537280:
                 thedarkzone = guild
         print(f'getting users dict for {thedarkzone}...')
-        self.users_dict = {m.id:m.name for m in thedarkzone.members}
+        self.users_dict = {str(m.id):m.name for m in thedarkzone.members}
         #Check Fishing
         y, s = fishOffHandler()
         kY = "A Fishoff season winner has been crowned!\n"
