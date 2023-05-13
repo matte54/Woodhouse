@@ -418,8 +418,8 @@ class MyClient(discord.Client):
         if message.content.startswith('$dex'):
             dexUser = message.author
             t = get_timestamp_str()
-            print(f'{t}Listing {dexUser}s pokédex...')
-            uiDex = str(dexUser)
+            print(f'{t}Listing {dexUser.name}s pokédex...')
+            uiDex = str(dexUser.id)
             filePathDex = './data/'+uiDex
             fE = open(filePathDex, 'a')
             fE.close()
@@ -437,13 +437,13 @@ class MyClient(discord.Client):
                 # status = f'{dexUser}\'s POKÉDEX  {count}/894 CAUGHT  {badge_text}'
                 # last_five = '\n'.join(mons[-5:])
                 # if count == 0: last_five = '  GO CATCH SOME POKÉMON FIRST'
-                trainer = str(dexUser).replace('#', '%23')
+                trainer = str(dexUser.name).replace('#', '%23')
                 url = f'http://thedarkzone.se/arachne/pokedex?trainer={trainer}'
                 # msg = f'```{status}\n{last_five}```\n{url}'
 
                 # TODO embed user's arachne avatar?
                 embed = discord.Embed()
-                embed.title = f'{dexUser}\'s POKÉDEX'
+                embed.title = f'{dexUser.name}\'s POKÉDEX'
                 embed.url = url
                 last_five = '\n'.join(['> ' + mon for mon in mons[-5:]])
                 if count == 0:
@@ -471,7 +471,7 @@ class MyClient(discord.Client):
             user_obj = message.author
             discordName = message.author.name #test
             t = get_timestamp_str()
-            print(f'{t}{user_obj} is attempting pokemon catch...')
+            print(f'{t}{user_obj.name} is attempting pokemon catch...')
             uid = str(user_obj.id)
             if pokemonAlive == 1:
                 # catchAttempt = bool(random.getrandbits(1))
@@ -500,17 +500,17 @@ class MyClient(discord.Client):
                             writer = csv.writer(f)
                             writer.writerow(recordEntry)
                         # f.close()
-                        msg = f'yaml\n{user_obj} CAUGHT {pokePick}!'
+                        msg = f'yaml\n{user_obj.name} CAUGHT {pokePick}!'
                         badge_pic = None
                         if count in THRESHOLDS:
                             badge_num = THRESHOLDS.index(count)
                             badge_pic = BADGE_PATH_SINGLE[badge_num]
-                            msg += f'\n{user_obj} EARNED A NEW BADGE!'
+                            msg += f'\n{user_obj.name} EARNED A NEW BADGE!'
                             await message.channel.send(f'```{msg}```', file=discord.File(badge_pic))
                         else:
                             await message.channel.send(f'```{msg}```')
                         t = get_timestamp_str()
-                        print(f'{t}{user_obj} caught {pokePick}')
+                        print(f'{t}{user_obj.name} caught {pokePick}')
                         #Catch history entry
                         try:
                             dbname = discordName[:discordName.find('#')]
@@ -523,11 +523,11 @@ class MyClient(discord.Client):
                             print(e)
                     else:
                         await message.channel.send(
-                            f'```yaml\n{user_obj} CAUGHT {pokePick}...but already had it!```')
+                            f'```yaml\n{user_obj.name} CAUGHT {pokePick}...but already had it!```')
                         #print("We had that one...")
 
                 else:
-                    await message.channel.send(f'```yaml\n{pokePick} BROKE OUT FOR {user_obj}!```')
+                    await message.channel.send(f'```yaml\n{pokePick} BROKE OUT FOR {user_obj.name}!```')
 
         if message.content.startswith('$mmo'):
             mmoMessage = message.content.replace('$mmo ','')
@@ -545,7 +545,7 @@ class MyClient(discord.Client):
         if message.content.startswith('$cast'):
             user_obj = message.author
             t = get_timestamp_str()
-            print(f'{t}{user_obj} is casting a line...')
+            print(f'{t}{user_obj.name} is casting a line...')
             uid = str(user_obj.id)
             failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "reels in the empty line...", "broke the fishing pole", "lost the fish and spilled their beer", "with all their force throwing their entire fishing rod, hook, line and sinker.", "with all their force throwing their entire fishing rod, hook, line and stinker.", "after a long tough fight the fish got away"]
             #This whole mess is to combat a File not found and just placing in the number 13 to get started
@@ -582,7 +582,7 @@ class MyClient(discord.Client):
                     writeJSON("./data/fishstats.json", data)
                     if os.path.isfile(f"./data/fishprofiles/{uid}.json"):
                         y = random.randint(1, 3)
-                        x = handleMoney(user_obj, -y)
+                        x = handleMoney(uid, -y)
                 else:
                     x = cast_line(user_obj, currentSchool)
                     await message.channel.send(embed=x)
