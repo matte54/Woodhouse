@@ -3,21 +3,20 @@ import json, os
 def writeJSON(filePath, data):
     with open(filePath, "w") as f:
         json.dump(data, f, indent=4)
-        f.close()
 
 def line2Calc(statsDict):
     #line2 calculation
     userList = statsDict["users"].keys()
     if not userList:
         print("Theres no data")
-        return("None", 0)
+        return ("None", 0)
     userDict = {}
     for i in userList:
         y = statsDict["users"][i]["numbers"]
         userDict[i] = y
     foundUser = (max(userDict, key=userDict.get))
     userCatches = userDict[foundUser]
-    return(foundUser, userCatches)
+    return (foundUser, userCatches)
 
 def line3Calc(statsDict):
     #line3 calculation
@@ -169,7 +168,7 @@ def classPercentages(statsDict):
     classT = (class1P, class2P, class3P, class4P, class5P, class6P, class7P)
     return(classT)
 
-def fishStats(uid, fish, weight, fishClass, shiny):
+def fishStats(uid, fish, weight, fishClass, shiny, username):
     with open("./data/fishstats.json", "r") as f:
         data = json.load(f)
     fishClassStr = str(fishClass)
@@ -180,15 +179,19 @@ def fishStats(uid, fish, weight, fishClass, shiny):
     data["total"][fishClassStr] += 1
     #add user specific data
     if uid not in data["users"]:
-        data["users"][uid] = {}
-        data["users"][uid]["numbers"] = 0
-        data["users"][uid]["fails"] = 0
-        data["users"][uid]["shinys"] = 0
+        data["users"][uid] = {
+            "name": username,
+            "numbers": 0,
+            "fails": 0,
+            "shinys": 0
+        }
+    elif "name" not in data["users"][uid]:
+        data["users"][uid]["name"] = username
     data["users"][uid]["numbers"] += 1
     #after statprofile creation add shinys mess...
-    if shiny == True:
+    if shiny:
         data["users"][uid]["shinys"] += 1
-        print(f'{uid} got a SHINY {fish} at {weight}')
+        print(f'{username} got a SHINY {fish} at {weight}')
     writeJSON("./data/fishstats.json", data)
 
 def listFishStats():
