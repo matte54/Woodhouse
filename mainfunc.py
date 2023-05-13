@@ -215,7 +215,7 @@ def cast_line(user_obj, school):
     #record stats(wip)
     fishStats(uid, z, w, cI, shiny)
     Xvalue, xp, dinged = profileHandler(uid, z, cI, w) # manage profile system(WIP)
-    x = fishing_embed(uid, z, j, cI, w, value, xp, shiny, weightCategory, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embed
+    x = fishing_embed(user_obj.name, z, j, cI, w, value, xp, shiny, weightCategory, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embed
     return x
 
 def fishOff():
@@ -285,17 +285,16 @@ def specialFishOff():
     else:
         return ("There are no buckets!", "")
 
-def bucket(discordId):
-    discordIdStr = str(discordId)
+def bucket(user_obj):
+    discordIdStr = str(user_obj.id)
     profileText = getUserInfo(discordIdStr)
-    jsonFile = discordIdStr + '.json'
-    filePath = "./data/bucket/"+jsonFile
+    filePath = f'./data/bucket/{discordIdStr}.json'
     try:
         with open(filePath, "r") as f:
             data = json.load(f)
             sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
             sortdict = dict(sort_bucket)
-            x = profileText + "\n" + discordIdStr.upper() + "s BUCKET(TOP 10)\n"
+            x = profileText + "\n" + user_obj.name.upper() + "s BUCKET(TOP 10)\n"
             limit = 0
             for i in sortdict:
                 x += i.upper() + ' - ' + str(sortdict[i]) + ' LBS\n'
@@ -308,8 +307,7 @@ def bucket(discordId):
 
 def addFish(discordId, fish, weight, classInt):
     discordIdStr = str(discordId)
-    jsonFile = discordIdStr + '.json'
-    filePath = "./data/bucket/"+jsonFile
+    filePath = f'./data/bucket/{discordIdStr}.json'
     #print(f'Loading file...{filePath}')
     if os.path.isfile(filePath):
         #print(f'File found!')
