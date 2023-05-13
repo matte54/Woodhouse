@@ -218,21 +218,22 @@ def cast_line(user_obj, school):
     x = fishing_embed(user_obj.name, z, j, cI, w, value, xp, shiny, weightCategory, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embed
     return x
 
-def fishOff():
+def fishOff(users_dict): # TODO make this print usernames instead of IDs (keep dict of ids to names?)
     path = "./data/bucket/"
     highscoreDict = {}
     x = os.listdir(path)
     if len(x) != 0:
-        for i in x:
-            filePath = path + i
+        for filename in x:
+            filePath = path + filename
             with open(filePath, "r") as f:
                 data = json.load(f)
                 sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
                 sortdict = dict(sort_bucket)
                 topFish = next(iter(sortdict))
                 topFishWeight = sortdict[topFish]
-                nameFix = i[:-5]
-                highscoreDict[nameFix + ' - ' + topFish] = topFishWeight
+                topFishWeight = sortdict[topFish]
+                uid = filename[:-5]
+                highscoreDict[users_dict[uid] + ' - ' + topFish] = topFishWeight
 
         sort_score = sorted(highscoreDict.items(), key=lambda x: x[1], reverse=True)
         sort_score_dict = dict(sort_score)
@@ -242,8 +243,8 @@ def fishOff():
         winner = y.upper() + ' - '+ z + ' LBS'
 
         x = ""
-        for i in sort_score_dict:
-            x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
+        for filename in sort_score_dict:
+            x += filename.upper() + ' - ' + str(sort_score_dict[filename]) + ' LBS\n'
         return (x, winner)
     else:
         return ("There is no buckets!", "")
