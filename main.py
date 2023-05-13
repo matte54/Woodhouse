@@ -90,6 +90,7 @@ class MyClient(discord.Client):
         self.quiz_var = []
         self.quiz_answers = {}
         self.quiz = Quizhandler()
+        self.users_dict = None
 
         # timekeeper
         #self.timekeeper = self.loop.create_task(self.ticker())
@@ -103,6 +104,11 @@ class MyClient(discord.Client):
 
     async def on_ready(self):
         print(f'{get_timestamp_str()}Logged in as {self.user.name} with id {self.user.id}')
+        for guild in self.guilds:
+            if guild.id == 194028816333537280:
+                thedarkzone = guild
+        print(f'getting users dict for {thedarkzone}...')
+        self.users_dict = {m.id:m.name for m in thedarkzone.members}
         #Check Fishing
         y, s = fishOffHandler()
         kY = "A Fishoff season winner has been crowned!\n"
@@ -418,7 +424,7 @@ class MyClient(discord.Client):
         if message.content.startswith('$dex'):
             dexUser = message.author
             t = get_timestamp_str()
-            print(f'{t}Listing {dexUser.name}s pokédex...')
+            print(f'{t}Listing {dexUser.name.upper()}s pokédex...')
             uiDex = str(dexUser.id)
             filePathDex = './data/'+uiDex
             fE = open(filePathDex, 'a')
@@ -594,7 +600,7 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             u = message.author
             print(f'{t}{u} is listing the fishoff highscores')
-            x, winner = fishOff()
+            x, winner = fishOff(self.users_dict)
             await message.channel.send(f'```yaml\n\n     FISH OFF MONTHLY HIGHSCORE\n{x}```')
 
         if message.content.startswith('$challenge'):
