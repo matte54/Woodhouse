@@ -57,7 +57,7 @@ def get_speech(client, trigger):
     #emoji_names = [emoji.name for emoji in client.emojis]
     emoji_names = []
     for emoji in client.emojis:
-        if emoji.animated == False:
+        if not emoji.animated:
             emoji_names.append(emoji.name) #testing new
     #add 10 emoji choices
     sEmo = random.choices(emoji_names, k=10)
@@ -154,9 +154,9 @@ def get_holiday():
     things = [thing[1].text for thing in result.iter('item')]
     return random.choice(things)
 
-def cast_line(discordId, school):
+def cast_line(user_obj, school):
     #define variables n stuff
-    uid = str(discordId)
+    uid = str(user_obj.id)
     fileDir = "./data/fishdata/"
     fishFiles = ["class1.json", "class2.json", "class3.json", "class4.json", "class5.json", "class6.json", "class7.json"]
     #pick random fish with weighted chances
@@ -169,7 +169,7 @@ def cast_line(discordId, school):
             data = json.load(f)
             #print(f'LOADED {filePath}!')
     except FileNotFoundError:
-        return(f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
+        return f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...'
     #Ugly data converting back and forth cause i dont know syntax
     z = random.choice(list(data))
     j = data[z]['joke']
@@ -194,9 +194,9 @@ def cast_line(discordId, school):
     weightCategory = wCategory(wL, wH, w)
     #Make the only fish once and hour mark.
     now = datetime.datetime.now()
-    f = open('./data/fishTime/'+uid, "w")
-    f.write(str(now.hour))
-    f.close()
+    with open(f'./data/fishTime/{uid}', 'w') as f:
+        f.write(str(now.hour))
+
     #check WR stuff
     wr, holder = get_wr(z)  # get the current wr if any
     #changed check_wr to this if statement
@@ -207,16 +207,16 @@ def cast_line(discordId, school):
         write_wr(uid, z, w)
     cI = int(c[5:])
     #addfish to buckets if needed
-    if shiny == True:
-        q, value = addFish(discordId, z+"*", w, cI) #add the asterix to shiny fish to offset.
+    if shiny:
+        q, value = addFish(user_obj, z + "*", w, cI) #add the asterix to shiny fish to offset.
     else:
-        q, value = addFish(discordId, z, w, cI) #check bucket and add if needed
+        q, value = addFish(user_obj, z, w, cI) #check bucket and add if needed
     #return for rogue embed
     #record stats(wip)
     fishStats(uid, z, w, cI, shiny)
     Xvalue, xp, dinged = profileHandler(uid, z, cI, w) # manage profile system(WIP)
-    x = fishing_embed(uid, z, j, cI, w, value, xp, shiny, weightCategory, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embedd
-    return(x)
+    x = fishing_embed(uid, z, j, cI, w, value, xp, shiny, weightCategory, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embed
+    return x
 
 def fishOff():
     path = "./data/bucket/"
@@ -274,16 +274,16 @@ def specialFishOff():
         try:
             y = next(iter(sort_score_dict))
         except StopIteration:
-            return(f'There is no {specialFish} caught yet...', '')
+            return (f'There is no {specialFish} caught yet...', '')
         z = str(sort_score_dict[y])
-        winner = y.upper() + ' - '+ z + ' LBS'
+        winner = y.upper() + ' - ' + z + ' LBS'
 
         x = ""
         for i in sort_score_dict:
             x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
-        return(x, winner)
+        return (x, winner)
     else:
-        return("There is no buckets!", "")
+        return ("There are no buckets!", "")
 
 def bucket(discordId):
     discordIdStr = str(discordId)
@@ -303,38 +303,38 @@ def bucket(discordId):
                 if limit == 10:
                     break
     except FileNotFoundError:
-        return("No fish in the bucket yet , go catch some!")
-    return(x)
+        return "No fish in the bucket yet , go catch some!"
+    return x
 
 def addFish(discordId, fish, weight, classInt):
     discordIdStr = str(discordId)
     jsonFile = discordIdStr + '.json'
     filePath = "./data/bucket/"+jsonFile
     #print(f'Loading file...{filePath}')
-    if os.path.isfile(filePath) == True:
+    if os.path.isfile(filePath):
         #print(f'File found!')
         with open(filePath, "r") as f:
             data = json.load(f)
             if fish in data:
                 #print(f"That fish type is in the bucket already.")
                 if data[fish] < weight:
-                    x = (f'NEW RECORD {fish}! This new one was {weight} the one in your bucket was only {data[fish]}')
+                    x = f'NEW RECORD {fish}! This new one was {weight} the one in your bucket was only {data[fish]}'
                     oldPb = data[fish]
                     data[fish] = weight
                     writeJSON(filePath, data)
                     #new rogue
                     value = handleMoney(discordIdStr, 0 , fish, classInt, oldPb)
-                    return(oldPb, value)
+                    return (oldPb, value)
                 else:
                     x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
                     currentPb = data[fish]
                     value = handleMoney(discordIdStr, 0 , fish, classInt, weight)
-                    return(currentPb, value)
+                    return (currentPb, value)
             else:
                 x = (f"New fish type! great addition to your bucket!")
                 data[fish] = weight
                 writeJSON(filePath, data)
-                return(0.0, 0)
+                return (0.0, 0)
     else:
         x = ""
         #print(f"JSON not found! Creating...")
@@ -342,7 +342,7 @@ def addFish(discordId, fish, weight, classInt):
         writeJSON(filePath, data)
     #old system
     #return(x)
-    return(0.0, 0)
+    return (0.0, 0)
 
 
 def fishscore():
@@ -436,7 +436,7 @@ def get_wr(fish):
         with open(filePath, "r") as f:
             data = json.load(f)
     except FileNotFoundError:
-        return (f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
+        return f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...'
     return data[fish]['weight'], data[fish]['holder']
 
 
@@ -446,7 +446,7 @@ def write_wr(uid, fish, weight):
         with open(filePath, "r") as f:
             data = json.load(f)
     except FileNotFoundError:
-        return (f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
+        return f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...'
     data[fish]['weight'] = weight
     data[fish]['holder'] = uid
     writeJSON(filePath, data)
@@ -463,18 +463,16 @@ def chooseSpecialFish():
             data = json.load(f)
             print(f'LOADED {filePath}!')
     except FileNotFoundError:
-        return(f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...')
+        return f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...'
 
     pickedSpecialFish = random.choice(list(data))
-    f1 = open('./data/specialfish', "w")
-    f1.write(pickedSpecialFish)
-    f1.close()
-    f.close()
+    with open('./data/specialfish', "w") as f:
+        f.write(pickedSpecialFish)
+
 
 def writeJSON(filePath, data):
     with open(filePath, "w") as f:
         json.dump(data, f, indent=4)
-        f.close()
     #print(f'Finished writing {filePath}')
 
 def wCategory(wL, wH, w):
@@ -491,7 +489,7 @@ def wCategory(wL, wH, w):
         if y > w:
             o = y
             break
-    return(sizes[l])
+    return sizes[l]
 
 def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, wCat, ding, old_pb=0.0, old_wr=0.0, dethroned=""):
     """Create a discord embed of the caught fish.
@@ -537,7 +535,7 @@ def fishing_embed(username, fish, joke, fish_class, weight, value, xp, shiny, wC
         embed.add_field(name="NEW WORLD RECORD!", value=f"*You caught the first {fish}!*")
     elif weight> old_wr and dethroned != "":
         embed.add_field(name="NEW WORLD RECORD!", value=f"*Previous record was {old_wr} lbs by {dethroned}*")
-    if shiny == True:
+    if shiny:
         embed.add_field(name="!", value=f"SHINY!")
     if ding != 0:
         embed.add_field(name="DING!", value=f"{username} is now level {ding}!")
