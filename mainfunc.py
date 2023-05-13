@@ -201,10 +201,10 @@ def cast_line(user_obj, school):
     wr, holder = get_wr(z)  # get the current wr if any
     #changed check_wr to this if statement
     if holder == "None":    # assuming if no wr we get back weight is 0.0 and holder is "None"
-        write_wr(uid, z, w) #added this rogue, cause it dont write the first ever record i think.
+        write_wr(user_obj, z, w) #added this rogue, cause it dont write the first ever record i think.
         wr, holder = 0.0, ""
     elif w > wr:              # if new fish is wr, write it to file
-        write_wr(uid, z, w)
+        write_wr(user_obj, z, w)
     cI = int(c[5:])
     #addfish to buckets if needed
     if shiny:
@@ -213,7 +213,7 @@ def cast_line(user_obj, school):
         q, value = addFish(user_obj, z, w, cI) #check bucket and add if needed
     #return for rogue embed
     #record stats(wip)
-    fishStats(uid, z, w, cI, shiny)
+    fishStats(uid, z, w, cI, shiny, user_obj.name)
     Xvalue, xp, dinged = profileHandler(uid, z, cI, w) # manage profile system(WIP)
     x = fishing_embed(user_obj.name, z, j, cI, w, value, xp, shiny, weightCategory, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embed
     return x
@@ -244,9 +244,9 @@ def fishOff():
         x = ""
         for i in sort_score_dict:
             x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
-        return(x, winner)
+        return (x, winner)
     else:
-        return("There is no buckets!", "")
+        return ("There is no buckets!", "")
 
 def specialFishOff():
     f1 = open('./data/specialfish', "r")
@@ -305,8 +305,8 @@ def bucket(user_obj):
         return "No fish in the bucket yet , go catch some!"
     return x
 
-def addFish(discordId, fish, weight, classInt):
-    discordIdStr = str(discordId)
+def addFish(user_obj, fish, weight, classInt):
+    discordIdStr = str(user_obj.id)
     filePath = f'./data/bucket/{discordIdStr}.json'
     #print(f'Loading file...{filePath}')
     if os.path.isfile(filePath):
@@ -356,8 +356,8 @@ def fishscore():
                 if limit == 10:
                     break
     except FileNotFoundError:
-        return("No previous winners yet!")
-    return(x)
+        return "No previous winners yet!"
+    return x
 
 def fishOffHandler():
     dir = './data/bucket'
@@ -438,7 +438,7 @@ def get_wr(fish):
     return data[fish]['weight'], data[fish]['holder']
 
 
-def write_wr(uid, fish, weight):
+def write_wr(user_obj, fish, weight):
     filePath = "./data/fishwr.json"
     try:
         with open(filePath, "r") as f:
@@ -446,7 +446,7 @@ def write_wr(uid, fish, weight):
     except FileNotFoundError:
         return f'ERROR {filePath} NOT FOUND SOMETHING IS WRONG HERE...'
     data[fish]['weight'] = weight
-    data[fish]['holder'] = uid
+    data[fish]['holder'] = user_obj.name
     writeJSON(filePath, data)
     #print(f'Wrote to file {filePath}')
 
