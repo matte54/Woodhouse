@@ -468,18 +468,18 @@ class MyClient(discord.Client):
         if message.content.startswith('$catch'):
             global pokemonAlive
             global pokePick
-            discordId = message.author
+            user_obj = message.author
             discordName = message.author.name #test
             t = get_timestamp_str()
-            print(f'{t}{discordId} is attempting pokemon catch...')
-            uid = str(discordId)
+            print(f'{t}{user_obj} is attempting pokemon catch...')
+            uid = str(user_obj.id)
             if pokemonAlive == 1:
-                #catchAttempt = bool(random.getrandbits(1))
+                # catchAttempt = bool(random.getrandbits(1))
                 if random.randint(1,10) < 9:
                     pokemonAlive = 0
-                    filePath = './data/'+uid
-                    #TODO should change this so the file is closed as soon as possible and avoid nesting with later call to open
-                    f = open(filePath, 'a')
+                    filePath = f'./data/{uid}'
+                    # TODO should change this so the file is closed as soon as possible and avoid nesting with later call to open
+                    # f = open(filePath, 'a') # if everything works we can remove this -rogue 2023
                     # fE = open(filePath, 'w+')
                     # fE.close()
                     record = pokePick.title()
@@ -487,45 +487,47 @@ class MyClient(discord.Client):
 
                     with open(filePath) as fDex2:
                         contentDex = fDex2.readlines()
-                        listC2 = [a for a in contentDex if a != '\n']
-                        listC3 = [i.strip() for i in listC2]
-                        #print(listC3)
-                        listC4 = ('\n'.join(map(str, listC3)))
 
-                        if record not in listC4:
-                            count = len(listC4.split('\n')) + 1 # Use this to figure out if a player has reached a badge
-                            #f = open(filePath, 'a')
+                    listC2 = [a for a in contentDex if a != '\n']
+                    listC3 = [i.strip() for i in listC2]
+                    #print(listC3)
+                    listC4 = ('\n'.join(map(str, listC3)))
+
+                    if record not in listC4:
+                        count = len(listC4.split('\n')) + 1 # Use this to figure out if a player has reached a badge
+                        #f = open(filePath, 'a')
+                        with open(filePath, 'a') as f:
                             writer = csv.writer(f)
                             writer.writerow(recordEntry)
-                            f.close()
-                            msg = f'yaml\n{discordId} CAUGHT {pokePick}!'
-                            badge_pic = None
-                            if count in THRESHOLDS:
-                                badge_num = THRESHOLDS.index(count)
-                                badge_pic = BADGE_PATH_SINGLE[badge_num]
-                                msg += f'\n{discordId} EARNED A NEW BADGE!'
-                                await message.channel.send(f'```{msg}```', file=discord.File(badge_pic))
-                            else:
-                                await message.channel.send(f'```{msg}```')
-                            t = get_timestamp_str()
-                            print(f'{t}{discordId} caught {pokePick}')
-                            #Catch history entry
-                            try:
-                                dbname = discordName[:discordName.find('#')]
-                                check_new_user(dbname, discordId.id)
-                                postCatch = Post(body=f'{discordName} CAUGHT {pokePick}!', pokemon=pokePick, user_id=discordId.id)
-                                db.session.add(postCatch)
-                                db.session.commit()
-                            except Exception as e:
-                                print(f'{t}ERROR Could not put pokemon into catch history!')
-                                print(e)
+                        # f.close()
+                        msg = f'yaml\n{user_obj} CAUGHT {pokePick}!'
+                        badge_pic = None
+                        if count in THRESHOLDS:
+                            badge_num = THRESHOLDS.index(count)
+                            badge_pic = BADGE_PATH_SINGLE[badge_num]
+                            msg += f'\n{user_obj} EARNED A NEW BADGE!'
+                            await message.channel.send(f'```{msg}```', file=discord.File(badge_pic))
                         else:
-                            await message.channel.send(
-                                f'```yaml\n{discordId} CAUGHT {pokePick}...but already had it!```')
-                            #print("We had that one...")
+                            await message.channel.send(f'```{msg}```')
+                        t = get_timestamp_str()
+                        print(f'{t}{user_obj} caught {pokePick}')
+                        #Catch history entry
+                        try:
+                            dbname = discordName[:discordName.find('#')]
+                            check_new_user(dbname, user_obj.id)
+                            postCatch = Post(body=f'{discordName} CAUGHT {pokePick}!', pokemon=pokePick, user_id=user_obj.id)
+                            db.session.add(postCatch)
+                            db.session.commit()
+                        except Exception as e:
+                            print(f'{t}ERROR Could not put pokemon into catch history!')
+                            print(e)
+                    else:
+                        await message.channel.send(
+                            f'```yaml\n{user_obj} CAUGHT {pokePick}...but already had it!```')
+                        #print("We had that one...")
 
                 else:
-                    await message.channel.send(f'```yaml\n{pokePick} BROKE OUT FOR {discordId}!```')
+                    await message.channel.send(f'```yaml\n{pokePick} BROKE OUT FOR {user_obj}!```')
 
         if message.content.startswith('$mmo'):
             mmoMessage = message.content.replace('$mmo ','')
@@ -541,29 +543,23 @@ class MyClient(discord.Client):
 
 #Fish catching game woo
         if message.content.startswith('$cast'):
-            discordId = message.author
+            user_obj = message.author
             t = get_timestamp_str()
-            print(f'{t}{discordId} is casting a line...')
-            uid = str(discordId)
+            print(f'{t}{user_obj} is casting a line...')
+            uid = str(user_obj.id)
             failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "reels in the empty line...", "broke the fishing pole", "lost the fish and spilled their beer", "with all their force throwing their entire fishing rod, hook, line and sinker.", "with all their force throwing their entire fishing rod, hook, line and stinker.", "after a long tough fight the fish got away"]
             #This whole mess is to combat a File not found and just placing in the number 13 to get started
             now = datetime.datetime.now()
-            try:
-                f = open('./data/fishTime/'+uid, 'r')
-            except FileNotFoundError:
-                f = open('./data/fishTime/'+uid, "w")
-                f.write("25")
-                f.close()
-                f = open('./data/fishTime/'+uid, "r")
-            #test check for day
-            timeCheck = int(f.readline())
-            #fname = pathlib.Path('./data/fishTime/'+uid)
-            #mtime = datetime.datetime.fromtimestamp(fname.stat().st_mtime)
-            f.close()
+            fn = f'./data/fishTime/{uid}'
+            if not os.path.exists(fn):
+                with open(fn, 'w') as f:
+                    f.write('25')
+            with open(fn, 'r') as f:
+                timeCheck = int(f.read().strip())
             #Check if person has fished in the current hour
             if timeCheck != now.hour:
                 #random xp modifier
-                lvl = getLevel(discordId)
+                lvl = getLevel(user_obj)
                 diff = 0.025 * lvl
                 if diff > 2:
                     diff = 2 #already 100% successrate
@@ -572,8 +568,8 @@ class MyClient(discord.Client):
                 #if random.randint(1,10) < 3: #oldroll
                 if roll < 5:
                     ff = random.choice(failFlare)
-                    await message.channel.send(f'```yaml\n{discordId} Casts their line but {ff}!```')
-                    with open('./data/fishTime/'+uid, "w") as f:
+                    await message.channel.send(f'```yaml\n{user_obj} Casts their line but {ff}!```')
+                    with open(fn, "w") as f:
                         f.write(str(now.hour))
                     #write fail into stats
                     with open("./data/fishstats.json", "r") as f:
@@ -586,13 +582,13 @@ class MyClient(discord.Client):
                     writeJSON("./data/fishstats.json", data)
                     if os.path.isfile(f"./data/fishprofiles/{uid}.json"):
                         y = random.randint(1, 3)
-                        x = handleMoney(discordId, -y)
+                        x = handleMoney(user_obj, -y)
                 else:
-                    x = cast_line(discordId, currentSchool)
+                    x = cast_line(user_obj, currentSchool)
                     await message.channel.send(embed=x)
             else:
                 await message.channel.send(
-                    f'```yaml\nYou are not allowed to fish again this soon {discordId}!```')
+                    f'```yaml\nYou are not allowed to fish again this soon {user_obj.name}!```')
 
         if message.content.startswith('$fishoff'):
             t = get_timestamp_str()
@@ -661,20 +657,20 @@ class MyClient(discord.Client):
             words = quizmessage.split()
             u = str(message.author)
 
-            if self.quiz_on == True:
+            if self.quiz_on:
                 if self.quiz_toggle_change:
                     self.quiz_answers[u] = quizmessage
                 else:
                     if u not in self.quiz_answers:
                         self.quiz_answers[u] = quizmessage
 
-            elif self.quiz_on == False and len(words) == 1 and words[0] == "reset":
+            elif not self.quiz_on and len(words) == 1 and words[0] == "reset":
                 self.quiz.resetscores()
                 msg = f'Quiz scores RESET by {u}'
                 await message.channel.send(f'```yaml\n\n{msg}```')
 
             elif self.quiz_on == False and len(words) == 1 and words[0] == "change":
-                if self.quiz_toggle_change == False:
+                if not self.quiz_toggle_change:
                     self.quiz_toggle_change = True
                     msg = f'Change your mind = ON'
                 else:
@@ -695,7 +691,7 @@ class MyClient(discord.Client):
                 check = self.quiz.getcategories()
                 rc = random.choice(check)
                 self.quiz_var, invalid = self.quiz.getquestion(rc)
-                if invalid == False:
+                if not invalid:
                     self.quiz_on = True
                     await message.channel.send(f'```yaml\n\nCATEGORY: {rc}\n{self.quiz_var[0].upper()}```')
                     self.loop.create_task(self.quizkeeper(message))
@@ -708,7 +704,7 @@ class MyClient(discord.Client):
                 check = self.quiz.getcategories()
                 if words[1] in check:
                     self.quiz_var, invalid = self.quiz.getquestion(words[1])
-                    if invalid == False:
+                    if not invalid:
                         self.quiz_on = True
                         await message.channel.send(f'```yaml\n\nCATEGORY: {words[1]}\n{self.quiz_var[0].upper()}```')
                         self.loop.create_task(self.quizkeeper(message))
