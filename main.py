@@ -628,7 +628,7 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             u = message.author
             print(f'{t}{u.name} is listing the fishstats')
-            x = listFishStats()
+            x = listFishStats(self.users_dict)
             await message.channel.send(f'```yaml\n\n{x}```')
 
         if message.content.startswith('$where'):

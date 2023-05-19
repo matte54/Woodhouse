@@ -194,7 +194,7 @@ def fishStats(uid, fish, weight, fishClass, shiny, username):
         print(f'{username} got a SHINY {fish} at {weight}')
     writeJSON("./data/fishstats.json", data)
 
-def listFishStats():
+def listFishStats(users_dict):
     with open("./data/fishstats.json", "r") as f1:
         statsDict = json.load(f1)
     with open("./data/fishwr.json", "r") as f2:
@@ -207,7 +207,7 @@ def listFishStats():
     #line4 line5 line10 line11
     unluckyUser, mostFails, percentFail, totalCatchesX, totalFailsX = line4Calc(statsDict)
     #line6
-    longestBucket, longestNumb = line6Calc()
+    longestBucket, longestNumb = line6Calc(users_dict)
     #line7 line12?
     mostWRs, biggestFishNa, biggestFishWe  = getWrStats(wrDict)
     #line8 line9
@@ -219,7 +219,7 @@ def listFishStats():
     shinyUser, shinyCatches = shinyCalc(statsDict)
     shinyTotalCatch = shinyTotal(statsDict)
     #combined total weight leader
-    totalWeightUser, totalWeightUserWeight = combinedWeight()
+    totalWeightUser, totalWeightUserWeight = combinedWeight(users_dict)
 
 
     msg = f'''---- Fishing Simulator Statistics ----
