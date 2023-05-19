@@ -265,7 +265,7 @@ def specialFishOff(users_dict):
                     #topFish = next(iter(sortdict))
                     topFish = specialFish
                     topFishWeight = sortdict[topFish]
-                    nameFix = i[:-5]
+                    nameFix = users_dict[i[:-5]]
                     highscoreDict[nameFix + ' - ' + topFish] = topFishWeight
 
         sort_score = sorted(highscoreDict.items(), key=lambda x: x[1], reverse=True)
@@ -280,7 +280,7 @@ def specialFishOff(users_dict):
 
         x = ""
         for i in sort_score_dict:
-            x += users_dict[i].upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
+            x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
         return (x, winner)
     else:
         return ("There are no buckets!", "")
