@@ -137,8 +137,8 @@ def fishCaughtMost(statsDict):
         y = statsDict["fishes"][i]["number"]
         fishListDict[i] = y
     mostCaught = (max(fishListDict, key=fishListDict.get))
-    mostCaughtN = fishListDict[mostCaught]
-    return (mostCaught, statsDict['users'][mostCaughtN]['name'])
+    mostCaughtNum = fishListDict[mostCaught]
+    return (mostCaught, mostCaughtNum)
 
 def fishCaughtLeast(statsDict):
     fishList = statsDict["fishes"].keys()
@@ -147,8 +147,8 @@ def fishCaughtLeast(statsDict):
         y = statsDict["fishes"][i]["number"]
         fishListDict[i] = y
     leastCaught = (min(fishListDict, key=fishListDict.get))
-    leastCaughtN = fishListDict[leastCaught]
-    return (leastCaught, statsDict['users'][leastCaughtN]['name'])
+    leastCaughtNum = fishListDict[leastCaught]
+    return (leastCaught,leastCaughtNum)
 
 def classPercentages(statsDict):
     class1 = statsDict["total"]["1"]
