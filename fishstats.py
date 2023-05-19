@@ -74,7 +74,7 @@ def line4Calc(statsDict):
 
     foundUser = (max(userDict, key=userDict.get))
     userCatches = userDict[foundUser]
-    return (statsDict[foundUser]['name'], userCatches, percentFail, totalCatches, totalFails)
+    return (statsDict['users'][foundUser]['name'], userCatches, percentFail, totalCatches, totalFails)
 
 def line6Calc(users_dict=None):
     #line6 calculation
@@ -137,7 +137,7 @@ def fishCaughtMost(statsDict):
         fishListDict[i] = y
     mostCaught = (max(fishListDict, key=fishListDict.get))
     mostCaughtN = fishListDict[mostCaught]
-    return (mostCaught, statsDict[mostCaughtN]['name'])
+    return (mostCaught, statsDict['users'][mostCaughtN]['name'])
 
 def fishCaughtLeast(statsDict):
     fishList = statsDict["fishes"].keys()
@@ -147,7 +147,7 @@ def fishCaughtLeast(statsDict):
         fishListDict[i] = y
     leastCaught = (min(fishListDict, key=fishListDict.get))
     leastCaughtN = fishListDict[leastCaught]
-    return (leastCaught, statsDict[leastCaughtN]['name'])
+    return (leastCaught, statsDict['users'][leastCaughtN]['name'])
 
 def classPercentages(statsDict):
     class1 = statsDict["total"]["1"]
@@ -166,7 +166,7 @@ def classPercentages(statsDict):
     class6P = round(class6 / total * 100, 1)
     class7P = round(class7 / total * 100, 1)
     classT = (class1P, class2P, class3P, class4P, class5P, class6P, class7P)
-    return(classT)
+    return classT
 
 def fishStats(uid, fish, weight, fishClass, shiny, username):
     with open("./data/fishstats.json", "r") as f:
