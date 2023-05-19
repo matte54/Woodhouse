@@ -89,7 +89,8 @@ def line6Calc(users_dict=None):
         typeDict[i] = z
     foundUser = (max(typeDict, key=typeDict.get))
     foundValue = typeDict[foundUser]
-    return (users_dict[foundUser[:-5]]['name'], foundValue)
+    print(f'foundUser = {foundUser}')
+    return (users_dict[foundUser[:-5]], foundValue)
 
 def combinedWeight(users_dict=None):
     weightDict = {}
@@ -109,7 +110,7 @@ def combinedWeight(users_dict=None):
 
     foundUser = (max(weightDict, key=weightDict.get))
     userCatches = weightDict[foundUser]
-    return (users_dict[foundUser[:-5]]['name'], userCatches)
+    return (users_dict[foundUser[:-5]], userCatches)
 
 def getWrStats(wrDict):
     #line7 line12?
