@@ -607,7 +607,7 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             u = message.author
             print(f'{t}{u.name} is listing the challenge highscores')
-            x, winner = specialFishOff()
+            x, winner = specialFishOff(self.users_dict)
             await message.channel.send(f'```yaml\n\n THE {specialFish} CHALLENGE MONTHLY HIGHSCORE\n{x}```')
 
         if message.content.startswith('$bucket'):

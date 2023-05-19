@@ -16,7 +16,7 @@ def line2Calc(statsDict):
         userDict[i] = y
     foundUser = max(userDict, key=userDict.get) # todo replace all similar lines to get a uid and name
     userCatches = userDict[foundUser] #todo use uid here return name below
-    return (statsDict[foundUser]['name'], userCatches)
+    return (statsDict['users'][foundUser]['name'], userCatches)
 
 def line3Calc(statsDict):
     #line3 calculation
@@ -30,7 +30,7 @@ def line3Calc(statsDict):
         userDict[i] = y
     foundUser = (min(userDict, key=userDict.get))
     userCatches = userDict[foundUser]
-    return (statsDict[foundUser]['name'], userCatches)
+    return (statsDict['users'][foundUser]['name'], userCatches)
 
 def shinyCalc(statsDict):
     userList = statsDict["users"].keys()
@@ -43,7 +43,7 @@ def shinyCalc(statsDict):
         userDict[i] = y
     foundUser = (max(userDict, key=userDict.get))
     userCatches = userDict[foundUser]
-    return (statsDict[foundUser]['name'], userCatches)
+    return (statsDict['users'][foundUser]['name'], userCatches)
 
 def shinyTotal(statsDict):
     userList = statsDict["users"].keys()
@@ -89,7 +89,7 @@ def line6Calc(users_dict=None):
         typeDict[i] = z
     foundUser = (max(typeDict, key=typeDict.get))
     foundValue = typeDict[foundUser]
-    return (users_dict[foundUser]['name'], foundValue)
+    return (users_dict['users'][foundUser]['name'], foundValue)
 
 def combinedWeight(users_dict=None):
     weightDict = {}
@@ -109,7 +109,7 @@ def combinedWeight(users_dict=None):
 
     foundUser = (max(weightDict, key=weightDict.get))
     userCatches = weightDict[foundUser]
-    return (users_dict[foundUser[:-5]]['name'], userCatches)
+    return (users_dict['users'][foundUser[:-5]]['name'], userCatches)
 
 def getWrStats(wrDict):
     #line7 line12?
