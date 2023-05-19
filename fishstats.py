@@ -110,7 +110,7 @@ def combinedWeight(users_dict=None):
 
     foundUser = (max(weightDict, key=weightDict.get))
     userCatches = weightDict[foundUser]
-    return (users_dict[foundUser[:-5]], userCatches)
+    return (users_dict[foundUser], userCatches)
 
 def getWrStats(wrDict):
     #line7 line12?
