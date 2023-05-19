@@ -236,7 +236,7 @@ Least caught fish : {leastFish} ({leastFishN})
 Total caught fish : {totalCatchesX}
 Total caught shinies : {shinyTotalCatch}
 Top total weight in bucket : {totalWeightUser} {totalWeightUserWeight} lbs
-Total failed casts : {totalFailsX}')
+Total failed casts : {totalFailsX}
 Biggest fish ever caught : {biggestFishNa} at {biggestFishWe} lbs
 Class percentages class1: {classT[0]}% class2: {classT[1]}% class3: {classT[2]}% class4: {classT[3]}%
 class5: {classT[4]}% class6: {classT[5]}% class7: {classT[6]}%'''
