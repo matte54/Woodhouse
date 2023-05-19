@@ -89,7 +89,7 @@ def line6Calc(users_dict=None):
         typeDict[i] = z
     foundUser = (max(typeDict, key=typeDict.get))
     foundValue = typeDict[foundUser]
-    return (users_dict[foundUser]['name'], foundValue)
+    return (users_dict[foundUser[:-5]]['name'], foundValue)
 
 def combinedWeight(users_dict=None):
     weightDict = {}
