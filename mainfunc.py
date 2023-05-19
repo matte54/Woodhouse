@@ -190,7 +190,6 @@ def cast_line(user_obj, school):
     #Triangular weighted random weight test.
     mid = (wL + wH) / 2
     w = round(random.triangular(wL, wH, mid),2)
-    #get weight category here todo!
     weightCategory = wCategory(wL, wH, w)
     #Make the only fish once and hour mark.
     now = datetime.datetime.now()
@@ -218,7 +217,7 @@ def cast_line(user_obj, school):
     x = fishing_embed(user_obj.name, z, j, cI, w, value, xp, shiny, weightCategory, ding=dinged, old_pb=q, old_wr=wr, dethroned=holder) #return for rogue embed
     return x
 
-def fishOff(users_dict): # TODO make this print usernames instead of IDs (keep dict of ids to names?)
+def fishOff(users_dict):
     path = "./data/bucket/"
     highscoreDict = {}
     x = os.listdir(path)
@@ -249,7 +248,7 @@ def fishOff(users_dict): # TODO make this print usernames instead of IDs (keep d
     else:
         return ("There is no buckets!", "")
 
-def specialFishOff():
+def specialFishOff(users_dict):
     f1 = open('./data/specialfish', "r")
     specialFish = str(f1.readline())
     path = "./data/bucket/"
@@ -281,7 +280,7 @@ def specialFishOff():
 
         x = ""
         for i in sort_score_dict:
-            x += i.upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
+            x += users_dict[i].upper() + ' - ' + str(sort_score_dict[i]) + ' LBS\n'
         return (x, winner)
     else:
         return ("There are no buckets!", "")
@@ -316,18 +315,19 @@ def addFish(user_obj, fish, weight, classInt):
             data = json.load(f)
             if fish in data:
                 #print(f"That fish type is in the bucket already.")
+                fishname = fish if not fish.endswith('*') else fish[:-1]
                 if data[fish] < weight:
                     x = f'NEW RECORD {fish}! This new one was {weight} the one in your bucket was only {data[fish]}'
                     oldPb = data[fish]
                     data[fish] = weight
                     writeJSON(filePath, data)
                     #new rogue
-                    value = handleMoney(discordIdStr, 0 , fish, classInt, oldPb)
+                    value = handleMoney(discordIdStr, 0 , fishname, classInt, oldPb)
                     return (oldPb, value)
                 else:
                     x = (f'This {fish} was only {weight}, you already have one at {data[fish]}')
                     currentPb = data[fish]
-                    value = handleMoney(discordIdStr, 0 , fish, classInt, weight)
+                    value = handleMoney(discordIdStr, 0 , fishname, classInt, weight)
                     return (currentPb, value)
             else:
                 x = (f"New fish type! great addition to your bucket!")

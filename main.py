@@ -109,6 +109,8 @@ class MyClient(discord.Client):
                 thedarkzone = guild
         print(f'getting users dict for {thedarkzone}...')
         self.users_dict = {str(m.id):m.name for m in thedarkzone.members}
+        with open('data/user_map.json', 'w') as f:
+            json.dump(self.users_dict, f, indent=2)
         #Check Fishing
         y, s = fishOffHandler()
         kY = "A Fishoff season winner has been crowned!\n"
@@ -484,10 +486,6 @@ class MyClient(discord.Client):
                 if random.randint(1,10) < 9:
                     pokemonAlive = 0
                     filePath = f'./data/{uid}'
-                    # TODO should change this so the file is closed as soon as possible and avoid nesting with later call to open
-                    # f = open(filePath, 'a') # if everything works we can remove this -rogue 2023
-                    # fE = open(filePath, 'w+')
-                    # fE.close()
                     record = pokePick.title()
                     recordEntry = [record]
 
@@ -544,7 +542,7 @@ class MyClient(discord.Client):
             mmoScore = playMMO(mmoName, mmoClass)
             t = get_timestamp_str()
             u = message.author
-            print(f'{t}{u} played the mmo...')
+            print(f'{t}{u.name} played the mmo...')
             await message.channel.send(mmoScore)
 
 #Fish catching game woo
@@ -599,7 +597,7 @@ class MyClient(discord.Client):
         if message.content.startswith('$fishoff'):
             t = get_timestamp_str()
             u = message.author
-            print(f'{t}{u} is listing the fishoff highscores')
+            print(f'{t}{u.name} is listing the fishoff highscores')
             x, winner = fishOff(self.users_dict)
             await message.channel.send(f'```yaml\n\n     FISH OFF MONTHLY HIGHSCORE\n{x}```')
 
@@ -608,28 +606,28 @@ class MyClient(discord.Client):
             specialFish = str(f1.readline()).upper()
             t = get_timestamp_str()
             u = message.author
-            print(f'{t}{u} is listing the challenge highscores')
+            print(f'{t}{u.name} is listing the challenge highscores')
             x, winner = specialFishOff()
             await message.channel.send(f'```yaml\n\n THE {specialFish} CHALLENGE MONTHLY HIGHSCORE\n{x}```')
 
         if message.content.startswith('$bucket'):
             t = get_timestamp_str()
             u = message.author
-            print(f'{t}{u} is listing their bucket')
+            print(f'{t}{u.name} is listing their bucket')
             x = bucket(u)
             await message.channel.send(f'```yaml\n\n{x}```')
 
         if message.content.startswith('$fishscore'):
             t = get_timestamp_str()
             u = message.author
-            print(f'{t}{u} is listing the all time fishoff winners')
+            print(f'{t}{u.name} is listing the all time fishoff winners')
             x = fishscore()
             await message.channel.send(f'```yaml\n\n{x}```')
 
-        if message.content.startswith('$fishstats'):
+        if message.content.startswith('$fishstats'): #TODO FIX THIS to print usernames instead
             t = get_timestamp_str()
             u = message.author
-            print(f'{t}{u} is listing the fishstats')
+            print(f'{t}{u.name} is listing the fishstats')
             x = listFishStats()
             await message.channel.send(f'```yaml\n\n{x}```')
 
@@ -661,18 +659,18 @@ class MyClient(discord.Client):
         if message.content.startswith('$quiz'):
             quizmessage = message.content.replace('$quiz ', '').lower()
             words = quizmessage.split()
-            u = str(message.author)
+            name = message.author.name
 
             if self.quiz_on:
                 if self.quiz_toggle_change:
-                    self.quiz_answers[u] = quizmessage
+                    self.quiz_answers[name] = quizmessage
                 else:
-                    if u not in self.quiz_answers:
-                        self.quiz_answers[u] = quizmessage
+                    if name not in self.quiz_answers:
+                        self.quiz_answers[name] = quizmessage
 
             elif not self.quiz_on and len(words) == 1 and words[0] == "reset":
                 self.quiz.resetscores()
-                msg = f'Quiz scores RESET by {u}'
+                msg = f'Quiz scores RESET by {name}'
                 await message.channel.send(f'```yaml\n\n{msg}```')
 
             elif self.quiz_on == False and len(words) == 1 and words[0] == "change":

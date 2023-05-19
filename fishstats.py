@@ -14,53 +14,53 @@ def line2Calc(statsDict):
     for i in userList:
         y = statsDict["users"][i]["numbers"]
         userDict[i] = y
-    foundUser = (max(userDict, key=userDict.get))
-    userCatches = userDict[foundUser]
-    return (foundUser, userCatches)
+    foundUser = max(userDict, key=userDict.get) # todo replace all similar lines to get a uid and name
+    userCatches = userDict[foundUser] #todo use uid here return name below
+    return (statsDict[foundUser]['name'], userCatches)
 
 def line3Calc(statsDict):
     #line3 calculation
     userList = statsDict["users"].keys()
     if not userList:
         print("Theres no data")
-        return("None", 0)
+        return ("None", 0)
     userDict = {}
     for i in userList:
         y = statsDict["users"][i]["numbers"]
         userDict[i] = y
     foundUser = (min(userDict, key=userDict.get))
     userCatches = userDict[foundUser]
-    return(foundUser, userCatches)
+    return (statsDict[foundUser]['name'], userCatches)
 
 def shinyCalc(statsDict):
     userList = statsDict["users"].keys()
     if not userList:
         print("Theres no data")
-        return("None", 0)
+        return ("None", 0)
     userDict = {}
     for i in userList:
         y = statsDict["users"][i]["shinys"]
         userDict[i] = y
     foundUser = (max(userDict, key=userDict.get))
     userCatches = userDict[foundUser]
-    return(foundUser, userCatches)
+    return (statsDict[foundUser]['name'], userCatches)
 
 def shinyTotal(statsDict):
     userList = statsDict["users"].keys()
     if not userList:
         print("Theres no data")
-        return(0)
+        return 0
     shinyNumber = 0
     for i in userList:
         shinyNumber += statsDict["users"][i]["shinys"]
-    return(shinyNumber)
+    return shinyNumber
 
 def line4Calc(statsDict):
     #line4 line5 line10 line11 calculations
     userList = statsDict["users"].keys()
     if not userList:
         print("Theres no data")
-        return("None", 0, 0, 0, 0)
+        return ("None", 0, 0, 0, 0)
     userDict = {}
     totalFails = 0
     for i in userList:
@@ -74,14 +74,14 @@ def line4Calc(statsDict):
 
     foundUser = (max(userDict, key=userDict.get))
     userCatches = userDict[foundUser]
-    return(foundUser, userCatches, percentFail, totalCatches, totalFails)
+    return (statsDict[foundUser]['name'], userCatches, percentFail, totalCatches, totalFails)
 
-def line6Calc():
+def line6Calc(users_dict=None):
     #line6 calculation
     y = os.listdir("./data/bucket/")
     if not y:
         print("No buckets detected")
-        return("None", 0)
+        return ("None", 0)
     typeDict = {}
     for i in y:
         filePath = "./data/bucket/" + i
@@ -89,9 +89,9 @@ def line6Calc():
         typeDict[i] = z
     foundUser = (max(typeDict, key=typeDict.get))
     foundValue = typeDict[foundUser]
-    return(foundUser[:-5], foundValue)
+    return (users_dict[foundUser]['name'], foundValue)
 
-def combinedWeight():
+def combinedWeight(users_dict=None):
     weightDict = {}
     y = os.listdir("./data/bucket/")
     if not y:
@@ -109,7 +109,7 @@ def combinedWeight():
 
     foundUser = (max(weightDict, key=weightDict.get))
     userCatches = weightDict[foundUser]
-    return(foundUser, userCatches)
+    return (users_dict[foundUser[:-5]]['name'], userCatches)
 
 def getWrStats(wrDict):
     #line7 line12?
@@ -127,7 +127,7 @@ def getWrStats(wrDict):
     biggestFishN = (max(wrWeightsDict, key=wrWeightsDict.get))
     biggestFishW = wrWeightsDict[biggestFishN]
     mostRecords = max(set(wrHolderList), key = wrHolderList.count)
-    return(mostRecords, biggestFishN, biggestFishW)
+    return (mostRecords, biggestFishN, biggestFishW)
 
 def fishCaughtMost(statsDict):
     fishList = statsDict["fishes"].keys()
@@ -137,7 +137,7 @@ def fishCaughtMost(statsDict):
         fishListDict[i] = y
     mostCaught = (max(fishListDict, key=fishListDict.get))
     mostCaughtN = fishListDict[mostCaught]
-    return(mostCaught, mostCaughtN)
+    return (mostCaught, statsDict[mostCaughtN]['name'])
 
 def fishCaughtLeast(statsDict):
     fishList = statsDict["fishes"].keys()
@@ -147,7 +147,7 @@ def fishCaughtLeast(statsDict):
         fishListDict[i] = y
     leastCaught = (min(fishListDict, key=fishListDict.get))
     leastCaughtN = fishListDict[leastCaught]
-    return(leastCaught, leastCaughtN)
+    return (leastCaught, statsDict[leastCaughtN]['name'])
 
 def classPercentages(statsDict):
     class1 = statsDict["total"]["1"]
@@ -222,24 +222,22 @@ def listFishStats():
     totalWeightUser, totalWeightUserWeight = combinedWeight()
 
 
+    msg = f'''---- Fishing Simulator Statistics ----
+Most active fisher : {activeUser} {activeCatches} catch(es)
+Least active fisher : {LactiveUser} {LactiveCatches} catch(es)
+Unluckiest fisher : {unluckyUser} {mostFails} fails
+Percent of failed casts : {percentFail}% (total)
+Most diverse fisher : {longestBucket} {longestNumb} types in bucket
+Most caught shinies : {shinyUser} ({shinyCatches})
+Most world records : {mostWRs}
+Most caught fish : {mostFish} ({mostFishN})
+Least caught fish : {leastFish} ({leastFishN})
+Total caught fish : {totalCatchesX}
+Total caught shinies : {shinyTotalCatch}
+Top total weight in bucket : {totalWeightUser} {totalWeightUserWeight} lbs
+Total failed casts : {totalFailsX}')
+Biggest fish ever caught : {biggestFishNa} at {biggestFishWe} lbs
+Class percentages class1: {classT[0]}% class2: {classT[1]}% class3: {classT[2]}% class4: {classT[3]}%
+class5: {classT[4]}% class6: {classT[5]}% class7: {classT[6]}%'''
 
-    line1 = (f'---- Fishing Simulator Statistics ----')
-    line2 = (f'\nMost active fisher : {activeUser} {activeCatches} catch(es)')
-    line3 = (f'\nLeast active fisher : {LactiveUser} {LactiveCatches} catch(es)')
-    line4 = (f'\nUnluckiest fisher : {unluckyUser} {mostFails} fails')
-    line5 = (f'\nPercent of failed casts : {percentFail}% (total)')
-    line6 = (f'\nMost diverse fisher : {longestBucket} {longestNumb} types in bucket')
-    line6andhalf = (f'\nMost caught shinies : {shinyUser} ({shinyCatches})')
-    line7 = (f'\nMost world records : {mostWRs}')
-    line8 = (f'\nMost caught fish : {mostFish} ({mostFishN})')
-    line9 = (f'\nLeast caught fish : {leastFish} ({leastFishN})')
-    line10 = (f'\nTotal caught fish : {totalCatchesX}')
-    line10andhalf = (f'\nTotal caught shinies : {shinyTotalCatch}')
-    line11andhalf = (f'\nTop total weight in bucket : {totalWeightUser} {totalWeightUserWeight} LBS')
-    line11 = (f'\nTotal failed casts : {totalFailsX}')
-    line12 = (f'\nBiggest fish ever caught : {biggestFishNa} at {biggestFishWe} lbs')
-    line13 = (f'\nClass percentages class1: {classT[0]}% class2: {classT[1]}% class3: {classT[2]}% class4: {classT[3]}%')
-    line14 = (f'\nclass5: {classT[4]}% class6: {classT[5]}% class7: {classT[6]}%')
-
-    x = line1 + line2 + line3 + line4 + line5 + line6 + line6andhalf + line7 + line8 + line9 + line10 + line10andhalf + line11andhalf + line11 + line12 + line13 + line14
-    return(x)
+    return msg
