@@ -1,3 +1,4 @@
+
 import json, random, os
 
 def writeJSON(filePath, data):
@@ -17,11 +18,11 @@ def getUserInfo(userId):
         txt = f'-- Lvl: {lvl} - Exp: {exp}/{xpCap} - Bells: {money} --'
     except FileNotFoundError:
         txt = f'-- Lvl: 1 - Exp: 0/25 - Bells: 0 --'
-        return(txt)
-    return(txt)
+        return txt
+    return txt
 
 def getFishValues(fishName, className, fishWeight):
-    filePath = (f"./data/fishdata/class{className}.json")
+    filePath = f"./data/fishdata/class{className}.json"
     with open(filePath, "r") as f:
         data = json.load(f)
     money = data[fishName]['value']
@@ -47,17 +48,17 @@ def getFishValues(fishName, className, fishWeight):
             money += random.randint(0,1)
             money += random.randint(0,2)
 
-    return(money, xp)
+    return (money, xp)
 
-def getLevel(userId):
-    filePath = f"./data/fishprofiles/{userId}.json"
+def getLevel(user_obj):
+    filePath = f"./data/fishprofiles/{user_obj.id}.json"
     try:
         with open(filePath, "r") as f:
             data = json.load(f)
         x = data["level"]
     except FileNotFoundError:
-        return(1)
-    return(x)
+        return 1
+    return x
 
 def handleMoney(userId, money=0, fishName="", classInt=0, fishWeight=0):
     if classInt != 0:
@@ -76,12 +77,12 @@ def handleMoney(userId, money=0, fishName="", classInt=0, fishWeight=0):
         #print(f'adding {money} money to {userId}')
         value = 0
     writeJSON(filePath, data)
-    return(value)
+    return value
 
 def profileHandler(userId, fishName, className, fishWeight):
     filePath = f"./data/fishprofiles/{userId}.json"
     value, xp = getFishValues(fishName, className, fishWeight)
-    #check if profile excist then load if not create.
+    #check if profile exists then load, if not create.
     try:
         with open(filePath, "r") as f:
             data = json.load(f)
@@ -104,11 +105,11 @@ def profileHandler(userId, fishName, className, fishWeight):
         data["currentXp"] += xp
         #print(f'{xp} XP gained {data["currentXp"]}/{data["xpCap"]}')
     writeJSON(filePath, data)
-    return(value, xp, dinged)
+    return (value, xp, dinged)
 
-def buyCast(discordId):
-    userId = str(discordId)
-    if os.path.isfile(f"./data/fishTime/{userId}") == False:
+def buyCast(user_obj):
+    userId = str(user_obj.id)
+    if not os.path.isfile(f"./data/fishTime/{userId}"):
         return False
     filePath = f"./data/fishprofiles/{userId}.json"
     try:
