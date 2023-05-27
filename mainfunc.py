@@ -180,7 +180,7 @@ def cast_line(user_obj, school):
     if random.randint(1, 100) == 100:
         shiny = True
         if c == "class7":
-            wL = wL * 1.5
+            wL = wL * 1.6
             wH = wH * 2
         else:
             wL = wL * 2
