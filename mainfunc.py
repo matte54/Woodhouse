@@ -361,7 +361,7 @@ def fishscore():
         return "No previous winners yet!"
     return x
 
-def fishOffHandler():
+def fishOffHandler(user_obj):
     dir = './data/bucket'
     now = datetime.datetime.now()
     lastMonth = now - datetime.timedelta(days=now.day)
@@ -405,7 +405,7 @@ def fishOffHandler():
                 return None, None
             else:
                 print(f'A fishoff winner been crowned {winnertext}')
-                list, specialWinner = specialFishOff()
+                list, specialWinner = specialFishOff(user_obj)
                 if specialWinner: #Added this check to make sure nothing breaks when no one gets the challenge fish
                     print(f'challenge winner is {specialWinner}') #rewards and stuff to come
                     specialWinnerText = f'challenge winner is {specialWinner}'
