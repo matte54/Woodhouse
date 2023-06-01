@@ -112,7 +112,7 @@ class MyClient(discord.Client):
         with open('data/user_map.json', 'w') as f:
             json.dump(self.users_dict, f, indent=2)
         #Check Fishing
-        y, s = fishOffHandler()
+        y, s = fishOffHandler(self.users_dict)
         kY = "A Fishoff season winner has been crowned!\n"
         if y and s:
             for h in fishChannels:
