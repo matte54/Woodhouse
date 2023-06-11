@@ -80,6 +80,11 @@ currentSchool = defaultWeights
 #Fishing channels
 fishChannels = [194028816333537280, 327131365944590337]
 
+def get_special_fish():
+    with open('./data/specialfish', "r") as f:
+        specialFish = str(f.readline()).upper()
+    return specialFish
+
 class MyClient(discord.Client):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -449,7 +454,6 @@ class MyClient(discord.Client):
                 url = f'http://thedarkzone.se/arachne/pokedex?trainer={trainer}'
                 # msg = f'```{status}\n{last_five}```\n{url}'
 
-                # TODO embed user's arachne avatar?
                 embed = discord.Embed()
                 embed.title = f'{dexUser.name}\'s POKÉDEX'
                 embed.url = url
@@ -527,7 +531,7 @@ class MyClient(discord.Client):
                             print(e)
                     else:
                         await message.channel.send(
-                            f'```yaml\n{user_obj.name} CAUGHT {pokePick}...but already had it!```')
+                            f'```yaml\n{user_obj.name} CAUGHT {pokePick}... but already had it!```')
                         #print("We had that one...")
 
                 else:
@@ -551,7 +555,10 @@ class MyClient(discord.Client):
             t = get_timestamp_str()
             print(f'{t}{user_obj.name} is casting a line...')
             uid = str(user_obj.id)
-            failFlare = ["broke the line and fish got away...", "fell in the water.", "caught nothing...", "reels in the empty line...", "broke the fishing pole", "lost the fish and spilled their beer", "with all their force throwing their entire fishing rod, hook, line and sinker.", "with all their force throwing their entire fishing rod, hook, line and stinker.", "after a long tough fight the fish got away"]
+            failFlare = ["broke the line and the fish got away...", "fell in the water.", "caught nothing...", "reels in the empty line...", "broke the fishing pole!", "lost the fish and spilled their beer!", "with all their force throwing their entire fishing rod, hook, line and sinker.", "with all their force throwing their entire fishing rod, hook, line and stinker.", "after a long tough fight the fish got away!", "nothing happened!"]
+            if random.randint(0, 50) == 0:
+                specialFish = get_special_fish().lower()
+                failFlare = [f"a {specialFish} jumped up and stole their fishing rod!!", f"broke the line and the {specialFish} got away...", f"lost the {specialFish} and spilled their beer!", f"after a long tough fight the {specialFish} got away!"]
             #This whole mess is to combat a File not found and just placing in the number 13 to get started
             now = datetime.datetime.now()
             fn = f'./data/fishTime/{uid}'
@@ -567,12 +574,12 @@ class MyClient(discord.Client):
                 diff = 0.025 * lvl
                 if diff > 2:
                     diff = 2 #already 100% successrate
-                    print("User is at max fishing sucessrate")
+                    print("User is at max fishing successrate")
                 roll = random.uniform(3 + diff, 10) #at level 80 you have 100% successrate
                 #if random.randint(1,10) < 3: #oldroll
                 if roll < 5:
                     ff = random.choice(failFlare)
-                    await message.channel.send(f'```yaml\n{user_obj} Casts their line but {ff}!```')
+                    await message.channel.send(f'```yaml\n{user_obj.name} casts their line but {ff}```')
                     with open(fn, "w") as f:
                         f.write(str(now.hour))
                     #write fail into stats
@@ -602,13 +609,12 @@ class MyClient(discord.Client):
             await message.channel.send(f'```yaml\n\n     FISH OFF MONTHLY HIGHSCORE\n{x}```')
 
         if message.content.startswith('$challenge'):
-            f1 = open('./data/specialfish', "r")
-            specialFish = str(f1.readline()).upper()
+            specialFish = get_special_fish().upper()
             t = get_timestamp_str()
             u = message.author
             print(f'{t}{u.name} is listing the challenge highscores')
             x, winner = specialFishOff(self.users_dict)
-            await message.channel.send(f'```yaml\n\n THE {specialFish} CHALLENGE MONTHLY HIGHSCORE\n{x}```')
+            await message.channel.send(f'```yaml\n\nTHE {specialFish} CHALLENGE MONTHLY HIGHSCORE\n{x}```')
 
         if message.content.startswith('$bucket'):
             t = get_timestamp_str()
@@ -624,7 +630,7 @@ class MyClient(discord.Client):
             x = fishscore()
             await message.channel.send(f'```yaml\n\n{x}```')
 
-        if message.content.startswith('$fishstats'): #TODO FIX THIS to print usernames instead
+        if message.content.startswith('$fishstats'):
             t = get_timestamp_str()
             u = message.author
             print(f'{t}{u.name} is listing the fishstats')

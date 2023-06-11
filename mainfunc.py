@@ -295,7 +295,7 @@ def bucket(user_obj):
             data = json.load(f)
             sort_bucket = sorted(data.items(), key=lambda x: x[1], reverse=True)
             sortdict = dict(sort_bucket)
-            x = profileText + "\n" + user_obj.name.upper() + "s BUCKET(TOP 10)\n"
+            x = profileText + "\n" + user_obj.name.upper() + "'S BUCKET(TOP 10)\n"
             limit = 0
             for i in sortdict:
                 x += i.upper() + ' - ' + str(sortdict[i]) + ' LBS\n'
@@ -303,7 +303,7 @@ def bucket(user_obj):
                 if limit == 10:
                     break
     except FileNotFoundError:
-        return "No fish in the bucket yet , go catch some!"
+        return "No fish in the bucket yet, go catch some!"
     return x
 
 def addFish(user_obj, fish, weight, classInt):
@@ -393,7 +393,7 @@ def fishOffHandler(user_obj):
                 y = next(iter(sort_score_dict))
                 z = str(sort_score_dict[y])
 
-        winnertext = monthStr + " " + yearStr + " " + y + " " + z
+        winnertext = f"{monthStr} {yearStr} {user_obj[y]} {z}"
 
 
         Key = monthStr+yearStr
