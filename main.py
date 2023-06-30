@@ -658,7 +658,7 @@ class MyClient(discord.Client):
                 print(f'{t}{msg}')
                 await message.channel.send(f'```yaml\n\n{msg}```')
             else:
-                xZ = f'{u} you cant afford a extra cast right now(or you already have a cast this hour)'
+                xZ = f"{u.name} you can't afford an extra cast right now (or you already have a cast this hour)"
                 await message.channel.send(f'```yaml\n\n{xZ}```')
 
         # quiz stuff
