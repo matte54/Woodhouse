@@ -392,9 +392,10 @@ def fishOffHandler(user_obj):
                 #Code to return the winner for future winnerlist.
                 y = next(iter(sort_score_dict))
                 z = str(sort_score_dict[y])
-                name = user_obj[y.split(' ')[0]]
+                id = y.split(' ')[0]
+                name = user_obj[id]
 
-        winnertext = f"{monthStr} {yearStr} {name} {y} {z}"
+        winnertext = f"{monthStr} {yearStr} {y.replace(id, name)} {z}"
 
 
         Key = monthStr+yearStr
