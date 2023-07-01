@@ -177,7 +177,8 @@ def cast_line(user_obj, school):
     wH = data[z]['weightHigh']
     c = chosenClass[0][:-5]
     #Shiny check/add
-    if random.randint(1, 100) == 100:
+    shinywave = random.choices(range(89,101), weights=[1,1,2,3,4,5,6,7,8,9,10,10]) #trying out random shiny chances for funsies
+    if random.randint(1, 100) > shinywave[0]:
         shiny = True
         if c == "class7":
             wL = wL * 1.6
